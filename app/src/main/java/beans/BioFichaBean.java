@@ -24,7 +24,7 @@ public class BioFichaBean {
     private String LONGITUD;
     private String OTRO_SINTOMA;
     private String FEC_CREACION;
-    private String FEC_ACTUALIZCION;
+    private String FEC_ACTUALIZACION;
     private String FEC_ELIMINACION;
 
     private List<EnfermedadBean> lstEnfermedad;
@@ -105,12 +105,12 @@ public class BioFichaBean {
         this.FEC_CREACION = FEC_CREACION;
     }
 
-    public String getFEC_ACTUALIZCION() {
-        return FEC_ACTUALIZCION;
+    public String getFEC_ACTUALIZACION() {
+        return FEC_ACTUALIZACION;
     }
 
-    public void setFEC_ACTUALIZCION(String FEC_ACTUALIZCION) {
-        this.FEC_ACTUALIZCION = FEC_ACTUALIZCION;
+    public void setFEC_ACTUALIZACION(String FEC_ACTUALIZCION) {
+        this.FEC_ACTUALIZACION = FEC_ACTUALIZCION;
     }
 
     public String getFEC_ELIMINACION() {
