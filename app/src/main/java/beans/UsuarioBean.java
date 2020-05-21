@@ -8,8 +8,10 @@ public class UsuarioBean {
     private String NUM_DOCUMENTO;
     private String NACIONALIDAD;
     private String NOMBRES;
-    private String APELLIDOS;
+    private String APELLIDO_PATERNO;
+    private String APELLIDO_MATERNO;
     private String ID_EMPRESA;
+    private String GENERO;
     private String CORREO;
     private String FECHA_NACIMIENTO;
     private String NOMBRES_CONTACTO;
@@ -20,10 +22,18 @@ public class UsuarioBean {
     private String CONTRASENA;
     private String ID_ROL;
     private String FEC_CREACION;
-    private String FEC_ACTUALIZCION;
+    private String FEC_ACTUALIZACION;
     private String FEC_ELIMINACION;
 
     public UsuarioBean() {
+    }
+
+    public String getGENERO() {
+        return GENERO;
+    }
+
+    public void setGENERO(String GENERO) {
+        this.GENERO = GENERO;
     }
 
     public String getID_TIPO_DOCUMENTO() {
@@ -106,14 +116,6 @@ public class UsuarioBean {
         this.FEC_CREACION = FEC_CREACION;
     }
 
-    public String getFEC_ACTUALIZCION() {
-        return FEC_ACTUALIZCION;
-    }
-
-    public void setFEC_ACTUALIZCION(String FEC_ACTUALIZCION) {
-        this.FEC_ACTUALIZCION = FEC_ACTUALIZCION;
-    }
-
     public String getFEC_ELIMINACION() {
         return FEC_ELIMINACION;
     }
@@ -136,14 +138,6 @@ public class UsuarioBean {
 
     public void setNOMBRES(String NOMBRES) {
         this.NOMBRES = NOMBRES;
-    }
-
-    public String getAPELLIDOS() {
-        return APELLIDOS;
-    }
-
-    public void setAPELLIDOS(String APELLIDOS) {
-        this.APELLIDOS = APELLIDOS;
     }
 
     public String getCORREO() {
@@ -176,5 +170,28 @@ public class UsuarioBean {
 
     public void setID_ROL(String ID_ROL) {
         this.ID_ROL = ID_ROL;
+    }
+
+    public String getAPELLIDO_PATERNO() {
+        return APELLIDO_PATERNO;
+    }
+
+    public void setAPELLIDO_PATERNO(String APELLIDO_PATERNO) {
+        this.APELLIDO_PATERNO = APELLIDO_PATERNO;
+    }
+
+    public String getAPELLIDO_MATERNO() {
+        return APELLIDO_MATERNO;
+    }
+
+    public void setAPELLIDO_MATERNO(String APELLIDO_MATERNO) {
+        this.APELLIDO_MATERNO = APELLIDO_MATERNO;
+    }
+
+    public void setFEC_ACTUALIZACION(String FEC_ACTUALIZACION) {
+        this.FEC_ACTUALIZACION = FEC_ACTUALIZACION;
+    }
+    public String getFEC_ACTUALIZACION() {
+        return FEC_ACTUALIZACION;
     }
 }
