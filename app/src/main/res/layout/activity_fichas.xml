@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".FichasActivity">
+    <LinearLayout
+        android:id="@+id/btnEmpresa"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="65dp"
+            android:background="@drawable/math_fichas"
+            android:orientation="vertical">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FICHAS"
+                android:textStyle="bold"
+                android:textSize="23sp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/colorPrimary"
+                android:layout_marginLeft="15dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Listado de fichas"
+                android:textStyle=""
+                android:textSize="18sp"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/colorPrimary"/>
+            <Button
+                android:id="@+id/btnAgregarFicha"
+                android:layout_width="50dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:layout_marginTop="-48dp"
+                android:layout_marginRight="2dp"
+                android:background="@drawable/ic_add" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <ListView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/listview">
+
+            </ListView>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
