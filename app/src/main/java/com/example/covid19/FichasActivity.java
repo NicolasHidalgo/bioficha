@@ -5,15 +5,20 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 public class FichasActivity extends AppCompatActivity {
+    FloatingActionButton btnAgregarFicha;
     ListView listView;
     String nFicha[] = {"Ficha 01","Ficha 02","Ficha 03","Ficha 04","Ficha 05","Ficha 06","Ficha 07","Ficha 08","Ficha 09","Ficha 10"};
     String nEmpleado[] = {"Juan Perez","María Vásquez","Guillermo Villavicencio","Andres Garay","Nicolas Hidalgo","Milagros Linares","Hector Mendoza","Marina Rubio","Alejandro Rosales","Edwin Bedregal"};
@@ -23,9 +28,18 @@ public class FichasActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fichas);
+        btnAgregarFicha = findViewById(R.id.btnAgregarFicha);
         listView = findViewById(R.id.listview);
         MyAdapter adapter = new MyAdapter(this, nFicha,nEmpleado,nHora);
         listView.setAdapter(adapter);
+        btnAgregarFicha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent dsp = new Intent(FichasActivity.this, ViewPageRegister.class);
+                startActivity(dsp);
+            }
+        });
+
 
     }
     class MyAdapter extends ArrayAdapter<String>{
