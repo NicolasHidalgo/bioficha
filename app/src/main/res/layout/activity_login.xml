@@ -78,3 +78,4 @@
             android:background="@drawable/button">
         </Button>
     </LinearLayout>
+</LinearLayout>
