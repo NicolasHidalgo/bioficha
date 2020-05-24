@@ -6,10 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".SintomasActivity">
 
-    <ListView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ListView
         android:id="@+id/listViewSintomas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:choiceMode="multipleChoice">
-    </ListView>
+        </ListView>
+    </LinearLayout>
 </RelativeLayout>
