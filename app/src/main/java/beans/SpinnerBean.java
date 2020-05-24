@@ -25,4 +25,8 @@ public class SpinnerBean {
     public void setVALUE(String VALUE) {
         this.VALUE = VALUE;
     }
+
+    public String toString() {
+        return getVALUE();
+    }
 }

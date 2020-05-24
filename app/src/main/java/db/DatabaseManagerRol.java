@@ -18,7 +18,6 @@ public class DatabaseManagerRol extends DatabaseManager {
     public static final String CN_ID = "_ID";
     public static final String CN_NOM_ROL = "NOM_ROL";
 
-
     public static final String CREATE_TABLE =  "create table " + NOMBRE_TABLA + " ("
             + CN_ID + " integer PRIMARY KEY,"
             + CN_NOM_ROL + " text NULL"
@@ -95,6 +94,19 @@ public class DatabaseManagerRol extends DatabaseManager {
         return existe;
     }
 
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
     public List<RolBean> getList(String tipo){
         List<RolBean> list = new ArrayList<>();
         Cursor c = null;
@@ -115,7 +127,8 @@ public class DatabaseManagerRol extends DatabaseManager {
         return list;
     }
 
-    public RolBean getObject(String id){
+    @Override
+    public RolBean get(String id){
         RolBean bean = null;
         Cursor c = cargarById(id);
 

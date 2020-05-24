@@ -18,7 +18,6 @@ public class DatabaseManagerTipoDocumento extends DatabaseManager {
     public static final String CN_ID = "_ID";
     public static final String CN_NOM_DOCUMENTO = "NOM_DOCUMENTO";
 
-
     public static final String CREATE_TABLE =  "create table " + NOMBRE_TABLA + " ("
             + CN_ID + " integer PRIMARY KEY,"
             + CN_NOM_DOCUMENTO + " text NULL"
@@ -95,6 +94,19 @@ public class DatabaseManagerTipoDocumento extends DatabaseManager {
         return existe;
     }
 
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
     public List<TipoDocumentoBean> getList(String tipo){
         List<TipoDocumentoBean> list = new ArrayList<>();
         Cursor c = null;
@@ -115,7 +127,8 @@ public class DatabaseManagerTipoDocumento extends DatabaseManager {
         return list;
     }
 
-    public TipoDocumentoBean getObject(String id){
+    @Override
+    public TipoDocumentoBean get(String id){
         TipoDocumentoBean bean = null;
         Cursor c = cargarById(id);
 
@@ -131,8 +144,9 @@ public class DatabaseManagerTipoDocumento extends DatabaseManager {
         List<SpinnerBean> list = new ArrayList<>();
         Cursor c = cargar();
 
+        SpinnerBean bean = null;
         while (c.moveToNext()){
-            SpinnerBean bean = new SpinnerBean(c.getInt(0),c.getString(1));
+            bean = new SpinnerBean(c.getInt(0),c.getString(1));
             list.add(bean);
         }
         return list;

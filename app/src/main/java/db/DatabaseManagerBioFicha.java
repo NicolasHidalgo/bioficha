@@ -152,7 +152,21 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         return existe;
     }
 
-    public List<BioFichaBean> getList(String tipo){
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
+    @Override
+    public List<BioFichaBean> get(String tipo){
         List<BioFichaBean> list = new ArrayList<>();
         Cursor c = null;
 

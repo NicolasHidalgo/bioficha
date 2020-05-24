@@ -93,6 +93,20 @@ public class DatabaseManagerDepartamento extends DatabaseManager {
         return existe;
     }
 
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
+
     public List<DepartamentoBean> getList(String tipo){
         List<DepartamentoBean> list = new ArrayList<>();
         Cursor c = null;
@@ -113,7 +127,8 @@ public class DatabaseManagerDepartamento extends DatabaseManager {
         return list;
     }
 
-    public DepartamentoBean getObject(String id){
+    @Override
+    public DepartamentoBean get(String id){
         DepartamentoBean bean = null;
         Cursor c = cargarById(id);
 

@@ -95,6 +95,19 @@ public class DatabaseManagerBioFichaSintoma extends DatabaseManager {
         return existe;
     }
 
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
     public List<BioFichaSintomaBean> getList(String tipo){
         List<BioFichaSintomaBean> list = new ArrayList<>();
         Cursor c = null;
@@ -115,7 +128,8 @@ public class DatabaseManagerBioFichaSintoma extends DatabaseManager {
         return list;
     }
 
-    public BioFichaSintomaBean getObject(String id){
+    @Override
+    public BioFichaSintomaBean get(String id){
         BioFichaSintomaBean bean = null;
         Cursor c = cargarById(id);
 

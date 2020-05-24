@@ -26,7 +26,8 @@ public abstract class DatabaseManager {
     abstract public Cursor cargar();
     abstract public Cursor cargarById(String id);
     abstract public Boolean compruebaRegistro(String id);
-
+    abstract public Boolean verificarRegistros();
+    abstract public Object get(String id);
 
     public DbHelper getHelper(){
         return  helper;

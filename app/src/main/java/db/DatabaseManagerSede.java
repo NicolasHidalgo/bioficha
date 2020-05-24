@@ -104,11 +104,32 @@ public class DatabaseManagerSede extends DatabaseManager {
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
     }
 
+    public Cursor cargarPorPermiso(String permiso) {
+        String [] columnas = new String[]
+                {CN_ID,CN_NOMBRE_SEDE};
+        //return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " IN ?",new String[] { "("+permiso+")" },null,null,null);
+        String query = "SELECT "+CN_ID+", " + CN_NOMBRE_SEDE +" FROM " + NOMBRE_TABLA + " WHERE " + CN_ID +" IN (" + permiso + ")";
+        return super.getDb().rawQuery(query, null);
+    }
+
 
     @Override
     public Boolean compruebaRegistro(String id) {
         boolean existe = true;
         Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA + " WHERE " + CN_ID + " =" + id, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
 
         if (resultSet.getCount() <= 0)
             existe = false;
@@ -138,7 +159,8 @@ public class DatabaseManagerSede extends DatabaseManager {
         return list;
     }
 
-    public EnfermedadBean getObject(String id){
+    @Override
+    public EnfermedadBean get(String id){
         EnfermedadBean bean = null;
         Cursor c = cargarById(id);
 
@@ -150,7 +172,18 @@ public class DatabaseManagerSede extends DatabaseManager {
         return bean;
     }
 
-    public List<SpinnerBean> getSpinner(){
+    public List<SpinnerBean> getSpinner(String permiso){
+        List<SpinnerBean> list = new ArrayList<>();
+        Cursor c = cargarPorPermiso(permiso);
+
+        while (c.moveToNext()){
+            SpinnerBean bean = new SpinnerBean(c.getInt(0),c.getString(1));
+            list.add(bean);
+        }
+        return list;
+    }
+
+    public List<SpinnerBean> getSpinnerAll(){
         List<SpinnerBean> list = new ArrayList<>();
         Cursor c = cargar();
 

@@ -10,6 +10,7 @@ import java.util.List;
 
 import beans.SpinnerBean;
 import beans.UsuarioBean;
+import beans.UsuarioSedeBean;
 
 public class DatabaseManagerUsuario extends DatabaseManager {
 
@@ -119,21 +120,27 @@ public class DatabaseManagerUsuario extends DatabaseManager {
     @Override
     public Cursor cargar() {
         String [] columnas = new String[]
-                {CN_ID,CN_NOMBRES,CN_APELLIDO_PATERNO};
+                {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_NACIONALIDAD,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
+                        CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
+                CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,null);
     }
 
     @Override
     public Cursor cargarById(String id) {
         String [] columnas = new String[]
-                {CN_ID,CN_NOMBRES,CN_APELLIDO_PATERNO};
+                {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_NACIONALIDAD,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
+                        CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
+                        CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
     }
 
 
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
-                {CN_ID,CN_NOMBRES,CN_APELLIDO_PATERNO};
+                {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_NACIONALIDAD,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
+                        CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
+                        CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_EMPRESA+ " = ?",new String[] { tipo },null,null,null);
     }
 
@@ -151,6 +158,67 @@ public class DatabaseManagerUsuario extends DatabaseManager {
         return existe;
     }
 
+    public Boolean verificarPorUsuarioPassword(String usuario, String password) {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA + " WHERE " + CN_USUARIO + " =" + usuario + " AND " + CN_CONTRASENA + " =" + password, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
+    public void eliminarPorUsuarioPassword(String usuario, String password) {
+        super.getDb().delete(NOMBRE_TABLA,CN_USUARIO + "=? AND " + CN_CONTRASENA + "=?" , new String[]{usuario,password});
+    }
+
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
+    @Override
+    public UsuarioBean get(String id){
+        UsuarioBean bean = null;
+        Cursor c = cargarById(id);
+
+        while (c.moveToNext()){
+            bean = new UsuarioBean();
+            bean.setID(c.getString(0));
+            bean.setID_TIPO_DOCUMENTO(c.getString(1));
+            bean.setNUM_DOCUMENTO(c.getString(2));
+            bean.setNACIONALIDAD(c.getString(3));
+            bean.setNOMBRES(c.getString(4));
+            bean.setAPELLIDO_PATERNO(c.getString(5));
+            bean.setAPELLIDO_MATERNO(c.getString(6));
+            bean.setID_EMPRESA(c.getString(7));
+            bean.setGENERO(c.getString(8));
+            bean.setCORREO(c.getString(9));
+            bean.setFECHA_NACIMIENTO(c.getString(10));
+            bean.setNOMBRES_CONTACTO(c.getString(11));
+            bean.setDIRECCION_CONTACTO(c.getString(12));
+            bean.setTELEFONO_CONTACTO(c.getString(13));
+            bean.setCORREO_CONTACTO(c.getString(14));
+            bean.setUSUARIO(c.getString(15));
+            bean.setCONTRASENA(c.getString(16));
+            bean.setID_ROL(c.getString(17));
+            bean.setFEC_CREACION(c.getString(18));
+            bean.setFEC_ACTUALIZACION(c.getString(19));
+            bean.setFEC_ELIMINACION(c.getString(20));
+        }
+        return bean;
+    }
+
     public List<UsuarioBean> getList(String tipo){
         List<UsuarioBean> list = new ArrayList<>();
         Cursor c = null;
@@ -163,8 +231,26 @@ public class DatabaseManagerUsuario extends DatabaseManager {
         while (c.moveToNext()){
             UsuarioBean bean = new UsuarioBean();
             bean.setID(c.getString(0));
-            bean.setNOMBRES(c.getString(1));
-            bean.setAPELLIDO_PATERNO(c.getString(2));
+            bean.setID_TIPO_DOCUMENTO(c.getString(1));
+            bean.setNUM_DOCUMENTO(c.getString(2));
+            bean.setNACIONALIDAD(c.getString(3));
+            bean.setNOMBRES(c.getString(4));
+            bean.setAPELLIDO_PATERNO(c.getString(5));
+            bean.setAPELLIDO_MATERNO(c.getString(6));
+            bean.setID_EMPRESA(c.getString(7));
+            bean.setGENERO(c.getString(8));
+            bean.setCORREO(c.getString(9));
+            bean.setFECHA_NACIMIENTO(c.getString(10));
+            bean.setNOMBRES_CONTACTO(c.getString(11));
+            bean.setDIRECCION_CONTACTO(c.getString(12));
+            bean.setTELEFONO_CONTACTO(c.getString(13));
+            bean.setCORREO_CONTACTO(c.getString(14));
+            bean.setUSUARIO(c.getString(15));
+            bean.setCONTRASENA(c.getString(16));
+            bean.setID_ROL(c.getString(17));
+            bean.setFEC_CREACION(c.getString(18));
+            bean.setFEC_ACTUALIZACION(c.getString(19));
+            bean.setFEC_ELIMINACION(c.getString(20));
 
             list.add(bean);
         }

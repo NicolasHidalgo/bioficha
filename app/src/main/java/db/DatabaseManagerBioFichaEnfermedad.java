@@ -95,6 +95,19 @@ public class DatabaseManagerBioFichaEnfermedad extends DatabaseManager {
         return existe;
     }
 
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
     public List<BioFichaEnfermedadBean> getList(String tipo){
         List<BioFichaEnfermedadBean> list = new ArrayList<>();
         Cursor c = null;
@@ -115,7 +128,8 @@ public class DatabaseManagerBioFichaEnfermedad extends DatabaseManager {
         return list;
     }
 
-    public BioFichaEnfermedadBean getObject(String id){
+    @Override
+    public BioFichaEnfermedadBean get(String id){
         BioFichaEnfermedadBean bean = null;
         Cursor c = cargarById(id);
 

@@ -14,7 +14,7 @@ import beans.UsuarioSedeBean;
 
 public class DatabaseManagerSedePoligono extends DatabaseManager {
 
-    public static final String NOMBRE_TABLA = "USUARIO_SEDE";
+    public static final String NOMBRE_TABLA = "SEDE_POLIGONO";
     public static final String CN_ID = "_ID";
     public static final String CN_LATITUD = "LATITUD";
     public static final String CN_LONGITUD = "LONGITUD";
@@ -51,7 +51,7 @@ public class DatabaseManagerSedePoligono extends DatabaseManager {
     public void actualizar(SedePoligonoBean obj) {
         ContentValues valores = generarContentValues(obj);
         String [] args = new String[]{obj.getID()};
-        Log.d(NOMBRE_TABLA + "_actualizar",super.getDb().update(NOMBRE_TABLA,valores, CN_ID+ "=?", args)+"");
+        Log.d(NOMBRE_TABLA + "_actualiza",super.getDb().update(NOMBRE_TABLA,valores, CN_ID+ "=?", args)+"");
     }
 
     @Override
@@ -62,7 +62,7 @@ public class DatabaseManagerSedePoligono extends DatabaseManager {
     @Override
     public void eliminarTodo() {
         super.getDb().execSQL("DELETE FROM " + NOMBRE_TABLA + ";");
-        Log.d(NOMBRE_TABLA + "_eliminados","Datos borrados");
+        Log.d(NOMBRE_TABLA + "_eliminado","Datos borrados");
     }
 
     @Override
@@ -100,6 +100,19 @@ public class DatabaseManagerSedePoligono extends DatabaseManager {
         return existe;
     }
 
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
     public List<SedePoligonoBean> getList(String tipo){
         List<SedePoligonoBean> list = new ArrayList<>();
         Cursor c = null;
@@ -122,7 +135,8 @@ public class DatabaseManagerSedePoligono extends DatabaseManager {
         return list;
     }
 
-    public SedePoligonoBean getObject(String id){
+    @Override
+    public SedePoligonoBean get(String id){
         SedePoligonoBean bean = null;
         Cursor c = cargarById(id);
 

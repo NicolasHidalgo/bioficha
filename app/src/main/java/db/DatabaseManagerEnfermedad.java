@@ -103,6 +103,19 @@ public class DatabaseManagerEnfermedad extends DatabaseManager {
         return existe;
     }
 
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
     public List<EnfermedadBean> getList(String tipo){
         List<EnfermedadBean> list = new ArrayList<>();
         Cursor c = null;
@@ -123,7 +136,8 @@ public class DatabaseManagerEnfermedad extends DatabaseManager {
         return list;
     }
 
-    public EnfermedadBean getObject(String id){
+    @Override
+    public EnfermedadBean get(String id){
         EnfermedadBean bean = null;
         Cursor c = cargarById(id);
 

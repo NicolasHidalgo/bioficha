@@ -78,13 +78,6 @@ public class DatabaseManagerUsuarioSede extends DatabaseManager {
     }
 
 
-    public Cursor cargarPorTipo(String tipo) {
-        String [] columnas = new String[]
-                {CN_ID_USUARIO,CN_ID_SEDE,CN_ID_ROL};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_USUARIO+ " = ?",new String[] { tipo },null,null,null);
-    }
-
-
     @Override
     public Boolean compruebaRegistro(String id) {
         boolean existe = true;
@@ -98,14 +91,27 @@ public class DatabaseManagerUsuarioSede extends DatabaseManager {
         return existe;
     }
 
-    public List<UsuarioSedeBean> getList(String tipo){
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
+    public List<UsuarioSedeBean> getList(String Id){
         List<UsuarioSedeBean> list = new ArrayList<>();
         Cursor c = null;
 
-        if (tipo == "")
+        if (Id == "")
             c = cargar();
         else
-            c = cargarPorTipo(tipo);
+            c = cargarById(Id);
 
         UsuarioSedeBean bean = null;
         while (c.moveToNext()){
@@ -119,7 +125,8 @@ public class DatabaseManagerUsuarioSede extends DatabaseManager {
         return list;
     }
 
-    public UsuarioSedeBean getObject(String id){
+    @Override
+    public UsuarioSedeBean get(String id){
         UsuarioSedeBean bean = null;
         Cursor c = cargarById(id);
 

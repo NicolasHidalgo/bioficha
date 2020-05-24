@@ -98,6 +98,19 @@ public class DatabaseManagerDistrito extends DatabaseManager {
         return existe;
     }
 
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
     public List<DistritoBean> getList(String tipo){
         List<DistritoBean> list = new ArrayList<>();
         Cursor c = null;
@@ -119,7 +132,8 @@ public class DatabaseManagerDistrito extends DatabaseManager {
         return list;
     }
 
-    public DistritoBean getObject(String id){
+    @Override
+    public DistritoBean get(String id){
         DistritoBean bean = null;
         Cursor c = cargarById(id);
 

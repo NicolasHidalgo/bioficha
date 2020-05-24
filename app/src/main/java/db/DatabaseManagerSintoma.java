@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.EnfermedadBean;
+import beans.SintomaBean;
 import beans.SpinnerBean;
 
 public class DatabaseManagerSintoma extends DatabaseManager {
@@ -36,7 +37,7 @@ public class DatabaseManagerSintoma extends DatabaseManager {
         super.getDb().close();
     }
 
-    private ContentValues generarContentValues(EnfermedadBean obj){
+    private ContentValues generarContentValues(SintomaBean obj){
         ContentValues valores = new ContentValues();
         valores.put(CN_ID,obj.getID());
         valores.put(CN_DESCRIPCION,obj.getDESCRIPCION());
@@ -46,11 +47,11 @@ public class DatabaseManagerSintoma extends DatabaseManager {
         return valores;
     }
 
-    public void insertar(EnfermedadBean obj) {
+    public void insertar(SintomaBean obj) {
         Log.d(NOMBRE_TABLA + "_insertar",super.getDb().insert(NOMBRE_TABLA,null,generarContentValues(obj))+"");
     }
 
-    public void actualizar(EnfermedadBean obj) {
+    public void actualizar(SintomaBean obj) {
         ContentValues valores = generarContentValues(obj);
         String [] args = new String[]{obj.getID()};
         Log.d(NOMBRE_TABLA + "_actualizar",super.getDb().update(NOMBRE_TABLA,valores, CN_ID+ "=?", args)+"");
@@ -101,9 +102,21 @@ public class DatabaseManagerSintoma extends DatabaseManager {
 
         return existe;
     }
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
 
-    public List<EnfermedadBean> getList(String tipo){
-        List<EnfermedadBean> list = new ArrayList<>();
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
+    public List<SintomaBean> getList(String tipo){
+        List<SintomaBean> list = new ArrayList<>();
         Cursor c = null;
 
         if (tipo == "")
@@ -111,9 +124,9 @@ public class DatabaseManagerSintoma extends DatabaseManager {
         else
             c = cargarPorTipo(tipo);
 
-        EnfermedadBean bean = null;
+        SintomaBean bean = null;
         while (c.moveToNext()){
-            bean = new EnfermedadBean();
+            bean = new SintomaBean();
             bean.setID(c.getString(0));
             bean.setDESCRIPCION(c.getString(1));
 
@@ -122,12 +135,13 @@ public class DatabaseManagerSintoma extends DatabaseManager {
         return list;
     }
 
-    public EnfermedadBean getObject(String id){
-        EnfermedadBean bean = null;
+    @Override
+    public SintomaBean get(String id){
+        SintomaBean bean = null;
         Cursor c = cargarById(id);
 
         while (c.moveToNext()){
-            bean = new EnfermedadBean();
+            bean = new SintomaBean();
             bean.setID(c.getString(0));
             bean.setDESCRIPCION(c.getString(1));
         }

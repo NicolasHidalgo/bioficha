@@ -131,6 +131,19 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         return existe;
     }
 
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
     public List<EmpresaBean> getList(String tipo){
         List<EmpresaBean> list = new ArrayList<>();
         Cursor c = null;
@@ -151,7 +164,8 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         return list;
     }
 
-    public EmpresaBean getObject(String id){
+    @Override
+    public EmpresaBean get(String id){
         EmpresaBean bean = null;
         Cursor c = cargarById(id);
 

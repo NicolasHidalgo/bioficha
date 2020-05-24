@@ -37,25 +37,27 @@
                 android:layout_marginTop="5dp"
                 android:padding="3dp"
                 android:layout_gravity="center">
+
                 <TextView
+                    android:id="@+id/lblRol"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Usuario:"
-                    android:textStyle="bold"
-                    android:textColor="@color/colorPrimaryDark"
                     android:fontFamily="sans-serif-medium"
-                    android:textSize="20dp">
-                </TextView>
+                    android:text="Usuario:"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="20dp"
+                    android:textStyle="bold"></TextView>
+
                 <TextView
+                    android:id="@+id/lblNomUsuario"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:fontFamily="sans-serif-medium"
                     android:text="Jaime Pajuelo"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textStyle="bold"
-                    android:fontFamily="sans-serif-medium"
-                    android:layout_marginLeft="5dp"
-                    android:textSize="20dp">
-                </TextView>
+                    android:textSize="20dp"
+                    android:textStyle="bold"></TextView>
             </LinearLayout>
             <LinearLayout
             android:id="@+id/btnEmpresa"
@@ -194,12 +196,12 @@
                 android:layout_marginTop="5dp"
                 android:padding="3dp"
                 android:layout_gravity="center">
+
                 <Spinner
-                    android:id="@+id/spinner"
+                    android:id="@+id/spSede"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/spinner">
-                </Spinner>
+                    android:layout_height="45dp"
+                    android:background="@drawable/spinner"></Spinner>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="320dp"

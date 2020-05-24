@@ -97,6 +97,19 @@ public class DatabaseManagerProvincia extends DatabaseManager {
         return existe;
     }
 
+    @Override
+    public Boolean verificarRegistros() {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA, null);
+
+        if (resultSet.getCount() <= 0)
+            existe = false;
+        else
+            existe = true;
+
+        return existe;
+    }
+
     public List<ProvinciaBean> getList(String tipo){
         List<ProvinciaBean> list = new ArrayList<>();
         Cursor c = null;
@@ -118,7 +131,8 @@ public class DatabaseManagerProvincia extends DatabaseManager {
         return list;
     }
 
-    public ProvinciaBean getObject(String id){
+    @Override
+    public ProvinciaBean get(String id){
         ProvinciaBean bean = null;
         Cursor c = cargarById(id);
 
