@@ -18,6 +18,8 @@
     <color name="comp_end">#526AEE</color>
     <color name="reg_stat">#3BB66D</color>
     <color name="reg_end">#00FF68</color>
+    <color name="tab_stat">#FFCC16</color>
+    <color name="tab_end">#FFC700</color>
 
 
 </resources>
