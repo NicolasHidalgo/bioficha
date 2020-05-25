@@ -59,6 +59,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -197,6 +198,7 @@ public class LoginActivity extends AppCompatActivity {
                                 dbUsuario.insertar(bean);
                             }
                             session.setIdUsuario(bean.getID());
+                            session.setIdEmpresa("1");
                             WebService(bean.getID());
                         }
                     } catch (JSONException e) {
@@ -393,7 +395,8 @@ public class LoginActivity extends AppCompatActivity {
                             jsonObject = jsonArray.getJSONObject(i);
                             bean = new SintomaBean();
                             bean.setID(jsonObject.getString("ID"));
-                            bean.setDESCRIPCION(jsonObject.getString("DESCRIPCION"));
+                            String descr = jsonObject.getString("DESCRIPCION");
+                            bean.setDESCRIPCION(descr);
                             dbSintoma.insertar(bean);
                         }
 

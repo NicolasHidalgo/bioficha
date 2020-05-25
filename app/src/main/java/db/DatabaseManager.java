@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.UnsupportedEncodingException;
+
 public abstract class DatabaseManager {
 
     private DbHelper helper;
@@ -27,7 +29,7 @@ public abstract class DatabaseManager {
     abstract public Cursor cargarById(String id);
     abstract public Boolean compruebaRegistro(String id);
     abstract public Boolean verificarRegistros();
-    abstract public Object get(String id);
+    abstract public Object get(String id) throws UnsupportedEncodingException;
 
     public DbHelper getHelper(){
         return  helper;

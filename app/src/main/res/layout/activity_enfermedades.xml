@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
         <ListView
-            android:id="@+id/listViewEnfermedades"
+            android:id="@+id/lvEnfermedad"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:choiceMode="multipleChoice">

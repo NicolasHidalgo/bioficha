@@ -2,6 +2,7 @@ package com.example.covid19;
 
 import androidx.appcompat.app.AppCompatActivity;
 import beans.RolBean;
+import beans.SedeBean;
 import beans.SpinnerBean;
 import beans.UsuarioBean;
 import beans.UsuarioSedeBean;
@@ -13,6 +14,7 @@ import helper.Session;
 import util.Util;
 import ws.WebService;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -31,7 +33,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MenuActivity extends AppCompatActivity {
-    LinearLayout btnEmpresa;
+    LinearLayout btnEmpresa, btnRegistrador, btnSede;
     Button btnVerFichas;
     TextView lblNomUsuario, lblRol;
     Spinner spSede;
@@ -50,12 +52,14 @@ public class MenuActivity extends AppCompatActivity {
         //spSede = (Spinner) findViewById(R.id.spSede);
         btnVerFichas = findViewById(R.id.btnVerFichas);
 
-        //String[] value = {"Municipio","Loza Deportiva", "Parque Central"};
-        //ArrayList<String> arrayList = new ArrayList<>(Arrays.asList(value));
-        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(this, R.layout.custom_spinner, arrayList);
-        //spSede.setAdapter(arrayAdapter);
-
         btnEmpresa = findViewById(R.id.btnEmpresa);
+        btnRegistrador = findViewById(R.id.btnRegistrador);
+        btnSede = findViewById(R.id.btnSede);
+
+        btnEmpresa.setVisibility(LinearLayout.GONE);
+        btnRegistrador.setVisibility(LinearLayout.GONE);
+        btnSede.setVisibility(LinearLayout.GONE);
+
         btnEmpresa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +69,10 @@ public class MenuActivity extends AppCompatActivity {
         btnVerFichas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String ItemSede = spSede.getSelectedItem().toString();
+                SedeBean sedeBean = dbSede.getByName(ItemSede);
+                session.setIdSede(sedeBean.getID());
+                session.setNomSede(sedeBean.getNOMBRE_SEDE());
                 Intent dsp = new Intent(MenuActivity.this, FichasActivity.class);
                 startActivity(dsp);
             }
@@ -89,8 +97,11 @@ public class MenuActivity extends AppCompatActivity {
 
         spSede = (Spinner) findViewById(R.id.spSede);
         List<SpinnerBean> listaSede = null;
-        if (rolBean.getID() == "1" || rolBean.getNOM_ROL() == "SUPER-ADMIN"){
+        if (rolBean.getID().equals("1") || rolBean.getNOM_ROL().equals("SUPER-ADMIN")){
             listaSede =  dbSede.getSpinnerAll();
+            btnEmpresa.setVisibility(LinearLayout.VISIBLE);
+            btnRegistrador.setVisibility(LinearLayout.VISIBLE);
+            btnSede.setVisibility(LinearLayout.VISIBLE);
         }else {
             List<UsuarioSedeBean> listaUsuarioSede = dbUsuarioSede.getList(usuarioBean.getID());
             String sedes = "";

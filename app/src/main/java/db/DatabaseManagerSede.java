@@ -101,7 +101,7 @@ public class DatabaseManagerSede extends DatabaseManager {
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
                 {CN_ID,CN_NOMBRE_SEDE};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_NOMBRE_SEDE+ " = ?",new String[] { tipo },null,null,null);
     }
 
     public Cursor cargarPorPermiso(String permiso) {
@@ -160,14 +160,26 @@ public class DatabaseManagerSede extends DatabaseManager {
     }
 
     @Override
-    public EnfermedadBean get(String id){
-        EnfermedadBean bean = null;
+    public SedeBean get(String id){
+        SedeBean bean = null;
         Cursor c = cargarById(id);
 
         while (c.moveToNext()){
-            bean = new EnfermedadBean();
+            bean = new SedeBean();
             bean.setID(c.getString(0));
-            bean.setDESCRIPCION(c.getString(1));
+            bean.setNOMBRE_SEDE(c.getString(1));
+        }
+        return bean;
+    }
+
+    public SedeBean getByName(String name){
+        SedeBean bean = null;
+        Cursor c = cargarPorTipo(name);
+
+        while (c.moveToNext()){
+            bean = new SedeBean();
+            bean.setID(c.getString(0));
+            bean.setNOMBRE_SEDE(c.getString(1));
         }
         return bean;
     }

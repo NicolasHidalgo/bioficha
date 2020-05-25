@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,7 +138,7 @@ public class DatabaseManagerSintoma extends DatabaseManager {
     }
 
     @Override
-    public SintomaBean get(String id){
+    public SintomaBean get(String id) {
         SintomaBean bean = null;
         Cursor c = cargarById(id);
 
@@ -148,12 +150,18 @@ public class DatabaseManagerSintoma extends DatabaseManager {
         return bean;
     }
 
-    public List<SpinnerBean> getSpinner(){
+    public List<SpinnerBean> getSpinner() {
         List<SpinnerBean> list = new ArrayList<>();
         Cursor c = cargar();
 
+        SpinnerBean bean = null;
+        int ID = 0;
+        String VALUE = "";
         while (c.moveToNext()){
-            SpinnerBean bean = new SpinnerBean(c.getInt(0),c.getString(1));
+            ID = c.getInt(0);
+            VALUE = c.getString(1);
+            bean = new SpinnerBean(ID, VALUE);
+
             list.add(bean);
         }
         return list;

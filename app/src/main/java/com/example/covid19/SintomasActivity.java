@@ -13,31 +13,39 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import beans.SpinnerBean;
+import db.DatabaseManagerSintoma;
 
 
 public class SintomasActivity extends Fragment {
 
-    View v;
-    ListView listView;
+    View view;
+    ListView lvSintoma;
+    DatabaseManagerSintoma dbSintoma;
+    Context context;
 
     String[] arraySintomas = {"Fiebre/escalofrío","Malestar general","Tos","Dolor de garganta","Congestión nasal","Irritación de ojo(s)","Dificultad respiratoria","Diarrea",
             "Náuseas/vómitos","Cefalea","Irritabilidad/confusión", "Dolor muscular", "Dolor de pecho", "Dolor abdominal", "Dolor articular", "Dolor de cabeza", "Dolor de oído","Otro, especificar"};
     List<String> listaSeleccionados;
-    ArrayAdapter<String> adapter;
     ArrayAdapter<String> adapterDolor;
     public SintomasActivity(){
     }
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.activity_sintomas, container, false);
-        listView = (ListView)v.findViewById(R.id.listViewSintomas);
+        view = inflater.inflate(R.layout.activity_sintomas, container, false);
+        context = this.getActivity();
 
-        adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_list_item_multiple_choice,arraySintomas);
+        dbSintoma = new DatabaseManagerSintoma(context);
+        List<SpinnerBean> listaSintoma = null;
+        listaSintoma = dbSintoma.getSpinner();
 
-        listView.setAdapter(adapter);
+        lvSintoma = (ListView)view.findViewById(R.id.lvSintoma);
+        ArrayAdapter<SpinnerBean> adapterSintoma = new ArrayAdapter<SpinnerBean>(context,android.R.layout.simple_list_item_multiple_choice,listaSintoma);
+        adapterSintoma.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lvSintoma.setAdapter(adapterSintoma);
 
-        return v;
+        return view;
     }
 
 }
