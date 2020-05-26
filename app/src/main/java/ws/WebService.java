@@ -45,7 +45,7 @@ import db.DatabaseManagerUsuarioSede;
 
 public class WebService  {
 
-    public static final String SERVER = "http://bioficha.electocandidato.com/";
+    public static final String SERVER = "https://bioficha.electocandidato.com/";
     public String URL = SERVER + "select.php";
     public String RESPUESTA = "NADA";
     public String ACCION = "SELECT";
