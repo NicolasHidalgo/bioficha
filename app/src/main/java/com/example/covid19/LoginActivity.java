@@ -69,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
     EditText txtUsuario, txtPassword;
     private Session session;
 
-    public static final String SERVER = "http://bioficha.electocandidato.com/";
+    public static final String SERVER = "https://bioficha.electocandidato.com/";
     public String URL = SERVER + "select.php";
     public String RESPUESTA = "NADA";
     public String ACCION = "SELECT";
@@ -156,7 +156,6 @@ public class LoginActivity extends AppCompatActivity {
             dbUsuario = new DatabaseManagerUsuario(this);
             String descripcion = "XXX";
             String ACCION = "LOGIN";
-            String URL = "http://bioficha.electocandidato.com/select.php";
             final String QUERY = "call SP_USUARIO('" + ACCION  + "','" + Usuario + "','" + Password + "');";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
@@ -210,7 +209,7 @@ public class LoginActivity extends AppCompatActivity {
                 public void onErrorResponse(VolleyError error) {
                     progressBar.setVisibility(View.INVISIBLE);
                     getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-                    Toast.makeText(getApplicationContext(), "Fallo el servicio de Login", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Fallo el servicio de Login: " + error.getMessage().toString() , Toast.LENGTH_LONG).show();
                 }
             }){
                 @Override
@@ -249,23 +248,23 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(String response) {
                     if (response.equals("[]")){
 
-                    }else {
-                        dbUsuarioSede.eliminarTodo();
-                        try {
-                            UsuarioSedeBean bean = null;
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject = null;
-                            for (int i = 0; i < jsonArray.length(); i++) {
-                                jsonObject = jsonArray.getJSONObject(i);
-                                bean = new UsuarioSedeBean();
-                                bean.setID_USUARIO(jsonObject.getString("ID_USUARIO"));
-                                bean.setID_SEDE(jsonObject.getString("ID_SEDE"));
-                                bean.setID_ROL(jsonObject.getString("ID_ROL"));
-                                dbUsuarioSede.insertar(bean);
+                        }else {
+                            dbUsuarioSede.eliminarTodo();
+                            try {
+                                UsuarioSedeBean bean = null;
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject jsonObject = null;
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    jsonObject = jsonArray.getJSONObject(i);
+                                    bean = new UsuarioSedeBean();
+                                    bean.setID_USUARIO(jsonObject.getString("ID_USUARIO"));
+                                    bean.setID_SEDE(jsonObject.getString("ID_SEDE"));
+                                    bean.setID_ROL(jsonObject.getString("ID_ROL"));
+                                    dbUsuarioSede.insertar(bean);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                     }
                     WebServiceEnfermedad();
                 }

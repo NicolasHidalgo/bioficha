@@ -58,7 +58,6 @@ public class RegistroActivity extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_registro, container, false);
         context = this.getActivity();
-
         session = new Session(context);
 
         dbTipoDocumento = new DatabaseManagerTipoDocumento(context);
