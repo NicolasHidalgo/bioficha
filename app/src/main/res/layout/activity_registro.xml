@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:text="Empresa:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:textSize="15dp">
         </TextView>
 
@@ -35,7 +35,7 @@
             android:text="GV SAC"
             android:textColor="#000"
             android:textSize="15dp"
-            android:textStyle="bold"></TextView>
+></TextView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,7 +47,7 @@
             android:text="Sede:"
             android:textColor="#000"
             android:layout_marginTop="15dp"
-            android:textStyle="bold"
+
             android:textSize="15dp">
         </TextView>
 
@@ -60,7 +60,7 @@
             android:text="Sede Principal"
             android:textColor="#000"
             android:textSize="15dp"
-            android:textStyle="bold"></TextView>
+></TextView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:text="Tipo Documento:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="20dp"
             android:textSize="15dp">
         </TextView>
@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:text="N° Documento:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="10dp"
             android:textSize="15dp">
         </TextView>
@@ -130,7 +130,7 @@
             android:layout_height="wrap_content"
             android:text="Nacionalidad:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -156,7 +156,7 @@
             android:layout_height="wrap_content"
             android:text="Nombres:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -182,7 +182,7 @@
             android:layout_height="wrap_content"
             android:text="Apellido Paterno:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -207,7 +207,7 @@
             android:layout_height="wrap_content"
             android:text="Apellido Materno:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -232,7 +232,7 @@
             android:layout_height="wrap_content"
             android:text="Género:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="20dp"
             android:textSize="15dp">
         </TextView>
@@ -254,7 +254,7 @@
             android:layout_height="wrap_content"
             android:text="Correo:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -279,7 +279,7 @@
             android:layout_height="wrap_content"
             android:text="Nacimiento:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -304,7 +304,7 @@
             android:layout_height="wrap_content"
             android:text="Estatura:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -324,7 +324,7 @@
             android:layout_height="wrap_content"
             android:text="Peso:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:layout_marginLeft="20dp"
             android:textSize="15dp">
@@ -350,7 +350,7 @@
             android:layout_height="wrap_content"
             android:text="IMC:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -359,7 +359,7 @@
             android:layout_height="wrap_content"
             android:text="120 IMC"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:layout_marginLeft="4dp"
             android:textSize="15dp">
@@ -369,7 +369,7 @@
             android:layout_height="wrap_content"
             android:text="Grados C°:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:layout_marginLeft="20dp"
             android:textSize="15dp">
