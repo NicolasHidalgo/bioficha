@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EmpresasActivity">
+    tools:context=".SedeActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -38,7 +38,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="EMPRESAS"
+                android:text="SEDES"
                 android:textStyle="bold"
                 android:textSize="23sp"
                 android:layout_marginTop="5dp"
@@ -47,7 +47,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Listado de Empresas"
+                android:text="Listado de Sedes"
                 android:textStyle=""
                 android:textSize="18sp"
                 android:layout_marginLeft="15dp"

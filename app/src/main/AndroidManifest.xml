@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".EmpresasActivity"></activity>
+        <activity android:name=".SedeActivity"></activity>
+        <activity android:name=".RegistradorActivity" />
+        <activity android:name=".EmpresasActivity" />
         <activity android:name=".SintomasActivity" />
         <activity android:name=".EnfermedadesActivity" />
         <activity android:name=".RegistroActivity" />
@@ -30,6 +32,7 @@
         </activity>
     </application>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

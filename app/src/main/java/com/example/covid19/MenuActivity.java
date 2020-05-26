@@ -66,9 +66,24 @@ public class MenuActivity extends AppCompatActivity {
         btnEmpresa.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MenuActivity.this, "Empresa", Toast.LENGTH_SHORT).show();
+                Intent dsp = new Intent(MenuActivity.this, EmpresasActivity.class);
+                startActivity(dsp);
             }
         });
+        btnRegistrador.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent dsp = new Intent(MenuActivity.this, RegistradorActivity.class);
+                startActivity(dsp);
+            }
+        });
+        btnSede.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent dsp = new Intent(MenuActivity.this, SedeActivity.class);
+                        startActivity(dsp);
+                    }
+                });
         btnVerFichas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -100,9 +115,8 @@ public class MenuActivity extends AppCompatActivity {
         RolBean rolBean = dbRol.get(usuarioBean.getID_ROL());
 
         lblNomUsuario = (TextView) findViewById(R.id.lblNomUsuario);
-        lblRol = (TextView) findViewById(R.id.lblRol);
         lblNomUsuario.setText(usuarioBean.getNOMBRES() + " " + usuarioBean.getAPELLIDO_PATERNO());
-        lblRol.setText("USUARIO " + rolBean.getNOM_ROL() + ":");
+
 
         spSede = (Spinner) findViewById(R.id.spSede);
         List<SpinnerBean> listaSede = null;
