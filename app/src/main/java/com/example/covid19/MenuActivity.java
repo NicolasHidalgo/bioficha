@@ -1,11 +1,13 @@
 package com.example.covid19;
 
 import androidx.appcompat.app.AppCompatActivity;
+import beans.EmpresaBean;
 import beans.RolBean;
 import beans.SedeBean;
 import beans.SpinnerBean;
 import beans.UsuarioBean;
 import beans.UsuarioSedeBean;
+import db.DatabaseManagerEmpresa;
 import db.DatabaseManagerRol;
 import db.DatabaseManagerSede;
 import db.DatabaseManagerUsuario;
@@ -39,6 +41,7 @@ public class MenuActivity extends AppCompatActivity {
     Spinner spSede;
     Context context;
     DatabaseManagerSede dbSede;
+    DatabaseManagerEmpresa dbEmpresa;
 
     DatabaseManagerUsuario dbUsuario;
     DatabaseManagerUsuarioSede dbUsuarioSede;
@@ -71,8 +74,13 @@ public class MenuActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String ItemSede = spSede.getSelectedItem().toString();
                 SedeBean sedeBean = dbSede.getByName(ItemSede);
+                EmpresaBean empresaBean = dbEmpresa.get(session.getIdEmpresa());
+
                 session.setIdSede(sedeBean.getID());
                 session.setNomSede(sedeBean.getNOMBRE_SEDE());
+                session.setIdEmpresa(empresaBean.getID());
+                session.setNomEmpresa(empresaBean.getNOM_RAZON_SOCIAL());
+
                 Intent dsp = new Intent(MenuActivity.this, FichasActivity.class);
                 startActivity(dsp);
             }
@@ -84,6 +92,7 @@ public class MenuActivity extends AppCompatActivity {
         dbUsuario = new DatabaseManagerUsuario(context);
         dbRol = new DatabaseManagerRol(context);
         dbSede = new DatabaseManagerSede(context);
+        dbEmpresa = new DatabaseManagerEmpresa(context);
         dbUsuarioSede = new DatabaseManagerUsuarioSede(context);
 
 

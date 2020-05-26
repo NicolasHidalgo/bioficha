@@ -72,9 +72,7 @@ public class RegistroActivity extends Fragment {
         lblNomSede = (TextView) view.findViewById(R.id.lblNomSede);
 
         lblNomSede.setText(session.getNomSede());
-
-
-
+        lblNomEmpresa.setText(session.getNomEmpresa());
 
         List<SpinnerBean> listaTipoDocumento = dbTipoDocumento.getSpinner();
 
