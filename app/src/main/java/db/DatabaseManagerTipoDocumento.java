@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.RolBean;
+import beans.SedeBean;
 import beans.SpinnerBean;
 import beans.TipoDocumentoBean;
 
@@ -77,7 +78,7 @@ public class DatabaseManagerTipoDocumento extends DatabaseManager {
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
                 {CN_ID,CN_NOM_DOCUMENTO};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_NOM_DOCUMENTO+ " = ?",new String[] { tipo },null,null,null);
     }
 
 
@@ -131,6 +132,18 @@ public class DatabaseManagerTipoDocumento extends DatabaseManager {
     public TipoDocumentoBean get(String id){
         TipoDocumentoBean bean = null;
         Cursor c = cargarById(id);
+
+        while (c.moveToNext()){
+            bean = new TipoDocumentoBean();
+            bean.setID(c.getString(0));
+            bean.setNOM_DOCUMENTO(c.getString(1));
+        }
+        return bean;
+    }
+
+    public TipoDocumentoBean getByName(String name){
+        TipoDocumentoBean bean = null;
+        Cursor c = cargarPorTipo(name);
 
         while (c.moveToNext()){
             bean = new TipoDocumentoBean();

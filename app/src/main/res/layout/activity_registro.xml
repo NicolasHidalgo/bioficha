@@ -75,14 +75,14 @@
             android:layout_marginTop="20dp"
             android:textSize="15dp">
         </TextView>
+
         <Spinner
             android:id="@+id/spTipoDocumento"
             android:layout_width="175dp"
-            android:layout_height="35dp"
-            android:background="@drawable/spinner"
+            android:layout_height="45dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="12dp" >
-        </Spinner>
+            android:layout_marginTop="12dp"
+            android:background="@drawable/spinner"></Spinner>
 
     </LinearLayout>
     <LinearLayout
@@ -236,14 +236,14 @@
             android:layout_marginTop="20dp"
             android:textSize="15dp">
         </TextView>
+
         <Spinner
             android:id="@+id/spGenero"
             android:layout_width="175dp"
-            android:layout_height="35dp"
-            android:background="@drawable/spinner"
+            android:layout_height="45dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="12dp" >
-        </Spinner>
+            android:layout_marginTop="12dp"
+            android:background="@drawable/spinner"></Spinner>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -283,17 +283,18 @@
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
+
         <EditText
             android:id="@+id/txtFechaNacimiento"
             android:layout_width="135dp"
             android:layout_height="35dp"
-            android:inputType="date"
-            android:paddingLeft="10dp"
-            android:textSize="15dp"
-            android:background="@drawable/edit"
+            android:layout_marginLeft="4dp"
             android:layout_marginTop="12dp"
-            android:layout_marginLeft="4dp">
-        </EditText>
+            android:background="@drawable/edit"
+            android:paddingLeft="10dp"
+            android:clickable="true"
+            android:editable="false"
+            android:textSize="15dp"></EditText>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -354,16 +355,17 @@
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
+
         <TextView
+            android:id="@+id/lblIMC"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:text="120 IMC"
-            android:textColor="#000"
-            android:textStyle="bold"
-            android:layout_marginTop="12dp"
             android:layout_marginLeft="4dp"
-            android:textSize="15dp">
-        </TextView>
+            android:layout_marginTop="12dp"
+            android:text="20.5"
+            android:textColor="#000"
+            android:textSize="15dp"
+            android:textStyle="bold"></TextView>
         <TextView
             android:layout_width="75dp"
             android:layout_height="wrap_content"

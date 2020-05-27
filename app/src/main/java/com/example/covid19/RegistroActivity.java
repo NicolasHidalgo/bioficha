@@ -1,13 +1,20 @@
 package com.example.covid19;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,10 +31,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import androidx.annotation.NonNull;
@@ -44,10 +54,14 @@ public class RegistroActivity extends Fragment {
     Spinner spTipoDocumento, spGenero;
     DatabaseManagerTipoDocumento dbTipoDocumento;
     Context context;
-    EditText txtNumDocumento, txtNombres, txtApePaterno, txtApeMaterno;
+    EditText txtNumDocumento, txtNombres, txtApePaterno, txtApeMaterno, txtNacionalidad, txtCorreo;
+    EditText txtFechaNacimiento, txtEstatura, txtPeso, txtGrados;
     RequestQueue requestQueue;
-    TextView lblNomEmpresa, lblNomSede;
+    TextView lblNomEmpresa, lblNomSede, lblIMC;
     private Session session;
+
+    Calendar calendar;
+    DatePickerDialog datePickerDialog;
 
     public RegistroActivity(){
 
@@ -64,9 +78,106 @@ public class RegistroActivity extends Fragment {
         spTipoDocumento = (Spinner) view.findViewById(R.id.spTipoDocumento);
         spGenero = (Spinner) view.findViewById(R.id.spGenero);
         txtNumDocumento = (EditText) view.findViewById(R.id.txtNumDocumento);
+        txtNacionalidad = (EditText) view.findViewById(R.id.txtNacionalidad);
         txtNombres = (EditText) view.findViewById(R.id.txtNombres);
         txtApePaterno = (EditText) view.findViewById(R.id.txtApellidoPaterno);
         txtApeMaterno = (EditText) view.findViewById(R.id.txtApellidoMaterno);
+        spGenero = (Spinner) view.findViewById(R.id.spGenero);
+        txtCorreo = (EditText) view.findViewById(R.id.txtCorreo);
+        txtFechaNacimiento = (EditText) view.findViewById(R.id.txtFechaNacimiento);
+        txtEstatura = (EditText) view.findViewById(R.id.txtEstatura);
+        txtPeso = (EditText) view.findViewById(R.id.txtPeso);
+        txtGrados = (EditText) view.findViewById(R.id.txtGrados);
+        lblIMC = (TextView) view.findViewById(R.id.lblIMC);
+
+        calendar = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
+
+            @Override
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                calendar.set(Calendar.YEAR, year);
+                calendar.set(Calendar.MONTH, monthOfYear);
+                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateFecha();
+            }
+
+        };
+
+        txtFechaNacimiento.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                new DatePickerDialog(context, date, calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+
+            }
+        });
+
+        txtEstatura.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                String estatura = txtEstatura.getText().toString();
+                String peso = txtPeso.getText().toString();
+
+                if (estatura.isEmpty()){
+                    return;
+                }
+                if (peso.isEmpty()){
+                    return;
+                }
+                if(estatura.equals("0")){
+                    return;
+                }
+                
+                float fest = Float.parseFloat(txtEstatura.getText().toString());
+                float fpes = Float.parseFloat(txtPeso.getText().toString());
+
+                float resultado = (fpes/(fest*fest));
+                lblIMC.setText(String.format("%.2f",resultado));
+            }
+        });
+
+        txtPeso.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                String estatura = txtEstatura.getText().toString();
+                String peso = txtPeso.getText().toString();
+
+                if (estatura.isEmpty()){
+                    return;
+                }
+                if (peso.isEmpty()){
+                    return;
+                }
+                if(estatura.equals("0")){
+                    return;
+                }
+
+                float fest = Float.parseFloat(txtEstatura.getText().toString());
+                float fpes = Float.parseFloat(txtPeso.getText().toString());
+
+                float resultado = (fpes/(fest*fest));
+                lblIMC.setText(String.format("%.2f",resultado));
+            }
+        });
+
         lblNomEmpresa = (TextView) view.findViewById(R.id.lblNomEmpresa);
         lblNomSede = (TextView) view.findViewById(R.id.lblNomSede);
 
@@ -122,9 +233,14 @@ public class RegistroActivity extends Fragment {
                 requestQueue.add(stringRequest);
             }
         });
-
         return view;
 
+    }
+
+    private void updateFecha() {
+        String myFormat = "dd/MM/yyyy"; //In which you need put here
+        SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+        txtFechaNacimiento.setText(sdf.format(calendar.getTime()));
     }
 
 

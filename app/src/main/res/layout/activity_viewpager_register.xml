@@ -24,12 +24,13 @@
         android:layout_height="match_parent"
         android:layout_marginBottom="60dp">
     </androidx.viewpager.widget.ViewPager>
+
     <Button
+        android:id="@+id/btnGrabar"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Grabar"
-        android:textColor="#fff"
+        android:layout_marginTop="-60dp"
         android:background="#38b6ff"
-        android:layout_marginTop="-60dp">
-    </Button>
+        android:text="Grabar"
+        android:textColor="#fff"></Button>
 </LinearLayout>
