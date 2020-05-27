@@ -20,6 +20,7 @@
     <color name="reg_end">#00FF68</color>
     <color name="tab_stat">#FFCC16</color>
     <color name="tab_end">#FFC700</color>
+    <color name="menu_red">#38b6ff</color>
 
 
 </resources>

@@ -4,12 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".FichasActivity">
-
+    tools:context=".SedeActivity">
     <LinearLayout
-        android:id="@+id/btnEmpresa"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -40,7 +38,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FICHAS"
+                android:text="SEDES"
                 android:textStyle="bold"
                 android:textSize="23sp"
                 android:layout_marginTop="5dp"
@@ -49,27 +47,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Listado de fichas"
+                android:text="Listado de Sedes"
                 android:textStyle=""
                 android:textSize="18sp"
                 android:layout_marginLeft="15dp"
                 android:textColor="@color/colorPrimaryDark"/>
 
         </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <ListView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#f9f9f9"
-                android:id="@+id/listview">
-
-            </ListView>
-
-        </LinearLayout>
-
-
     </LinearLayout>
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
@@ -81,6 +65,4 @@
         android:src="@drawable/ic_add"
         app:fabSize="auto">
     </com.google.android.material.floatingactionbutton.FloatingActionButton>
-
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

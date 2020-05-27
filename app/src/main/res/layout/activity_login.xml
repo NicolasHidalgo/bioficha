@@ -10,6 +10,7 @@
         android:layout_height="match_parent"
         android:layout_margin="20dp"
         android:orientation="vertical"
+        android:background="#f9f9f9"
         android:layout_gravity="center">
         <ImageView
             android:layout_width="300dp"

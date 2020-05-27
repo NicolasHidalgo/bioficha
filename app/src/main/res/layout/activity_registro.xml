@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:text="Empresa:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:textSize="15dp">
         </TextView>
 
@@ -34,8 +34,8 @@
             android:layout_marginLeft="4dp"
             android:text="GV SAC"
             android:textColor="#000"
-            android:textSize="15dp"
-            android:textStyle="bold"></TextView>
+            android:textSize="15dp">
+        </TextView>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -47,7 +47,6 @@
             android:text="Sede:"
             android:textColor="#000"
             android:layout_marginTop="15dp"
-            android:textStyle="bold"
             android:textSize="15dp">
         </TextView>
 
@@ -59,9 +58,9 @@
             android:layout_marginTop="15dp"
             android:text="Sede Principal"
             android:textColor="#000"
-            android:textSize="15dp"
-            android:textStyle="bold"></TextView>
+            android:textSize="15dp"></TextView>
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -71,8 +70,7 @@
             android:layout_height="wrap_content"
             android:text="Tipo Documento:"
             android:textColor="#000"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             android:textSize="15dp">
         </TextView>
 
@@ -81,8 +79,8 @@
             android:layout_width="175dp"
             android:layout_height="45dp"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/spinner"></Spinner>
+            android:background="@drawable/spinner"
+            android:layout_marginTop="15dp"></Spinner>
 
     </LinearLayout>
     <LinearLayout
@@ -94,14 +92,14 @@
             android:layout_height="wrap_content"
             android:text="N° Documento:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="10dp"
             android:textSize="15dp">
         </TextView>
         <EditText
             android:id="@+id/txtNumDocumento"
             android:layout_width="130dp"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:inputType="number"
             android:paddingLeft="10dp"
             android:textSize="15dp"
@@ -112,13 +110,12 @@
 
         <Button
             android:id="@+id/btnBuscarEmpleado"
-            android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="12dp"
-            android:background="@drawable/button"
+            android:background="@drawable/ic_search"
             android:padding="8dp"
-            android:text="Consultar"
             android:textColor="#fff"></Button>
     </LinearLayout>
     <LinearLayout
@@ -130,14 +127,14 @@
             android:layout_height="wrap_content"
             android:text="Nacionalidad:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
         <EditText
             android:id="@+id/txtNacionalidad"
             android:layout_width="130dp"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:inputType="textWebEditText"
             android:paddingLeft="10dp"
             android:textSize="15dp"
@@ -156,14 +153,14 @@
             android:layout_height="wrap_content"
             android:text="Nombres:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
         <EditText
             android:id="@+id/txtNombres"
             android:layout_width="170dp"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:inputType="text"
             android:paddingLeft="10dp"
             android:textSize="15dp"
@@ -182,14 +179,14 @@
             android:layout_height="wrap_content"
             android:text="Apellido Paterno:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
         <EditText
             android:id="@+id/txtApellidoPaterno"
             android:layout_width="135dp"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:inputType="text"
             android:paddingLeft="10dp"
             android:textSize="15dp"
@@ -207,14 +204,13 @@
             android:layout_height="wrap_content"
             android:text="Apellido Materno:"
             android:textColor="#000"
-            android:textStyle="bold"
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
         <EditText
             android:id="@+id/txtApellidoMaterno"
             android:layout_width="135dp"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:inputType="text"
             android:paddingLeft="10dp"
             android:textSize="15dp"
@@ -232,8 +228,7 @@
             android:layout_height="wrap_content"
             android:text="Género:"
             android:textColor="#000"
-            android:textStyle="bold"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
 
@@ -241,9 +236,9 @@
             android:id="@+id/spGenero"
             android:layout_width="175dp"
             android:layout_height="45dp"
+            android:background="@drawable/spinner"
             android:layout_marginLeft="4dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/spinner"></Spinner>
+            android:layout_marginTop="12dp"></Spinner>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
@@ -254,14 +249,13 @@
             android:layout_height="wrap_content"
             android:text="Correo:"
             android:textColor="#000"
-            android:textStyle="bold"
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
         <EditText
             android:id="@+id/txtCorreo"
             android:layout_width="match_parent"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:inputType="textEmailAddress"
             android:paddingLeft="10dp"
             android:textSize="15dp"
@@ -279,7 +273,6 @@
             android:layout_height="wrap_content"
             android:text="Nacimiento:"
             android:textColor="#000"
-            android:textStyle="bold"
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -287,8 +280,9 @@
         <EditText
             android:id="@+id/txtFechaNacimiento"
             android:layout_width="135dp"
-            android:layout_height="35dp"
             android:layout_marginLeft="4dp"
+            android:layout_height="40dp"
+            android:inputType="date"
             android:layout_marginTop="12dp"
             android:background="@drawable/edit"
             android:paddingLeft="10dp"
@@ -305,14 +299,13 @@
             android:layout_height="wrap_content"
             android:text="Estatura:"
             android:textColor="#000"
-            android:textStyle="bold"
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
         <EditText
             android:id="@+id/txtEstatura"
             android:layout_width="75dp"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:inputType="numberDecimal"
             android:paddingLeft="10dp"
             android:textSize="15dp"
@@ -325,7 +318,6 @@
             android:layout_height="wrap_content"
             android:text="Peso:"
             android:textColor="#000"
-            android:textStyle="bold"
             android:layout_marginTop="12dp"
             android:layout_marginLeft="20dp"
             android:textSize="15dp">
@@ -333,7 +325,7 @@
         <EditText
             android:id="@+id/txtPeso"
             android:layout_width="75dp"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:inputType="numberDecimal"
             android:paddingLeft="10dp"
             android:textSize="15dp"
@@ -351,7 +343,6 @@
             android:layout_height="wrap_content"
             android:text="IMC:"
             android:textColor="#000"
-            android:textStyle="bold"
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -360,10 +351,9 @@
             android:id="@+id/lblIMC"
             android:layout_width="75dp"
             android:layout_height="wrap_content"
+            android:textColor="#000"
             android:layout_marginLeft="4dp"
             android:layout_marginTop="12dp"
-            android:text="20.5"
-            android:textColor="#000"
             android:textSize="15dp"
             android:textStyle="bold"></TextView>
         <TextView
@@ -371,7 +361,7 @@
             android:layout_height="wrap_content"
             android:text="Grados C°:"
             android:textColor="#000"
-            android:textStyle="bold"
+
             android:layout_marginTop="12dp"
             android:layout_marginLeft="20dp"
             android:textSize="15dp">
@@ -379,7 +369,7 @@
         <EditText
             android:id="@+id/txtGrados"
             android:layout_width="75dp"
-            android:layout_height="35dp"
+            android:layout_height="40dp"
             android:inputType="numberDecimal"
             android:paddingLeft="10dp"
             android:textSize="15dp"
@@ -388,6 +378,8 @@
             android:layout_marginLeft="4dp">
         </EditText>
     </LinearLayout>
+
+
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
