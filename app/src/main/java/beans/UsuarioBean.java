@@ -6,7 +6,7 @@ public class UsuarioBean {
     private String ID;
     private String ID_TIPO_DOCUMENTO;
     private String NUM_DOCUMENTO;
-    private String NACIONALIDAD;
+    private String COD_PAIS;
     private String NOMBRES;
     private String APELLIDO_PATERNO;
     private String APELLIDO_MATERNO;
@@ -26,6 +26,14 @@ public class UsuarioBean {
     private String FEC_ELIMINACION;
 
     public UsuarioBean() {
+    }
+
+    public String getCOD_PAIS() {
+        return COD_PAIS;
+    }
+
+    public void setCOD_PAIS(String COD_PAIS) {
+        this.COD_PAIS = COD_PAIS;
     }
 
     public String getGENERO() {
@@ -50,14 +58,6 @@ public class UsuarioBean {
 
     public void setNUM_DOCUMENTO(String NUM_DOCUMENTO) {
         this.NUM_DOCUMENTO = NUM_DOCUMENTO;
-    }
-
-    public String getNACIONALIDAD() {
-        return NACIONALIDAD;
-    }
-
-    public void setNACIONALIDAD(String NACIONALIDAD) {
-        this.NACIONALIDAD = NACIONALIDAD;
     }
 
     public String getFECHA_NACIMIENTO() {

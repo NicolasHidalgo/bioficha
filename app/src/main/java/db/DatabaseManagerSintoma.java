@@ -88,7 +88,7 @@ public class DatabaseManagerSintoma extends DatabaseManager {
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
                 {CN_ID,CN_DESCRIPCION};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_DESCRIPCION+ " = ?",new String[] { tipo },null,null,null);
     }
 
 
@@ -135,6 +135,18 @@ public class DatabaseManagerSintoma extends DatabaseManager {
             list.add(bean);
         }
         return list;
+    }
+
+    public SintomaBean getByName(String name) {
+        SintomaBean bean = null;
+        Cursor c = cargarPorTipo(name);
+
+        while (c.moveToNext()){
+            bean = new SintomaBean();
+            bean.setID(c.getString(0));
+            bean.setDESCRIPCION(c.getString(1));
+        }
+        return bean;
     }
 
     @Override

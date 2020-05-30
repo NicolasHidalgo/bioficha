@@ -19,7 +19,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
     public static final String CN_ID_SEDE = "ID_SEDE";
     public static final String CN_ID_TIPO_DOCUMENTO = "ID_TIPO_DOCUMENTO";
     public static final String CN_NUM_DOCUMENTO = "NUM_DOCUMENTO";
-    public static final String CN_NACIONALIDAD = "NACIONALIDAD";
+    public static final String CN_COD_PAIS = "COD_PAIS";
     public static final String CN_NOMBRES = "NOMBRES";
     public static final String CN_APELLIDO_PATERNO = "APELLIDO_PATERNO";
     public static final String CN_APELLIDO_MATERNO = "APELLIDO_MATERNO";
@@ -35,7 +35,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
     public static final String CN_OTRO_SINTOMA = "OTRO_SINTOMA";
 
     public static final String CN_FEC_CREACION = "FEC_CREACION";
-    public static final String CN_FEC_ACTUALIZCION = "FEC_ACTUALIZCION";
+    public static final String CN_FEC_ACTUALIZACION = "FEC_ACTUALIZACION";
     public static final String CN_FEC_ELIMINACION = "FEC_ELIMINACION";
 
     public static final String CREATE_TABLE =  "create table " + NOMBRE_TABLA + " ("
@@ -43,7 +43,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
             + CN_ID_SEDE + " integer NULL,"
             + CN_ID_TIPO_DOCUMENTO + " integer NULL,"
             + CN_NUM_DOCUMENTO + " text NULL,"
-            + CN_NACIONALIDAD + " text NULL,"
+            + CN_COD_PAIS + " text NULL,"
             + CN_NOMBRES + " text NULL,"
             + CN_APELLIDO_PATERNO + " text NULL,"
             + CN_APELLIDO_MATERNO + " text NULL,"
@@ -58,7 +58,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
             + CN_LONGITUD + " float NULL,"
             + CN_OTRO_SINTOMA + " text NULL,"
             + CN_FEC_CREACION + " datetime NULL,"
-            + CN_FEC_ACTUALIZCION + " datetime NULL,"
+            + CN_FEC_ACTUALIZACION + " datetime NULL,"
             + CN_FEC_ELIMINACION + " datetime NULL"
             + ");";
 
@@ -76,7 +76,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         valores.put(CN_ID_SEDE,obj.getID_SEDE());
         valores.put(CN_ID_TIPO_DOCUMENTO,obj.getID_TIPO_DOCUMENTO());
         valores.put(CN_NUM_DOCUMENTO,obj.getNUM_DOCUMENTO());
-        valores.put(CN_NACIONALIDAD,obj.getNACIONALIDAD());
+        valores.put(CN_COD_PAIS,obj.getCOD_PAIS());
         valores.put(CN_NOMBRES,obj.getNOMBRES());
         valores.put(CN_APELLIDO_PATERNO,obj.getAPELLIDO_PATERNO());
         valores.put(CN_APELLIDO_MATERNO,obj.getAPELLIDO_MATERNO());
@@ -91,7 +91,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         valores.put(CN_LONGITUD,obj.getLONGITUD());
         valores.put(CN_OTRO_SINTOMA,obj.getOTRO_SINTOMA());
         valores.put(CN_FEC_CREACION,obj.getFEC_CREACION());
-        valores.put(CN_FEC_ACTUALIZCION,obj.getFEC_ACTUALIZACION());
+        valores.put(CN_FEC_ACTUALIZACION,obj.getFEC_ACTUALIZACION());
         valores.put(CN_FEC_ELIMINACION,obj.getFEC_ELIMINACION());
         return valores;
     }
@@ -120,21 +120,27 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
     @Override
     public Cursor cargar() {
         String [] columnas = new String[]
-                {CN_ID,CN_NOMBRES};
+                {CN_ID,CN_ID_SEDE,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO
+                        ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_ESTADO,CN_LATITUD,CN_LONGITUD
+                        ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,null);
     }
 
     @Override
     public Cursor cargarById(String id) {
         String [] columnas = new String[]
-                {CN_ID,CN_NOMBRES};
+                {CN_ID,CN_ID_SEDE,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO
+                        ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_ESTADO,CN_LATITUD,CN_LONGITUD
+                        ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
     }
 
 
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
-                {CN_ID,CN_NOMBRES};
+                {CN_ID,CN_ID_SEDE,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO
+                        ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_ESTADO,CN_LATITUD,CN_LONGITUD
+                        ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
     }
 
@@ -175,14 +181,38 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         else
             c = cargarPorTipo(tipo);
 
-        BioFichaBean bean = null;
-        while (c.moveToNext()){
-            bean = new BioFichaBean();
-            bean.setID(c.getString(0));
-            bean.setNOMBRES(c.getString(1));
+        try{
+            BioFichaBean bean = null;
+            while (c.moveToNext()){
+                bean = new BioFichaBean();
+                bean.setID(c.getString(0));
+                bean.setID_SEDE(c.getString(1));
+                bean.setID_TIPO_DOCUMENTO(c.getString(2));
+                bean.setNUM_DOCUMENTO(c.getString(3));
+                bean.setCOD_PAIS(c.getString(4));
+                bean.setNOMBRES(c.getString(5));
+                bean.setAPELLIDO_PATERNO(c.getString(6));
+                bean.setAPELLIDO_MATERNO(c.getString(7));
+                bean.setFECHA_NACIMIENTO(c.getString(8));
+                bean.setGENERO(c.getString(9));
+                bean.setESTATURA(c.getString(10));
+                bean.setPESO(c.getString(11));
+                bean.setIMC(c.getString(12));
+                bean.setGRADO_CELSIUS(c.getString(13));
+                bean.setMENSAJE_ESTADO(c.getString(14));
+                bean.setLATITUD(c.getString(15));
+                bean.setLONGITUD(c.getString(16));
+                bean.setOTRO_SINTOMA(c.getString(17));
+                bean.setFEC_CREACION(c.getString(18));
+                bean.setFEC_ACTUALIZACION(c.getString(19));
+                bean.setFEC_ELIMINACION(c.getString(20));
 
-            list.add(bean);
+                list.add(bean);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
+
         return list;
     }
 
@@ -190,10 +220,33 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         BioFichaBean bean = null;
         Cursor c = cargarById(id);
 
-        while (c.moveToNext()){
-            bean = new BioFichaBean();
-            bean.setID(c.getString(0));
-            bean.setNOMBRES(c.getString(1));
+        try{
+            while (c.moveToNext()){
+                bean = new BioFichaBean();
+                bean.setID(c.getString(0));
+                bean.setID_SEDE(c.getString(1));
+                bean.setID_TIPO_DOCUMENTO(c.getString(2));
+                bean.setNUM_DOCUMENTO(c.getString(3));
+                bean.setCOD_PAIS(c.getString(4));
+                bean.setNOMBRES(c.getString(5));
+                bean.setAPELLIDO_PATERNO(c.getString(6));
+                bean.setAPELLIDO_MATERNO(c.getString(7));
+                bean.setFECHA_NACIMIENTO(c.getString(8));
+                bean.setGENERO(c.getString(9));
+                bean.setESTATURA(c.getString(10));
+                bean.setPESO(c.getString(11));
+                bean.setIMC(c.getString(12));
+                bean.setGRADO_CELSIUS(c.getString(13));
+                bean.setMENSAJE_ESTADO(c.getString(14));
+                bean.setLATITUD(c.getString(15));
+                bean.setLONGITUD(c.getString(16));
+                bean.setOTRO_SINTOMA(c.getString(17));
+                bean.setFEC_CREACION(c.getString(18));
+                bean.setFEC_ACTUALIZACION(c.getString(19));
+                bean.setFEC_ELIMINACION(c.getString(20));
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
         return bean;
     }
