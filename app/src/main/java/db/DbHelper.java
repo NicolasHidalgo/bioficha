@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DB_NOMBRE = "bioficha.sqlite";
-    private static int DB_SCHEME_VERSION = 26;
+    private static int DB_SCHEME_VERSION = 29;
 
     public DbHelper(Context context){ //, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DB_NOMBRE, null, DB_SCHEME_VERSION);
@@ -31,6 +31,7 @@ public class DbHelper extends SQLiteOpenHelper {
             db.execSQL(DatabaseManagerSedePoligono.CREATE_TABLE);
             db.execSQL(DatabaseManagerBioFichaEnfermedad.CREATE_TABLE);
             db.execSQL(DatabaseManagerBioFichaSintoma.CREATE_TABLE);
+            db.execSQL(DatabaseManagerPais.CREATE_TABLE);
 
         }catch(Exception e){
             e.getMessage();
@@ -67,6 +68,7 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS " + DatabaseManagerSedePoligono.NOMBRE_TABLA);
         db.execSQL("DROP TABLE IF EXISTS " + DatabaseManagerBioFichaEnfermedad.NOMBRE_TABLA);
         db.execSQL("DROP TABLE IF EXISTS " + DatabaseManagerBioFichaSintoma.NOMBRE_TABLA);
+        db.execSQL("DROP TABLE IF EXISTS " + DatabaseManagerPais.NOMBRE_TABLA);
         onCreate(db);
     }
 }

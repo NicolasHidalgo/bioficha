@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.EnfermedadBean;
+import beans.SintomaBean;
 import beans.SpinnerBean;
 import beans.UsuarioBean;
 
@@ -86,7 +87,7 @@ public class DatabaseManagerEnfermedad extends DatabaseManager {
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
                 {CN_ID,CN_DESCRIPCION};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_DESCRIPCION+ " = ?",new String[] { tipo },null,null,null);
     }
 
 
@@ -140,6 +141,18 @@ public class DatabaseManagerEnfermedad extends DatabaseManager {
     public EnfermedadBean get(String id){
         EnfermedadBean bean = null;
         Cursor c = cargarById(id);
+
+        while (c.moveToNext()){
+            bean = new EnfermedadBean();
+            bean.setID(c.getString(0));
+            bean.setDESCRIPCION(c.getString(1));
+        }
+        return bean;
+    }
+
+    public EnfermedadBean getByName(String name) {
+        EnfermedadBean bean = null;
+        Cursor c = cargarPorTipo(name);
 
         while (c.moveToNext()){
             bean = new EnfermedadBean();

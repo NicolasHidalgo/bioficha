@@ -74,7 +74,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
         valores.put(CN_ID,obj.getID());
         valores.put(CN_ID_TIPO_DOCUMENTO,obj.getNOMBRES());
         valores.put(CN_NUM_DOCUMENTO,obj.getNUM_DOCUMENTO());
-        valores.put(CN_NACIONALIDAD,obj.getNACIONALIDAD());
+        valores.put(CN_NACIONALIDAD,obj.getCOD_PAIS());
         valores.put(CN_NOMBRES,obj.getNOMBRES());
         valores.put(CN_APELLIDO_PATERNO,obj.getAPELLIDO_PATERNO());
         valores.put(CN_APELLIDO_MATERNO,obj.getAPELLIDO_MATERNO());
@@ -197,7 +197,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
             bean.setID(c.getString(0));
             bean.setID_TIPO_DOCUMENTO(c.getString(1));
             bean.setNUM_DOCUMENTO(c.getString(2));
-            bean.setNACIONALIDAD(c.getString(3));
+            bean.setCOD_PAIS(c.getString(3));
             bean.setNOMBRES(c.getString(4));
             bean.setAPELLIDO_PATERNO(c.getString(5));
             bean.setAPELLIDO_MATERNO(c.getString(6));
@@ -233,7 +233,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
             bean.setID(c.getString(0));
             bean.setID_TIPO_DOCUMENTO(c.getString(1));
             bean.setNUM_DOCUMENTO(c.getString(2));
-            bean.setNACIONALIDAD(c.getString(3));
+            bean.setCOD_PAIS(c.getString(3));
             bean.setNOMBRES(c.getString(4));
             bean.setAPELLIDO_PATERNO(c.getString(5));
             bean.setAPELLIDO_MATERNO(c.getString(6));

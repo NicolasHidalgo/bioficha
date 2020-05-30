@@ -506,7 +506,7 @@ public class WebService  {
                         bean.setID(jsonObject.getString("ID"));
                         bean.setID_TIPO_DOCUMENTO(jsonObject.getString("ID_TIPO_DOCUMENTO"));
                         bean.setNUM_DOCUMENTO(jsonObject.getString("NUM_DOCUMENTO"));
-                        bean.setNACIONALIDAD(jsonObject.getString("NACIONALIDAD"));
+                        bean.setCOD_PAIS(jsonObject.getString("COD_PAIS"));
                         bean.setNOMBRES(jsonObject.getString("NOMBRES"));
                         bean.setAPELLIDO_PATERNO(jsonObject.getString("APELLIDO_PATERNO"));
                         bean.setAPELLIDO_MATERNO(jsonObject.getString("APELLIDO_MATERNO"));
