@@ -80,7 +80,7 @@ public class DatabaseManagerProvincia extends DatabaseManager {
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
                 {CN_ID,CN_NOM_PROVINCIA};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_DEPARTAMENTO+ " = ?",new String[] { tipo },null,null,null);
     }
 
 
@@ -125,6 +125,27 @@ public class DatabaseManagerProvincia extends DatabaseManager {
             bean.setID(c.getString(0));
             bean.setID_DEPARTAMENTO(c.getString(1));
             bean.setNOM_PROVINCIA(c.getString(2));
+
+            list.add(bean);
+        }
+        return list;
+    }
+    public List<SpinnerBean> getListSpinner(String tipo){
+        List<SpinnerBean> list = new ArrayList<>();
+        Cursor c = null;
+
+        if (tipo == "")
+            c = cargar();
+        else
+            c = cargarPorTipo(tipo);
+
+        SpinnerBean bean = null;
+        bean = new SpinnerBean(-1,"Seleccione");
+        list.add(bean);
+        while (c.moveToNext()){
+            bean = new SpinnerBean();
+            bean.setID(c.getInt(0));
+            bean.setVALUE(c.getString(1));
 
             list.add(bean);
         }

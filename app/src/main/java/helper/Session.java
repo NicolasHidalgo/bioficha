@@ -4,8 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import beans.UsuarioBean;
-
 public class Session {
     private SharedPreferences prefs;
 
