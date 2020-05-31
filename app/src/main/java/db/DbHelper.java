@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 public class DbHelper extends SQLiteOpenHelper {
 
     private static final String DB_NOMBRE = "bioficha.sqlite";
-    private static int DB_SCHEME_VERSION = 29;
+    private static int DB_SCHEME_VERSION = 30;
 
     public DbHelper(Context context){ //, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DB_NOMBRE, null, DB_SCHEME_VERSION);

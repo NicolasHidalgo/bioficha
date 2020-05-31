@@ -22,8 +22,8 @@ public class DatabaseManagerSedePoligono extends DatabaseManager {
 
     public static final String CREATE_TABLE =  "create table " + NOMBRE_TABLA + " ("
             + CN_ID + " integer,"
-            + CN_LATITUD + " float NULL,"
-            + CN_LONGITUD + " float NULL,"
+            + CN_LATITUD + " double NULL,"
+            + CN_LONGITUD + " double NULL,"
             + CN_ID_SEDE + " integer NULL"
             + ");";
 
@@ -83,7 +83,7 @@ public class DatabaseManagerSedePoligono extends DatabaseManager {
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
                 {CN_ID,CN_LATITUD,CN_LONGITUD,CN_ID_SEDE};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_SEDE+ " = ?",new String[] { tipo },null,null,null);
     }
 
 
@@ -126,10 +126,9 @@ public class DatabaseManagerSedePoligono extends DatabaseManager {
         while (c.moveToNext()){
             bean = new SedePoligonoBean();
             bean.setID(c.getString(0));
-            bean.setLATITUD(c.getString(1));
-            bean.setLONGITUD(c.getString(2));
+            bean.setLATITUD(c.getDouble(1));
+            bean.setLONGITUD(c.getDouble(2));
             bean.setID_SEDE(c.getString(3));
-
             list.add(bean);
         }
         return list;
@@ -143,8 +142,8 @@ public class DatabaseManagerSedePoligono extends DatabaseManager {
         while (c.moveToNext()){
             bean = new SedePoligonoBean();
             bean.setID(c.getString(0));
-            bean.setLATITUD(c.getString(1));
-            bean.setLONGITUD(c.getString(2));
+            bean.setLATITUD(c.getDouble(1));
+            bean.setLONGITUD(c.getDouble(2));
             bean.setID_SEDE(c.getString(3));
         }
         return bean;

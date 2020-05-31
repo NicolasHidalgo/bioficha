@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -51,9 +52,11 @@ public class FichasActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fichas);
         context = this;
+        session = new Session(context);
         dbFicha = new DatabaseManagerBioFicha(context);
 
-        listaFicha = dbFicha.get("");
+        String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+        listaFicha = dbFicha.ListarPorFecha(session.getIdSede(),fechaHoy);
 
         BioFichaBean bio = null;
         nFicha = new String[listaFicha.size()];
@@ -66,11 +69,11 @@ public class FichasActivity extends AppCompatActivity {
             nEmpleado[i] = bio.getNUM_DOCUMENTO();
             nHora[i] = bio.getFEC_CREACION();
         }
-
         btnAgregarFicha = findViewById(R.id.btnAgregarFicha);
         lvFicha = findViewById(R.id.lvFicha);
         MyAdapter adapter = new MyAdapter(this, nFicha,nEmpleado,nHora);
         lvFicha.setAdapter(adapter);
+
         btnAgregarFicha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +81,30 @@ public class FichasActivity extends AppCompatActivity {
                 startActivity(dsp);
             }
         });
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+        listaFicha = dbFicha.ListarPorFecha(session.getIdSede(),fechaHoy);
+        BioFichaBean bio = null;
+        nFicha = new String[listaFicha.size()];
+        nEmpleado = new String[listaFicha.size()];
+        nHora = new String[listaFicha.size()];
+
+        for (int i=0; i<listaFicha.size(); i++) {
+            bio = listaFicha.get(i);
+            nFicha[i] = bio.getNOMBRES();
+            nEmpleado[i] = bio.getNUM_DOCUMENTO();
+            nHora[i] = bio.getFEC_CREACION();
+        }
+        btnAgregarFicha = findViewById(R.id.btnAgregarFicha);
+        lvFicha = findViewById(R.id.lvFicha);
+        MyAdapter adapter = new MyAdapter(this, nFicha,nEmpleado,nHora);
+        lvFicha.setAdapter(adapter);
 
     }
 

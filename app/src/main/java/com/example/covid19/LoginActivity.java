@@ -838,8 +838,8 @@ public class LoginActivity extends AppCompatActivity {
                                 jsonObject = jsonArray.getJSONObject(i);
                                 bean = new SedePoligonoBean();
                                 bean.setID(jsonObject.getString("ID"));
-                                bean.setLATITUD(jsonObject.getString("LATITUD"));
-                                bean.setLONGITUD(jsonObject.getString("LONGITUD"));
+                                bean.setLATITUD(jsonObject.getDouble("LATITUD"));
+                                bean.setLONGITUD(jsonObject.getDouble("LONGITUD"));
                                 bean.setID_SEDE(jsonObject.getString("ID_SEDE"));
                                 dbSedePoligono.insertar(bean);
                             }

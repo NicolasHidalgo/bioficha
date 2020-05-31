@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Util {
 
-    private boolean hasGPSDevice(Context context) {
+    public static boolean hasGPSDevice(Context context) {
         final LocationManager mgr = (LocationManager) context
                 .getSystemService(Context.LOCATION_SERVICE);
         if (mgr == null)
@@ -17,6 +17,7 @@ public class Util {
             return false;
         return providers.contains(LocationManager.GPS_PROVIDER);
     }
+
 
     public static String leftTrim(String str, String replace) {
         return str.replaceAll("^\\s+",replace);

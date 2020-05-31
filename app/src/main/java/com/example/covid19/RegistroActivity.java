@@ -117,6 +117,19 @@ public class RegistroActivity extends Fragment {
 
         };
 
+        txtFechaNacimiento.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(hasFocus) {
+                    new DatePickerDialog(context, date, calendar
+                            .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                            calendar.get(Calendar.DAY_OF_MONTH)).show();
+                } else {
+                    // Hide your calender here
+                }
+            }
+        });
+
         txtFechaNacimiento.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
