@@ -123,9 +123,7 @@ public class ViewPageRegister extends AppCompatActivity {
                     Toast.makeText(context, "Necesitas contectarte a internet para continuar", Toast.LENGTH_LONG).show();
                     return;
                 }
-
                 OpenProgressBar();
-
                 String pAccion = "INSERT";
                 String pId = "0";
                 final String pIdSede = session.getIdSede();

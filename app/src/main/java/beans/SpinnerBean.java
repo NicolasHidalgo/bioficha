@@ -9,7 +9,7 @@ public class SpinnerBean {
     public SpinnerBean(){
 
     }
-    
+
     public SpinnerBean(int ID, String VALUE) {
         this.ID = ID;
         this.VALUE = VALUE;
