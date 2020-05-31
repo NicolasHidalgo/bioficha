@@ -20,8 +20,8 @@ public class BioFichaBean {
     private String IMC;
     private String GRADO_CELSIUS;
     private String MENSAJE_ESTADO;
-    private String LATITUD;
-    private String LONGITUD;
+    private double LATITUD;
+    private double LONGITUD;
     private String OTRO_SINTOMA;
     private String FEC_CREACION;
     private String FEC_ACTUALIZACION;
@@ -200,20 +200,19 @@ public class BioFichaBean {
         this.ID_SEDE = ID_SEDE;
     }
 
-    public String getLATITUD() {
+    public double getLATITUD() {
         return LATITUD;
     }
 
-    public void setLATITUD(String LATITUD) {
+    public void setLATITUD(double LATITUD) {
         this.LATITUD = LATITUD;
     }
 
-    public String getLONGITUD() {
+    public double getLONGITUD() {
         return LONGITUD;
     }
 
-    public void setLONGITUD(String LONGITUD) {
+    public void setLONGITUD(double LONGITUD) {
         this.LONGITUD = LONGITUD;
     }
-
 }

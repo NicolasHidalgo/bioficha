@@ -45,6 +45,8 @@ public class SintomasActivity extends Fragment {
         adapterSintoma.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lvSintoma.setAdapter(adapterSintoma);
 
+        lvSintoma.setItemChecked(0,true);
+
         return view;
     }
 

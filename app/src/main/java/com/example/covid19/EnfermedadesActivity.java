@@ -44,6 +44,9 @@ public class EnfermedadesActivity extends Fragment {
         ArrayAdapter<SpinnerBean> adapterEnfermedad = new ArrayAdapter<SpinnerBean>(context,android.R.layout.simple_list_item_multiple_choice,listaEnfermedad);
         adapterEnfermedad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lvEnfermedad.setAdapter(adapterEnfermedad);
+
+        lvEnfermedad.setItemChecked(0,true);
+
         return view;
     }
 }

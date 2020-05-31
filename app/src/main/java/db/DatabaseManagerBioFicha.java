@@ -54,8 +54,8 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
             + CN_IMC + " float NULL,"
             + CN_GRADO_CELSIUS + " integer NULL,"
             + CN_MENSAJE_ESTADO + " text NULL,"
-            + CN_LATITUD + " float NULL,"
-            + CN_LONGITUD + " float NULL,"
+            + CN_LATITUD + " double NULL,"
+            + CN_LONGITUD + " double NULL,"
             + CN_OTRO_SINTOMA + " text NULL,"
             + CN_FEC_CREACION + " datetime NULL,"
             + CN_FEC_ACTUALIZACION + " datetime NULL,"
@@ -143,7 +143,13 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
                         ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
     }
-
+    public Cursor cargarPorSedeFecha(String IdSede, String Fecha) {
+        String [] columnas = new String[]
+                {CN_ID,CN_ID_SEDE,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO
+                        ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_ESTADO,CN_LATITUD,CN_LONGITUD
+                        ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_SEDE+ " = ? AND strftime('%Y-%m-%d'," + CN_FEC_CREACION + ") = ?",new String[] { IdSede, Fecha },null,null,null);
+    }
 
     @Override
     public Boolean compruebaRegistro(String id) {
@@ -167,6 +173,19 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
             existe = false;
         else
             existe = true;
+
+        return existe;
+    }
+
+    public Boolean VerificarRegistroPorDia(String tipoDocumento, String numDocumento, String fechaRegistro) {
+        boolean existe = true;
+        String sql = "Select * from " + NOMBRE_TABLA + " WHERE " + CN_ID_TIPO_DOCUMENTO + " = '" + tipoDocumento + "' AND " + CN_NUM_DOCUMENTO + " = '" + numDocumento + "' AND strftime('%Y-%m-%d'," + CN_FEC_CREACION + ") = '" + fechaRegistro + "'";
+        Cursor resultSet = super.getDb().rawQuery(sql, null);
+
+        if (resultSet.getCount() > 0)
+            existe = true;
+        else
+            existe = false;
 
         return existe;
     }
@@ -200,8 +219,47 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
                 bean.setIMC(c.getString(12));
                 bean.setGRADO_CELSIUS(c.getString(13));
                 bean.setMENSAJE_ESTADO(c.getString(14));
-                bean.setLATITUD(c.getString(15));
-                bean.setLONGITUD(c.getString(16));
+                bean.setLATITUD(c.getDouble(15));
+                bean.setLONGITUD(c.getDouble(16));
+                bean.setOTRO_SINTOMA(c.getString(17));
+                bean.setFEC_CREACION(c.getString(18));
+                bean.setFEC_ACTUALIZACION(c.getString(19));
+                bean.setFEC_ELIMINACION(c.getString(20));
+
+                list.add(bean);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public List<BioFichaBean> ListarPorFecha(String IdSede, String Fecha){
+        List<BioFichaBean> list = new ArrayList<>();
+        Cursor c = cargarPorSedeFecha(IdSede, Fecha);
+
+        try{
+            BioFichaBean bean = null;
+            while (c.moveToNext()){
+                bean = new BioFichaBean();
+                bean.setID(c.getString(0));
+                bean.setID_SEDE(c.getString(1));
+                bean.setID_TIPO_DOCUMENTO(c.getString(2));
+                bean.setNUM_DOCUMENTO(c.getString(3));
+                bean.setCOD_PAIS(c.getString(4));
+                bean.setNOMBRES(c.getString(5));
+                bean.setAPELLIDO_PATERNO(c.getString(6));
+                bean.setAPELLIDO_MATERNO(c.getString(7));
+                bean.setFECHA_NACIMIENTO(c.getString(8));
+                bean.setGENERO(c.getString(9));
+                bean.setESTATURA(c.getString(10));
+                bean.setPESO(c.getString(11));
+                bean.setIMC(c.getString(12));
+                bean.setGRADO_CELSIUS(c.getString(13));
+                bean.setMENSAJE_ESTADO(c.getString(14));
+                bean.setLATITUD(c.getDouble(15));
+                bean.setLONGITUD(c.getDouble(16));
                 bean.setOTRO_SINTOMA(c.getString(17));
                 bean.setFEC_CREACION(c.getString(18));
                 bean.setFEC_ACTUALIZACION(c.getString(19));
@@ -238,8 +296,8 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
                 bean.setIMC(c.getString(12));
                 bean.setGRADO_CELSIUS(c.getString(13));
                 bean.setMENSAJE_ESTADO(c.getString(14));
-                bean.setLATITUD(c.getString(15));
-                bean.setLONGITUD(c.getString(16));
+                bean.setLATITUD(c.getDouble(15));
+                bean.setLONGITUD(c.getDouble(16));
                 bean.setOTRO_SINTOMA(c.getString(17));
                 bean.setFEC_CREACION(c.getString(18));
                 bean.setFEC_ACTUALIZACION(c.getString(19));

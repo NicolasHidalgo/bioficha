@@ -2,8 +2,8 @@ package beans;
 
 public class SedePoligonoBean {
     private String ID;
-    private String LATITUD;
-    private String LONGITUD;
+    private double LATITUD;
+    private double LONGITUD;
     private String ID_SEDE;
 
     public SedePoligonoBean() {
@@ -17,19 +17,19 @@ public class SedePoligonoBean {
         this.ID = ID;
     }
 
-    public String getLATITUD() {
+    public Double getLATITUD() {
         return LATITUD;
     }
 
-    public void setLATITUD(String LATITUD) {
+    public void setLATITUD(Double LATITUD) {
         this.LATITUD = LATITUD;
     }
 
-    public String getLONGITUD() {
+    public Double getLONGITUD() {
         return LONGITUD;
     }
 
-    public void setLONGITUD(String LONGITUD) {
+    public void setLONGITUD(Double LONGITUD) {
         this.LONGITUD = LONGITUD;
     }
 
