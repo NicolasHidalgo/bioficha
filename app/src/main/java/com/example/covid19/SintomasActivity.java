@@ -17,8 +17,12 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import beans.BioFichaSintomaBean;
+import beans.SintomaBean;
 import beans.SpinnerBean;
+import db.DatabaseManagerBioFichaSintoma;
 import db.DatabaseManagerSintoma;
+import helper.Session;
 
 
 public class SintomasActivity extends Fragment {
@@ -26,8 +30,10 @@ public class SintomasActivity extends Fragment {
     View view;
     ListView lvSintoma;
     DatabaseManagerSintoma dbSintoma;
+    DatabaseManagerBioFichaSintoma dbFichaSintoma;
     Context context;
     SparseBooleanArray checked = null;
+    Session session;
 
     String[] arraySintomas = {"Fiebre/escalofrío","Malestar general","Tos","Dolor de garganta","Congestión nasal","Irritación de ojo(s)","Dificultad respiratoria","Diarrea",
             "Náuseas/vómitos","Cefalea","Irritabilidad/confusión", "Dolor muscular", "Dolor de pecho", "Dolor abdominal", "Dolor articular", "Dolor de cabeza", "Dolor de oído","Otro, especificar"};
@@ -42,8 +48,10 @@ public class SintomasActivity extends Fragment {
         view = inflater.inflate(R.layout.activity_sintomas, container, false);
         lvSintoma = (ListView)view.findViewById(R.id.lvSintoma);
         context = this.getActivity();
+        session = new Session(context);
 
         dbSintoma = new DatabaseManagerSintoma(context);
+        dbFichaSintoma = new DatabaseManagerBioFichaSintoma(context);
         List<SpinnerBean> listaSintoma = null;
         listaSintoma = dbSintoma.getSpinner();
 
@@ -51,7 +59,12 @@ public class SintomasActivity extends Fragment {
         adapterSintoma.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lvSintoma.setAdapter(adapterSintoma);
 
-        lvSintoma.setItemChecked(0,true);
+        String ide = session.getIdEmpleado();
+        if (!(ide.isEmpty())){
+            TraerSintomas(ide);
+        }else{
+            lvSintoma.setItemChecked(0,true);
+        }
 
         lvSintoma.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -74,6 +87,20 @@ public class SintomasActivity extends Fragment {
         });
 
         return view;
+    }
+
+    public void TraerSintomas(String ide){
+        List<BioFichaSintomaBean> lista = dbFichaSintoma.ListarPorFicha(ide);
+        for (BioFichaSintomaBean item : lista){
+            for (int i = 0; i < lvSintoma.getAdapter().getCount(); i++) {
+                String valor = lvSintoma.getItemAtPosition(i).toString();
+                if (valor.equalsIgnoreCase(item.getNOM_SINTOMA())){
+                    lvSintoma.setItemChecked(i,true);
+                    break;
+                }
+            }
+
+        }
     }
 
 }

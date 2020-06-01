@@ -108,6 +108,22 @@ public class DatabaseManagerBioFichaSintoma extends DatabaseManager {
         return existe;
     }
 
+    public List<BioFichaSintomaBean> ListarPorFicha(String Id) {
+        List<BioFichaSintomaBean> list = new ArrayList<>();
+        String SQL = "Select s._ID, s.DESCRIPCION FROM BIO_FICHA bf INNER JOIN BIO_FICHA_SINTOMA bfs ON bfs.ID_FICHA = bf._ID INNER JOIN SINTOMA s ON s._ID = bfs.ID_SINTOMA WHERE bf._ID = " + Id;
+        Cursor c = super.getDb().rawQuery(SQL, null);
+
+        BioFichaSintomaBean bean = null;
+        while (c.moveToNext()){
+            bean = new BioFichaSintomaBean();
+            bean.setID_SINTOMA(c.getString(0));
+            bean.setNOM_SINTOMA(c.getString(1));
+
+            list.add(bean);
+        }
+        return list;
+    }
+
     public List<BioFichaSintomaBean> getList(String tipo){
         List<BioFichaSintomaBean> list = new ArrayList<>();
         Cursor c = null;

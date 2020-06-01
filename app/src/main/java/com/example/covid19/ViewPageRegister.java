@@ -4,6 +4,7 @@ package com.example.covid19;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -44,6 +45,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import java.util.Map;
 
@@ -154,7 +156,7 @@ public class ViewPageRegister extends AppCompatActivity {
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_sintomas_tab);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_enfermedad_tab);
 
-        //WebServiceSedePoligono();
+        WebServiceSedePoligono();
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -209,12 +211,18 @@ public class ViewPageRegister extends AppCompatActivity {
                 }
 
                 if(!(VerificarSedeGPS())){
-                    Toast.makeText(context, "Para registrar una ficha ustede debe encontrarse dentro del perimetro de la sede " + session.getNomSede(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Para registrar una ficha usted debe encontrarse dentro del perimetro de la sede " + session.getNomSede(), Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 String pAccion = "INSERT";
                 String pId = "0";
+                final String ide = session.getIdEmpleado();
+                if(!(ide.isEmpty())){
+                    pAccion = "UPDATE";
+                    pId = ide;
+                }
+
                 final String pIdSede = session.getIdSede();
 
                 final String pTipoDocumento = registroActivity.spTipoDocumento.getSelectedItem().toString();
@@ -324,14 +332,18 @@ public class ViewPageRegister extends AppCompatActivity {
                 final String pOtroSintoma = "otro sintoma";
 
                 // Validar si existe ficha localmente (por Tipo Document, Num Documento y Fecha Registro)
-                String fechaRegistro = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
-                if(dbFicha.VerificarRegistroPorDia(pIdTipoDocumento,pNumDocumento,fechaRegistro)){
-                    Toast.makeText(context, "Este registro ya se encuentra registrado", Toast.LENGTH_LONG).show();
-                    return;
+                if (pAccion.equals("INSERT")){
+                    String fechaRegistro = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+                    if(dbFicha.VerificarRegistroPorDia(pIdTipoDocumento,pNumDocumento,fechaRegistro)){
+                        Toast.makeText(context, "Este registro ya se encuentra registrado", Toast.LENGTH_LONG).show();
+                        return;
+                    }
                 }
 
                 OpenProgressBar();
-                final String QUERY = "CALL SP_FICHA('"+pAccion+"',null,"+pIdSede+","+pIdTipoDocumento+",'"+pNumDocumento+"','"+pCodPais+"','"+pNombres+"','"+pApePaterno+"','"+pApeMaterno+"','" + pFechaNacimiento +"','"+pGenero+"',"+pEstatura+","+pPeso+","+pIMC+","+pGrados+",'"+ pMensaje+ "'," + latitud + "," + longitud +",'"+ pOtroSintoma +"');";
+                final String QUERY = "CALL SP_FICHA('"+pAccion+"',"+pId+","+pIdSede+","+pIdTipoDocumento+",'"+pNumDocumento+"','"+pCodPais+"','"+pNombres+"','"+pApePaterno+"','"+pApeMaterno+"','" + pFechaNacimiento +"','"+pGenero+"',"+pEstatura+","+pPeso+","+pIMC+","+pGrados+",'"+ pMensaje+ "'," + latitud + "," + longitud +",'"+ pOtroSintoma +"');";
+                final String finalAccion = pAccion;
+                final String finalId = pId;
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -354,7 +366,7 @@ public class ViewPageRegister extends AppCompatActivity {
                                     ID_USUARIO = jsonObject.getString("ID_USUARIO");
                                     MENSAJE = jsonObject.getString("MENSAJE");
 
-                                    if(ID_FICHA.equals("0")){
+                                    if(ID_FICHA.equals("0") || ID_FICHA.isEmpty()){
                                         CloseProgressBar();
                                         Toast.makeText(context,MENSAJE,Toast.LENGTH_LONG).show();
                                         return;
@@ -384,29 +396,47 @@ public class ViewPageRegister extends AppCompatActivity {
                                 bioFichaBean.setFEC_CREACION(pFecha);
                                 //bioFichaBean.setFEC_ACTUALIZACION(pIdTipoDocumento);
                                 //bioFichaBean.setFEC_ELIMINACION(pIdTipoDocumento);
-                                dbFicha.insertar(bioFichaBean);
+
+                                if(finalAccion.equals("UPDATE")){
+                                    bioFichaBean = dbFicha.getObject(finalId);
+                                    bioFichaBean.setESTATURA(pEstatura);
+                                    bioFichaBean.setPESO(pPeso);
+                                    bioFichaBean.setIMC(pIMC);
+                                    bioFichaBean.setGRADO_CELSIUS(pGrados);
+                                    bioFichaBean.setMENSAJE_ESTADO(pMensaje);
+                                    bioFichaBean.setLATITUD(latitud);
+                                    bioFichaBean.setLONGITUD(longitud);
+                                    bioFichaBean.setOTRO_SINTOMA(pOtroSintoma);
+                                    bioFichaBean.setFEC_CREACION(pFecha);
+                                    bioFichaBean.setFEC_ACTUALIZACION(pFecha);
+                                    dbFicha.actualizar(bioFichaBean);
+                                }else{
+                                    dbFicha.insertar(bioFichaBean);
+                                }
 
                                 // Insertamos Usuario Empleado
-                                if (!(ID_USUARIO.equals("0"))){
-                                    if (!(dbUsuario.verificarRegistroPorID(ID_USUARIO))){
-                                        UsuarioBean usuarioBean = new UsuarioBean();
-                                        usuarioBean.setID(ID_USUARIO);
-                                        usuarioBean.setID_TIPO_DOCUMENTO(pIdTipoDocumento);
-                                        usuarioBean.setNUM_DOCUMENTO(pNumDocumento);
-                                        usuarioBean.setCOD_PAIS(pCodPais);
-                                        usuarioBean.setNOMBRES(pNombres);
-                                        usuarioBean.setAPELLIDO_PATERNO(pApePaterno);
-                                        usuarioBean.setAPELLIDO_MATERNO(pApeMaterno);
-                                        usuarioBean.setID_EMPRESA(session.getIdEmpresa());
-                                        usuarioBean.setGENERO(pGenero);
-                                        usuarioBean.setFECHA_NACIMIENTO(pFechaNacimiento);
-                                        bioFichaBean.setFEC_CREACION(pFecha);
-                                        dbUsuario.insertar(usuarioBean);
+                                if (finalAccion.equals("INSERT")){
+                                    if (!(ID_USUARIO.equals("0"))){
+                                        if (!(dbUsuario.verificarRegistroPorID(ID_USUARIO))){
+                                            UsuarioBean usuarioBean = new UsuarioBean();
+                                            usuarioBean.setID(ID_USUARIO);
+                                            usuarioBean.setID_TIPO_DOCUMENTO(pIdTipoDocumento);
+                                            usuarioBean.setNUM_DOCUMENTO(pNumDocumento);
+                                            usuarioBean.setCOD_PAIS(pCodPais);
+                                            usuarioBean.setNOMBRES(pNombres);
+                                            usuarioBean.setAPELLIDO_PATERNO(pApePaterno);
+                                            usuarioBean.setAPELLIDO_MATERNO(pApeMaterno);
+                                            usuarioBean.setID_EMPRESA(session.getIdEmpresa());
+                                            usuarioBean.setGENERO(pGenero);
+                                            usuarioBean.setFECHA_NACIMIENTO(pFechaNacimiento);
+                                            bioFichaBean.setFEC_CREACION(pFecha);
+                                            dbUsuario.insertar(usuarioBean);
+                                        }
                                     }
                                 }
 
                                 SparseBooleanArray checked = null;
-                                String SINTOMAS = "1"; // SET 1 "NINGUNO"
+                                String SINTOMAS = "";//"1"; // SET 1 "NINGUNO"
                                 checked = sintomasActivity.lvSintoma.getCheckedItemPositions();
                                 if (checked != null){
                                     SintomaBean sintomaBean = null;
@@ -448,7 +478,7 @@ public class ViewPageRegister extends AppCompatActivity {
                                             }
 
                                             SparseBooleanArray checked = null;
-                                            String ENFERMEDADES = "1"; // SET 1 "NINGUNO"
+                                            String ENFERMEDADES = "";//"1"; // SET 1 "NINGUNO"
                                             checked = enfermedadesActivity.lvEnfermedad.getCheckedItemPositions();
                                             if (checked != null){
                                                 EnfermedadBean enfermedadBean = null;
@@ -493,7 +523,10 @@ public class ViewPageRegister extends AppCompatActivity {
                                                         Toast.makeText(context,"Error:" + e.getMessage(),Toast.LENGTH_LONG).show();
                                                     }
                                                     CloseProgressBar();
-                                                    Toast.makeText(context,"Registro exitoso",Toast.LENGTH_LONG).show();
+                                                    if(finalAccion.equals("INSERT"))
+                                                        Toast.makeText(context,"Registro exitoso",Toast.LENGTH_LONG).show();
+                                                    else
+                                                        Toast.makeText(context,"Actualizacion exitosa",Toast.LENGTH_LONG).show();
                                                 }
                                             }, new Response.ErrorListener() {
                                                 @Override

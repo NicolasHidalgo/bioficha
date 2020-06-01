@@ -16,8 +16,12 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import beans.BioFichaEnfermedadBean;
+import beans.BioFichaSintomaBean;
 import beans.SpinnerBean;
+import db.DatabaseManagerBioFichaEnfermedad;
 import db.DatabaseManagerEnfermedad;
+import helper.Session;
 
 
 public class EnfermedadesActivity extends Fragment {
@@ -25,8 +29,10 @@ public class EnfermedadesActivity extends Fragment {
     View view;
     ListView lvEnfermedad;
     DatabaseManagerEnfermedad dbEnfermedad;
+    DatabaseManagerBioFichaEnfermedad dbFichaEnfermedad;
     Context context;
     SparseBooleanArray checked = null;
+    Session session;
 
     String[] arrayEnfermedades = {"Hipertensión arterial","Asma","Enfermedad cardiovascular","Enfermedad respiratoria crónica","Cáncer","Insuficiencia renal","Diabetes","Tratamiento Inmunosupresor"};
     public EnfermedadesActivity(){
@@ -38,8 +44,10 @@ public class EnfermedadesActivity extends Fragment {
         view = inflater.inflate(R.layout.activity_enfermedades,container, false);
         lvEnfermedad = (ListView)view.findViewById(R.id.lvEnfermedad);
         context = this.getActivity();
+        session = new Session(context);
 
         dbEnfermedad = new DatabaseManagerEnfermedad(context);
+        dbFichaEnfermedad = new DatabaseManagerBioFichaEnfermedad(context);
         List<SpinnerBean> listaEnfermedad = null;
         listaEnfermedad = dbEnfermedad.getSpinner();
 
@@ -47,7 +55,12 @@ public class EnfermedadesActivity extends Fragment {
         adapterEnfermedad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lvEnfermedad.setAdapter(adapterEnfermedad);
 
-        lvEnfermedad.setItemChecked(0,true);
+        String ide = session.getIdEmpleado();
+        if (!(ide.isEmpty())){
+            TraerEnfermedades(ide);
+        }else{
+            lvEnfermedad.setItemChecked(0,true);
+        }
 
         lvEnfermedad.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -70,5 +83,19 @@ public class EnfermedadesActivity extends Fragment {
         });
 
         return view;
+    }
+
+    public void TraerEnfermedades(String ide){
+        List<BioFichaEnfermedadBean> lista = dbFichaEnfermedad.ListarPorFicha(ide);
+        for (BioFichaEnfermedadBean item : lista){
+            for (int i = 0; i < lvEnfermedad.getAdapter().getCount(); i++) {
+                String valor = lvEnfermedad.getItemAtPosition(i).toString();
+                if (valor.equalsIgnoreCase(item.getNOM_ENFERMEDAD())){
+                    lvEnfermedad.setItemChecked(i,true);
+                    break;
+                }
+            }
+
+        }
     }
 }

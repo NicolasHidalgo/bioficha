@@ -4,8 +4,17 @@ public class BioFichaEnfermedadBean {
 
     private String ID_FICHA;
     private String ID_ENFERMEDAD;
+    private String NOM_ENFERMEDAD;
 
     public BioFichaEnfermedadBean() {
+    }
+
+    public String getNOM_ENFERMEDAD() {
+        return NOM_ENFERMEDAD;
+    }
+
+    public void setNOM_ENFERMEDAD(String NOM_ENFERMEDAD) {
+        this.NOM_ENFERMEDAD = NOM_ENFERMEDAD;
     }
 
     public String getID_FICHA() {
