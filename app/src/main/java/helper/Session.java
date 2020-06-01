@@ -27,6 +27,7 @@ public class Session {
     public void setNomSede(String Nom) {
         prefs.edit().putString("NomSede", Nom).commit();
     }
+    public void setIdEmpleado(String Id){ prefs.edit().putString("IdEmpleado", Id).commit();}
 
     public String getIdUsuario() {
         String IdUsuario = prefs.getString("IdUsuario","");
@@ -47,5 +48,9 @@ public class Session {
     public String getNomSede() {
         String NomSede = prefs.getString("NomSede","");
         return NomSede;
+    }
+    public String getIdEmpleado() {
+        String IdEmpleado = prefs.getString("IdEmpleado","");
+        return IdEmpleado;
     }
 }

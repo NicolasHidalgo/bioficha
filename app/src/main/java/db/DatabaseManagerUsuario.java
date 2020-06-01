@@ -18,7 +18,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
     public static final String CN_ID = "_ID";
     public static final String CN_ID_TIPO_DOCUMENTO = "ID_TIPO_DOCUMENTO";
     public static final String CN_NUM_DOCUMENTO = "NUM_DOCUMENTO";
-    public static final String CN_NACIONALIDAD = "NACIONALIDAD";
+    public static final String CN_COD_PAIS = "COD_PAIS";
     public static final String CN_NOMBRES = "NOMBRES";
     public static final String CN_APELLIDO_PATERNO = "APELLIDO_PATERNO";
     public static final String CN_APELLIDO_MATERNO = "APELLIDO_MATERNO";
@@ -41,7 +41,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
             + CN_ID + " integer PRIMARY KEY,"
             + CN_ID_TIPO_DOCUMENTO + " integer NULL,"
             + CN_NUM_DOCUMENTO + " text NULL,"
-            + CN_NACIONALIDAD + " text NULL,"
+            + CN_COD_PAIS + " text NULL,"
             + CN_NOMBRES + " text NULL,"
             + CN_APELLIDO_PATERNO + " text NULL,"
             + CN_APELLIDO_MATERNO + " text NULL,"
@@ -72,9 +72,9 @@ public class DatabaseManagerUsuario extends DatabaseManager {
     private ContentValues generarContentValues(UsuarioBean obj){
         ContentValues valores = new ContentValues();
         valores.put(CN_ID,obj.getID());
-        valores.put(CN_ID_TIPO_DOCUMENTO,obj.getNOMBRES());
+        valores.put(CN_ID_TIPO_DOCUMENTO,obj.getID_TIPO_DOCUMENTO());
         valores.put(CN_NUM_DOCUMENTO,obj.getNUM_DOCUMENTO());
-        valores.put(CN_NACIONALIDAD,obj.getCOD_PAIS());
+        valores.put(CN_COD_PAIS,obj.getCOD_PAIS());
         valores.put(CN_NOMBRES,obj.getNOMBRES());
         valores.put(CN_APELLIDO_PATERNO,obj.getAPELLIDO_PATERNO());
         valores.put(CN_APELLIDO_MATERNO,obj.getAPELLIDO_MATERNO());
@@ -120,16 +120,24 @@ public class DatabaseManagerUsuario extends DatabaseManager {
     @Override
     public Cursor cargar() {
         String [] columnas = new String[]
-                {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_NACIONALIDAD,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
+                {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
                         CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
                 CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,null);
     }
 
+    public Cursor cargarPorTipoDocumentoNumDocumento(String TipoDocumento, String NumDocumento) {
+        String [] columnas = new String[]
+                {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
+                        CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
+                        CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_TIPO_DOCUMENTO + " =? AND " + CN_NUM_DOCUMENTO + " =?", new String[]{TipoDocumento,NumDocumento},null,null,null);
+    }
+
     @Override
     public Cursor cargarById(String id) {
         String [] columnas = new String[]
-                {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_NACIONALIDAD,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
+                {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
                         CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
                         CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
@@ -138,7 +146,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
 
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
-                {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_NACIONALIDAD,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
+                {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
                         CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
                         CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_EMPRESA+ " = ?",new String[] { tipo },null,null,null);
@@ -183,6 +191,19 @@ public class DatabaseManagerUsuario extends DatabaseManager {
             existe = false;
         else
             existe = true;
+
+        return existe;
+    }
+
+
+    public Boolean verificarRegistroPorID(String Id) {
+        boolean existe = true;
+        Cursor resultSet = super.getDb().rawQuery("Select * from " + NOMBRE_TABLA + " WHERE " + CN_ID + " = " + Id, null);
+
+        if (resultSet.getCount() > 0)
+            existe = true;
+        else
+            existe = false;
 
         return existe;
     }
@@ -255,6 +276,37 @@ public class DatabaseManagerUsuario extends DatabaseManager {
             list.add(bean);
         }
         return list;
+    }
+
+    public UsuarioBean getPorTipoDocumentoNumDocumento(String TipoDocumento, String NumDocumento){
+        UsuarioBean bean = null;
+        Cursor c = cargarPorTipoDocumentoNumDocumento(TipoDocumento, NumDocumento);
+
+        while (c.moveToNext()){
+            bean = new UsuarioBean();
+            bean.setID(c.getString(0));
+            bean.setID_TIPO_DOCUMENTO(c.getString(1));
+            bean.setNUM_DOCUMENTO(c.getString(2));
+            bean.setCOD_PAIS(c.getString(3));
+            bean.setNOMBRES(c.getString(4));
+            bean.setAPELLIDO_PATERNO(c.getString(5));
+            bean.setAPELLIDO_MATERNO(c.getString(6));
+            bean.setID_EMPRESA(c.getString(7));
+            bean.setGENERO(c.getString(8));
+            bean.setCORREO(c.getString(9));
+            bean.setFECHA_NACIMIENTO(c.getString(10));
+            bean.setNOMBRES_CONTACTO(c.getString(11));
+            bean.setDIRECCION_CONTACTO(c.getString(12));
+            bean.setTELEFONO_CONTACTO(c.getString(13));
+            bean.setCORREO_CONTACTO(c.getString(14));
+            bean.setUSUARIO(c.getString(15));
+            bean.setCONTRASENA(c.getString(16));
+            bean.setID_ROL(c.getString(17));
+            bean.setFEC_CREACION(c.getString(18));
+            bean.setFEC_ACTUALIZACION(c.getString(19));
+            bean.setFEC_ELIMINACION(c.getString(20));
+        }
+        return bean;
     }
 
     public List<SpinnerBean> getSpinner(String tipo){

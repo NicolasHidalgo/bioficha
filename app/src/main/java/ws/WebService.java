@@ -589,7 +589,7 @@ public class WebService  {
 
     public void WebServiceSedePoligono(final Context context){
         dbSedePoligono = new DatabaseManagerSedePoligono(context);
-        QUERY = "call SP_SEDE_POLIGONO('" + ACCION  + "');";
+        QUERY = "call SP_SEDE_POLIGONO('" + ACCION  + "',0);";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {

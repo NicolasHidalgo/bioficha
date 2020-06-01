@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import beans.BioFichaEnfermedadBean;
+import beans.BioFichaSintomaBean;
 import beans.SpinnerBean;
 import beans.UsuarioSedeBean;
 
@@ -106,6 +107,22 @@ public class DatabaseManagerBioFichaEnfermedad extends DatabaseManager {
             existe = true;
 
         return existe;
+    }
+
+    public List<BioFichaEnfermedadBean> ListarPorFicha(String Id) {
+        List<BioFichaEnfermedadBean> list = new ArrayList<>();
+        String SQL = "Select e._ID, e.DESCRIPCION FROM BIO_FICHA bf INNER JOIN BIO_FICHA_ENFERMEDAD bfe ON bfe.ID_FICHA = bf._ID INNER JOIN ENFERMEDAD e ON e._ID = bfe.ID_ENFERMEDAD WHERE bf._ID = " + Id;
+        Cursor c = super.getDb().rawQuery(SQL, null);
+
+        BioFichaEnfermedadBean bean = null;
+        while (c.moveToNext()){
+            bean = new BioFichaEnfermedadBean();
+            bean.setID_ENFERMEDAD(c.getString(0));
+            bean.setNOM_ENFERMEDAD(c.getString(1));
+
+            list.add(bean);
+        }
+        return list;
     }
 
     public List<BioFichaEnfermedadBean> getList(String tipo){

@@ -236,30 +236,32 @@
             android:layout_marginLeft="4dp"
             android:layout_marginTop="12dp"></Spinner>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:text="Correo:"
-            android:textColor="#000"
-            android:layout_marginTop="12dp"
-            android:textSize="15dp">
-        </TextView>
-        <EditText
-            android:id="@+id/txtCorreo"
-            android:layout_width="match_parent"
-            android:layout_height="40dp"
-            android:inputType="textEmailAddress"
-            android:paddingLeft="10dp"
-            android:textSize="15dp"
-            android:background="@drawable/edit"
-            android:layout_marginTop="12dp"
-            android:layout_marginLeft="4dp">
-        </EditText>
-    </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/LinearLayoutCorreo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:text="Correo:"
+                    android:textColor="#000"
+                    android:textSize="15dp"></TextView>
+
+                <EditText
+                    android:id="@+id/txtCorreo"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/edit"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="10dp"
+                    android:textSize="15dp"></EditText>
+            </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

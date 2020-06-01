@@ -59,6 +59,10 @@ public class DatabaseManagerSedePoligono extends DatabaseManager {
         super.getDb().delete(NOMBRE_TABLA,CN_ID+ "=?", new String[]{id});
     }
 
+    public void eliminarPorSede(String IdSede) {
+        super.getDb().delete(NOMBRE_TABLA,CN_ID_SEDE+ "=?", new String[]{IdSede});
+    }
+
     @Override
     public void eliminarTodo() {
         super.getDb().execSQL("DELETE FROM " + NOMBRE_TABLA + ";");

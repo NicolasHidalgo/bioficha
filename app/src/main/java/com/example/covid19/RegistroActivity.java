@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -36,6 +37,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,11 +50,18 @@ import java.util.Map;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import beans.BioFichaBean;
+import beans.PaisBean;
 import beans.SpinnerBean;
+import beans.TipoDocumentoBean;
+import beans.UsuarioBean;
 import beans.UsuarioSedeBean;
+import db.DatabaseManagerBioFicha;
 import db.DatabaseManagerPais;
 import db.DatabaseManagerTipoDocumento;
+import db.DatabaseManagerUsuario;
 import helper.Session;
+import util.Util;
 
 public class RegistroActivity extends Fragment {
 
@@ -60,12 +69,16 @@ public class RegistroActivity extends Fragment {
     Spinner spTipoDocumento, spGenero, spPais;
     DatabaseManagerTipoDocumento dbTipoDocumento;
     DatabaseManagerPais dbPais;
+    DatabaseManagerUsuario dbUsuario;
+    DatabaseManagerBioFicha dbFicha;
     Context context;
     EditText txtNumDocumento, txtNombres, txtApePaterno, txtApeMaterno, txtCorreo;
     EditText txtFechaNacimiento, txtEstatura, txtPeso, txtGrados;
     RequestQueue requestQueue;
     TextView lblNomEmpresa, lblNomSede, lblIMC;
     private Session session;
+    LinearLayout linearLayoutCorreo;
+    Button btnBuscarEmpleado;
 
     Calendar calendar;
     DatePickerDialog datePickerDialog;
@@ -87,6 +100,8 @@ public class RegistroActivity extends Fragment {
 
         dbTipoDocumento = new DatabaseManagerTipoDocumento(context);
         dbPais = new DatabaseManagerPais(context);
+        dbUsuario = new DatabaseManagerUsuario(context);
+        dbFicha = new DatabaseManagerBioFicha(context);
 
         spTipoDocumento = (Spinner) view.findViewById(R.id.spTipoDocumento);
         spGenero = (Spinner) view.findViewById(R.id.spGenero);
@@ -102,6 +117,9 @@ public class RegistroActivity extends Fragment {
         txtPeso = (EditText) view.findViewById(R.id.txtPeso);
         txtGrados = (EditText) view.findViewById(R.id.txtGrados);
         lblIMC = (TextView) view.findViewById(R.id.lblIMC);
+
+        linearLayoutCorreo = (LinearLayout) view.findViewById(R.id.LinearLayoutCorreo);
+        linearLayoutCorreo.setVisibility(View.INVISIBLE);
 
         calendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -209,6 +227,7 @@ public class RegistroActivity extends Fragment {
 
         lblNomSede.setText(session.getNomSede());
         lblNomEmpresa.setText(session.getNomEmpresa());
+        btnBuscarEmpleado = (Button) view.findViewById(R.id.btnBuscarEmpleado);
 
         List<SpinnerBean> listaTipoDocumento = dbTipoDocumento.getSpinner();
         ArrayAdapter<SpinnerBean> adapterTipoDocumento = new ArrayAdapter<SpinnerBean>(context, R.layout.custom_spinner, listaTipoDocumento);
@@ -216,7 +235,7 @@ public class RegistroActivity extends Fragment {
         spTipoDocumento.setAdapter(adapterTipoDocumento);
 
         List<SpinnerBean> listaPais = dbPais.getSpinner();
-        ArrayAdapter<SpinnerBean> adapterPais = new ArrayAdapter<SpinnerBean>(context, R.layout.custom_spinner, listaPais);
+        final ArrayAdapter<SpinnerBean> adapterPais = new ArrayAdapter<SpinnerBean>(context, R.layout.custom_spinner, listaPais);
         adapterPais.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spPais.setAdapter(adapterPais);
 
@@ -225,11 +244,15 @@ public class RegistroActivity extends Fragment {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner, arrayList);
         spGenero.setAdapter(arrayAdapter);
 
-        Button btnBuscarEmpleado = (Button) view.findViewById(R.id.btnBuscarEmpleado);
+        String ide = session.getIdEmpleado();
+        if (!(ide.isEmpty())){
+            BloquearCampos();
+            TraerFicha(ide);
+        }
+
         btnBuscarEmpleado.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                // Consulta DNI webservice
 
                 String tipoDocumento = spTipoDocumento.getSelectedItem().toString();
                 if(!(tipoDocumento.equals("DNI"))){
@@ -237,14 +260,49 @@ public class RegistroActivity extends Fragment {
                     return;
                 }
 
-                OpenProgressBar();
                 String NumDocumento = txtNumDocumento.getText().toString();
                 if (NumDocumento.isEmpty()){
-                    CloseProgressBar();
                     Toast.makeText(context,"Debe ingresar un numero de documento", Toast.LENGTH_LONG).show();
                     return;
                 }
 
+                // Buscar Usuario Empleado en el sqlite
+                TipoDocumentoBean tipoDocumentoBean = dbTipoDocumento.getByName(tipoDocumento);
+                UsuarioBean usuarioBean = dbUsuario.getPorTipoDocumentoNumDocumento(tipoDocumentoBean.getID(),NumDocumento);
+                if (usuarioBean != null){
+                    PaisBean paisBean = dbPais.get(usuarioBean.getCOD_PAIS());
+                    int pos = 0;
+                    for (int i=0;i<spPais.getCount();i++){
+                        if (spPais.getItemAtPosition(i).toString().equalsIgnoreCase(paisBean.getNOMBRE())){
+                            pos = i;
+                            break;
+                        }
+                    }
+                    spPais.setSelection(pos);
+                    txtNombres.setText(usuarioBean.getNOMBRES());
+                    txtApePaterno.setText(usuarioBean.getAPELLIDO_PATERNO());
+                    txtApeMaterno.setText(usuarioBean.getAPELLIDO_MATERNO());
+
+                    pos = 0;
+                    for (int i=0;i<spGenero.getCount();i++){
+                        if (spGenero.getItemAtPosition(i).toString().equalsIgnoreCase(usuarioBean.getGENERO())){
+                            pos = i;
+                            break;
+                        }
+                    }
+                    spGenero.setSelection(pos);
+                    String fecNac = "";
+                    try {
+                        fecNac = Util.formatDate(usuarioBean.getFECHA_NACIMIENTO(),"yyyy-MM-dd","dd/MM/yyyy");
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    txtFechaNacimiento.setText(fecNac);
+                    return;
+                }
+
+                OpenProgressBar();
+                // Consulta DNI webservice
                 String URL = "https://dniruc.apisperu.com/api/v1/dni/" + NumDocumento + "?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5pY29sYXNoaWRhbGdvY29ycmVhQGhvdG1haWwuY29tIn0.vRpQYdBvxUFwsXFehU1KpQzNJhl08IBR69hHBcefGno";
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
                     @Override
@@ -312,6 +370,67 @@ public class RegistroActivity extends Fragment {
         rl.setGravity(Gravity.CENTER);
         rl.addView(progressBar);
         layout.addView(rl, params);
+    }
+
+    public void BloquearCampos(){
+        spTipoDocumento.setEnabled(false);
+        txtNumDocumento.setEnabled(false);
+        btnBuscarEmpleado.setEnabled(false);
+        spPais.setEnabled(false);
+        txtNombres.setEnabled(false);
+        txtApePaterno.setEnabled(false);
+        txtApeMaterno.setEnabled(false);
+        spGenero.setEnabled(false);
+        txtFechaNacimiento.setEnabled(false);
+    }
+
+    public void TraerFicha(String ide){
+        BioFichaBean bioFichaBean = null;
+        bioFichaBean = dbFicha.getObject(ide);
+
+        TipoDocumentoBean tipoDocumentoBean = dbTipoDocumento.get(bioFichaBean.getID_TIPO_DOCUMENTO());
+        int pos = 0;
+        for (int i=0;i<spTipoDocumento.getCount();i++){
+            if (spTipoDocumento.getItemAtPosition(i).toString().equalsIgnoreCase(tipoDocumentoBean.getNOM_DOCUMENTO())){
+                pos = i;
+                break;
+            }
+        }
+        spPais.setSelection(pos);
+        txtNumDocumento.setText(bioFichaBean.getNUM_DOCUMENTO());
+
+        PaisBean paisBean = dbPais.get(bioFichaBean.getCOD_PAIS());
+        pos = 0;
+        for (int i=0;i<spPais.getCount();i++){
+            if (spPais.getItemAtPosition(i).toString().equalsIgnoreCase(paisBean.getNOMBRE())){
+                pos = i;
+                break;
+            }
+        }
+        spPais.setSelection(pos);
+
+        txtNombres.setText(bioFichaBean.getNOMBRES());
+        txtApePaterno.setText(bioFichaBean.getAPELLIDO_PATERNO());
+        txtApeMaterno.setText(bioFichaBean.getAPELLIDO_MATERNO());
+
+        pos = 0;
+        for (int i=0;i<spGenero.getCount();i++){
+            if (spGenero.getItemAtPosition(i).toString().equalsIgnoreCase(bioFichaBean.getGENERO())){
+                pos = i;
+                break;
+            }
+        }
+        spGenero.setSelection(pos);
+        String fecNac = "";
+        try {
+            fecNac = Util.formatDate(bioFichaBean.getFECHA_NACIMIENTO(),"yyyy-MM-dd","dd/MM/yyyy");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        txtFechaNacimiento.setText(fecNac);
+        txtEstatura.setText(bioFichaBean.getESTATURA());
+        txtPeso.setText(bioFichaBean.getPESO());
+        txtGrados.setText(bioFichaBean.getGRADO_CELSIUS());
     }
 
 

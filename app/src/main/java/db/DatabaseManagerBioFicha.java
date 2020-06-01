@@ -38,6 +38,8 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
     public static final String CN_FEC_ACTUALIZACION = "FEC_ACTUALIZACION";
     public static final String CN_FEC_ELIMINACION = "FEC_ELIMINACION";
 
+    public static final String CN_NOM_DOCUMENTO = "NOM_DOCUMENTO";
+
     public static final String CREATE_TABLE =  "create table " + NOMBRE_TABLA + " ("
             + CN_ID + " integer PRIMARY KEY,"
             + CN_ID_SEDE + " integer NULL,"
@@ -151,6 +153,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_SEDE+ " = ? AND strftime('%Y-%m-%d'," + CN_FEC_CREACION + ") = ?",new String[] { IdSede, Fecha },null,null,null);
     }
 
+
     @Override
     public Boolean compruebaRegistro(String id) {
         boolean existe = true;
@@ -189,6 +192,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
 
         return existe;
     }
+
 
     @Override
     public List<BioFichaBean> get(String tipo){
@@ -235,7 +239,32 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         return list;
     }
 
-    public List<BioFichaBean> ListarPorFecha(String IdSede, String Fecha){
+    public List<BioFichaBean> ListarPorSedeFechaV2(String IdSede, String Fecha){
+        List<BioFichaBean> list = new ArrayList<>();
+        String SQL = "Select bf."+ CN_ID +","+CN_ID_TIPO_DOCUMENTO+","+CN_NOM_DOCUMENTO+","+CN_NUM_DOCUMENTO+","+CN_NOMBRES+","+CN_APELLIDO_PATERNO+","+CN_FEC_CREACION+"  from " + NOMBRE_TABLA + " bf INNER JOIN TIPO_DOCUMENTO td ON td._ID = bf.ID_TIPO_DOCUMENTO WHERE " + CN_ID_SEDE + " = " + IdSede + " AND strftime('%Y-%m-%d'," + CN_FEC_CREACION + ") = '" + Fecha + "' ORDER BY " + CN_FEC_CREACION + " DESC";
+        Cursor c = super.getDb().rawQuery(SQL, null);
+
+        try{
+            BioFichaBean bean = null;
+            while (c.moveToNext()){
+                bean = new BioFichaBean();
+                bean.setID(c.getString(0));
+                bean.setID_TIPO_DOCUMENTO(c.getString(1));
+                bean.setNOM_DOCUMENTO(c.getString(2));
+                bean.setNUM_DOCUMENTO(c.getString(3));
+                bean.setNOMBRES(c.getString(4));
+                bean.setAPELLIDO_PATERNO(c.getString(5));
+                bean.setFEC_CREACION(c.getString(6));
+                list.add(bean);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    public List<BioFichaBean> ListarPorSedeFecha(String IdSede, String Fecha){
         List<BioFichaBean> list = new ArrayList<>();
         Cursor c = cargarPorSedeFecha(IdSede, Fecha);
 
