@@ -56,7 +56,7 @@ public class FichasActivity extends AppCompatActivity {
         dbFicha = new DatabaseManagerBioFicha(context);
 
         String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
-        listaFicha = dbFicha.ListarPorFecha(session.getIdSede(),fechaHoy);
+        listaFicha = dbFicha.ListarPorSedeFechaV2(session.getIdSede(),fechaHoy);
 
         BioFichaBean bio = null;
         nFicha = new String[listaFicha.size()];
@@ -89,7 +89,7 @@ public class FichasActivity extends AppCompatActivity {
         super.onResume();
 
         String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
-        listaFicha = dbFicha.ListarPorFecha(session.getIdSede(),fechaHoy);
+        listaFicha = dbFicha.ListarPorSedeFechaV2(session.getIdSede(),fechaHoy);
         BioFichaBean bio = null;
         nFicha = new String[listaFicha.size()];
         nEmpleado = new String[listaFicha.size()];

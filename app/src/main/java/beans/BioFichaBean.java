@@ -8,6 +8,7 @@ public class BioFichaBean {
     private String ID;
     private String ID_SEDE;
     private String ID_TIPO_DOCUMENTO;
+    private String NOM_DOCUMENTO;
     private String NUM_DOCUMENTO;
     private String COD_PAIS;
     private String NOMBRES;
@@ -39,6 +40,14 @@ public class BioFichaBean {
 
     public void setLstEnfermedad(List<EnfermedadBean> lstEnfermedad) {
         this.lstEnfermedad = lstEnfermedad;
+    }
+
+    public String getNOM_DOCUMENTO() {
+        return NOM_DOCUMENTO;
+    }
+
+    public void setNOM_DOCUMENTO(String NOM_DOCUMENTO) {
+        this.NOM_DOCUMENTO = NOM_DOCUMENTO;
     }
 
     public String getCOD_PAIS() {

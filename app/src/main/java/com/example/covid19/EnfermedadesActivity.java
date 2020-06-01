@@ -3,9 +3,11 @@ package com.example.covid19;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -19,14 +21,15 @@ import db.DatabaseManagerEnfermedad;
 
 
 public class EnfermedadesActivity extends Fragment {
+
     View view;
     ListView lvEnfermedad;
-    Context context;
     DatabaseManagerEnfermedad dbEnfermedad;
+    Context context;
+    SparseBooleanArray checked = null;
 
     String[] arrayEnfermedades = {"Hipertensión arterial","Asma","Enfermedad cardiovascular","Enfermedad respiratoria crónica","Cáncer","Insuficiencia renal","Diabetes","Tratamiento Inmunosupresor"};
     public EnfermedadesActivity(){
-
     }
 
     @Nullable
@@ -40,12 +43,31 @@ public class EnfermedadesActivity extends Fragment {
         List<SpinnerBean> listaEnfermedad = null;
         listaEnfermedad = dbEnfermedad.getSpinner();
 
-        lvEnfermedad = (ListView)view.findViewById(R.id.lvEnfermedad);
         ArrayAdapter<SpinnerBean> adapterEnfermedad = new ArrayAdapter<SpinnerBean>(context,android.R.layout.simple_list_item_multiple_choice,listaEnfermedad);
         adapterEnfermedad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lvEnfermedad.setAdapter(adapterEnfermedad);
 
         lvEnfermedad.setItemChecked(0,true);
+
+        lvEnfermedad.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if(position == 0){
+                    checked = lvEnfermedad.getCheckedItemPositions();
+                    if (checked != null){
+                        for (int i = 0; i < checked.size() ; ++i) {
+                            if (checked.valueAt(i)) {
+                                int pos = checked.keyAt(i);
+                                lvEnfermedad.setItemChecked(pos,false);
+                            }
+                        }
+                    }
+                    lvEnfermedad.setItemChecked(0,true);
+                }else{
+                    lvEnfermedad.setItemChecked(0,false);
+                }
+            }
+        });
 
         return view;
     }

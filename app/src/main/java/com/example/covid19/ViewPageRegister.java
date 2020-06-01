@@ -59,6 +59,7 @@ import beans.SedeBean;
 import beans.SedePoligonoBean;
 import beans.SintomaBean;
 import beans.TipoDocumentoBean;
+import beans.UsuarioBean;
 import db.DatabaseManagerBioFicha;
 import db.DatabaseManagerBioFichaEnfermedad;
 import db.DatabaseManagerBioFichaSintoma;
@@ -68,6 +69,7 @@ import db.DatabaseManagerSede;
 import db.DatabaseManagerSedePoligono;
 import db.DatabaseManagerSintoma;
 import db.DatabaseManagerTipoDocumento;
+import db.DatabaseManagerUsuario;
 import helper.ConnectivityReceiver;
 import helper.Session;
 import util.Util;
@@ -93,6 +95,7 @@ public class ViewPageRegister extends AppCompatActivity {
     DatabaseManagerPais dbPais;
     DatabaseManagerSedePoligono dbSedePoligono;
     DatabaseManagerSede dbSede;
+    DatabaseManagerUsuario dbUsuario;
 
     ProgressBar progressBar;
 
@@ -127,6 +130,7 @@ public class ViewPageRegister extends AppCompatActivity {
         dbPais = new DatabaseManagerPais(context);
         dbSedePoligono = new DatabaseManagerSedePoligono(context);
         dbSede = new DatabaseManagerSede(context);
+        dbUsuario = new DatabaseManagerUsuario(context);
 
         final String pIdSede = session.getIdSede();
         listaVertice = dbSedePoligono.getList(pIdSede);
@@ -143,12 +147,14 @@ public class ViewPageRegister extends AppCompatActivity {
         viewPagerAdapter.AddFragment(sintomasActivity,"Síntomas");
         viewPagerAdapter.AddFragment(enfermedadesActivity,"Enfermedades");
 
+        viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(viewPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
         tabLayout.getTabAt(0).setIcon(R.drawable.ic_insert_tap);
         tabLayout.getTabAt(1).setIcon(R.drawable.ic_sintomas_tab);
         tabLayout.getTabAt(2).setIcon(R.drawable.ic_enfermedad_tab);
 
+        //WebServiceSedePoligono();
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         locationListener = new LocationListener() {
@@ -267,7 +273,7 @@ public class ViewPageRegister extends AppCompatActivity {
 
                 String fecNac = "";
                 try {
-                    fecNac = formatDate(fechaNacimiento,"dd/MM/yyyy","yyyy-MM-dd");
+                    fecNac = Util.formatDate(fechaNacimiento,"dd/MM/yyyy","yyyy-MM-dd");
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -292,22 +298,24 @@ public class ViewPageRegister extends AppCompatActivity {
                     return;
                 }
 
+                /*
                 SparseBooleanArray checked = null;
+                checked = sintomasActivity.lvSintoma.getCheckedItemPositions();
                 if (checked != null){
-                    checked = sintomasActivity.lvSintoma.getCheckedItemPositions();
                     if (checked.size() == 0){
                         Toast.makeText(context, "Debe seleccionar un tipo de sintoma", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
 
+                checked = enfermedadesActivity.lvEnfermedad.getCheckedItemPositions();
                 if (checked != null){
-                    checked = enfermedadesActivity.lvEnfermedad.getCheckedItemPositions();
                     if (checked.size() == 0){
                         Toast.makeText(context, "Debe seleccionar un tipo de enfermedad", Toast.LENGTH_LONG).show();
                         return;
                     }
                 }
+                 */
 
                 Date currentTime = Calendar.getInstance().getTime();
                 final String pFecha = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new java.util.Date());
@@ -338,10 +346,12 @@ public class ViewPageRegister extends AppCompatActivity {
                                 JSONArray jsonArray = new JSONArray(response);
                                 JSONObject jsonObject = null;
                                 String ID_FICHA = "";
+                                String ID_USUARIO = "";
                                 String MENSAJE = "";
                                 for (int i = 0; i < jsonArray.length(); i++) {
                                     jsonObject = jsonArray.getJSONObject(i);
                                     ID_FICHA = jsonObject.getString("ID");
+                                    ID_USUARIO = jsonObject.getString("ID_USUARIO");
                                     MENSAJE = jsonObject.getString("MENSAJE");
 
                                     if(ID_FICHA.equals("0")){
@@ -376,10 +386,29 @@ public class ViewPageRegister extends AppCompatActivity {
                                 //bioFichaBean.setFEC_ELIMINACION(pIdTipoDocumento);
                                 dbFicha.insertar(bioFichaBean);
 
+                                // Insertamos Usuario Empleado
+                                if (!(ID_USUARIO.equals("0"))){
+                                    if (!(dbUsuario.verificarRegistroPorID(ID_USUARIO))){
+                                        UsuarioBean usuarioBean = new UsuarioBean();
+                                        usuarioBean.setID(ID_USUARIO);
+                                        usuarioBean.setID_TIPO_DOCUMENTO(pIdTipoDocumento);
+                                        usuarioBean.setNUM_DOCUMENTO(pNumDocumento);
+                                        usuarioBean.setCOD_PAIS(pCodPais);
+                                        usuarioBean.setNOMBRES(pNombres);
+                                        usuarioBean.setAPELLIDO_PATERNO(pApePaterno);
+                                        usuarioBean.setAPELLIDO_MATERNO(pApeMaterno);
+                                        usuarioBean.setID_EMPRESA(session.getIdEmpresa());
+                                        usuarioBean.setGENERO(pGenero);
+                                        usuarioBean.setFECHA_NACIMIENTO(pFechaNacimiento);
+                                        bioFichaBean.setFEC_CREACION(pFecha);
+                                        dbUsuario.insertar(usuarioBean);
+                                    }
+                                }
+
                                 SparseBooleanArray checked = null;
                                 String SINTOMAS = "1"; // SET 1 "NINGUNO"
+                                checked = sintomasActivity.lvSintoma.getCheckedItemPositions();
                                 if (checked != null){
-                                    checked = sintomasActivity.lvSintoma.getCheckedItemPositions();
                                     SintomaBean sintomaBean = null;
                                     String name = "";
                                     String ID_SINTOMA = "";
@@ -404,7 +433,7 @@ public class ViewPageRegister extends AppCompatActivity {
                                     @Override
                                     public void onResponse(String response) {
                                         try {
-                                            JSONArray jsonArray = new JSONArray(response);
+                                            //JSONArray jsonArray = new JSONArray(response);
 
                                             // INSERTARMOS FICHA_SINTOMA EN EL SQLITE
                                             dbFichaSintoma.eliminar(ID_FICHAK);
@@ -420,8 +449,8 @@ public class ViewPageRegister extends AppCompatActivity {
 
                                             SparseBooleanArray checked = null;
                                             String ENFERMEDADES = "1"; // SET 1 "NINGUNO"
+                                            checked = enfermedadesActivity.lvEnfermedad.getCheckedItemPositions();
                                             if (checked != null){
-                                                checked = enfermedadesActivity.lvEnfermedad.getCheckedItemPositions();
                                                 EnfermedadBean enfermedadBean = null;
                                                 String name = "";
                                                 String ID_ENFERMEDAD = "";
@@ -446,7 +475,7 @@ public class ViewPageRegister extends AppCompatActivity {
                                                 @Override
                                                 public void onResponse(String response) {
                                                     try {
-                                                        JSONArray jsonArray = new JSONArray(response);
+                                                        //JSONArray jsonArray = new JSONArray(response);
 
                                                         // INSERTARMOS FICHA_SINTOMA EN EL SQLITE
                                                         dbFichaEnfermedad.eliminar(ID_FICHAK);
@@ -459,7 +488,7 @@ public class ViewPageRegister extends AppCompatActivity {
                                                             bean.setID_ENFERMEDAD(ID);
                                                             dbFichaEnfermedad.insertar(bean);
                                                         }
-                                                    } catch (JSONException e) {
+                                                    } catch (Exception e) {
                                                         CloseProgressBar();
                                                         Toast.makeText(context,"Error:" + e.getMessage(),Toast.LENGTH_LONG).show();
                                                     }
@@ -482,7 +511,7 @@ public class ViewPageRegister extends AppCompatActivity {
                                             };
                                             requestQueue.add(stringRequest);
 
-                                        } catch (JSONException e) {
+                                        } catch (Exception e) {
                                             CloseProgressBar();
                                             Toast.makeText(context,"Error:" + e.getMessage(),Toast.LENGTH_LONG).show();
                                         }
@@ -503,7 +532,7 @@ public class ViewPageRegister extends AppCompatActivity {
                                 };
                                 requestQueue.add(stringRequest);
 
-                            } catch (JSONException e) {
+                            } catch (Exception e) {
                                 CloseProgressBar();
                                 Toast.makeText(context,"Error:" + e.getMessage(),Toast.LENGTH_LONG).show();
                             }
@@ -590,13 +619,6 @@ public class ViewPageRegister extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 
-    public static String formatDate (String date, String initDateFormat, String endDateFormat) throws ParseException {
-        Date initDate = new SimpleDateFormat(initDateFormat).parse(date);
-        SimpleDateFormat formatter = new SimpleDateFormat(endDateFormat);
-        String parsedDate = formatter.format(initDate);
-        return parsedDate;
-    }
-
     public void ProgressBarHandler(Context context) {
         ViewGroup layout = (ViewGroup) ((Activity) context).findViewById(android.R.id.content).getRootView();
         progressBar = new ProgressBar(context, null, android.R.attr.progressBarStyleLarge);
@@ -607,5 +629,55 @@ public class ViewPageRegister extends AppCompatActivity {
         rl.setGravity(Gravity.CENTER);
         rl.addView(progressBar);
         layout.addView(rl, params);
+    }
+
+    public void WebServiceSedePoligono(){
+        if(!(ConnectivityReceiver.isConnected(context))){
+            Toast.makeText(context, "Necesita contectarte a internet para continuar", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        final String QUERY = "call SP_SEDE_POLIGONO('SELECT_BY_SEDE',"+ session.getIdSede() +");";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("[]") || response.equals("") || response.isEmpty()) {
+                    Toast.makeText(context, "No se encontraron datos SP_SEDE_POLIGONO", Toast.LENGTH_LONG).show();
+                }else{
+                    dbSedePoligono.eliminarPorSede(session.getIdSede());
+                    try {
+                        SedePoligonoBean bean  = null;
+                        JSONArray jsonArray = new JSONArray(response);
+                        JSONObject jsonObject = null;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            jsonObject = jsonArray.getJSONObject(i);
+                            bean  = new SedePoligonoBean();
+                            bean.setID(jsonObject.getString("ID"));
+                            bean.setLATITUD(jsonObject.getDouble("LATITUD"));
+                            bean.setLONGITUD(jsonObject.getDouble("LONGITUD"));
+                            bean.setID_SEDE(jsonObject.getString("ID_SEDE"));
+                            dbSedePoligono.insertar(bean);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Erro servicio poligono: " + error.getMessage(),Toast.LENGTH_SHORT).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> parametros = new HashMap<>();
+                parametros.put("consulta",QUERY);
+                return parametros;
+            }
+        };
+        requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
     }
 }

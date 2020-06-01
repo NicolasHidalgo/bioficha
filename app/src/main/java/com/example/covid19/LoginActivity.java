@@ -821,7 +821,7 @@ public class LoginActivity extends AppCompatActivity {
     public void WebServiceSedePoligono(){
         dbSedePoligono = new DatabaseManagerSedePoligono(context);
         if (!(dbSedePoligono.verificarRegistros())) {
-            QUERY = "call SP_SEDE_POLIGONO('" + ACCION + "');";
+            QUERY = "call SP_SEDE_POLIGONO('" + ACCION + "',0);";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
