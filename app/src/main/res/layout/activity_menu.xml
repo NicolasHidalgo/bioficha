@@ -135,7 +135,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="REGISTRADOR"
+                        android:text="EMPLEADO"
                         android:textStyle="bold"
                         android:textSize="23sp"
                         android:layout_marginTop="10dp"
@@ -144,7 +144,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Consulte registrador"
+                        android:text="Consulte empleado"
                         android:textStyle="bold"
                         android:textSize="18sp"
                         android:layout_marginLeft="15dp"
