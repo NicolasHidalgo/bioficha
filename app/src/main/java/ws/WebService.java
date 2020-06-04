@@ -520,7 +520,6 @@ public class WebService  {
                         bean.setCORREO_CONTACTO(jsonObject.getString("CORREO_CONTACTO"));
                         bean.setUSUARIO(jsonObject.getString("USUARIO"));
                         bean.setCONTRASENA(jsonObject.getString("CONTRASENA"));
-                        bean.setCONTRASENA(jsonObject.getString("CONTRASENA"));
                         bean.setID_ROL(jsonObject.getString("ID_ROL"));
                         bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                         bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));

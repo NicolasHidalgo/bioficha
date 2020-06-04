@@ -165,7 +165,7 @@ public class LoginActivity extends AppCompatActivity {
         dbUsuario = new DatabaseManagerUsuario(context);
         String descripcion = "XXX";
         String ACCION = "LOGIN";
-        final String QUERY = "call SP_USUARIO('" + ACCION  + "','" + Usuario + "','" + Password + "');";
+        final String QUERY = "call SP_USUARIO('" + ACCION  + "',0,'" + Usuario + "','" + Password + "');";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -208,7 +208,8 @@ public class LoginActivity extends AppCompatActivity {
                             dbUsuario.insertar(bean);
                         }
                         session.setIdUsuario(bean.getID());
-                        session.setIdEmpresa("1"); // EN DURO, DEBE SER DINAMICO
+                        session.setIdRol(bean.getID_ROL());
+                        session.setIdEmpresa(bean.getID_EMPRESA());
                         WebService(bean.getID());
                     }
                 } catch (JSONException e) {
@@ -237,7 +238,7 @@ public class LoginActivity extends AppCompatActivity {
     public void WebService(String IdUsuario){
         dbUsuarioSede = new DatabaseManagerUsuarioSede(context);
         if (!(dbUsuarioSede.verificarRegistros())) {
-            QUERY = "call SP_USUARIO_SEDE('" + ACCION + "_BY_USUARIO'," + IdUsuario + ");";
+            QUERY = "call SP_USUARIO_SEDE('" + ACCION + "_BY_USUARIO'," + IdUsuario + ",0);";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -595,7 +596,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
     public void WebServiceTipoDocumento(){
         dbTipoDocumento = new DatabaseManagerTipoDocumento(context);
         if (!(dbTipoDocumento.verificarRegistros())) {
@@ -712,7 +712,7 @@ public class LoginActivity extends AppCompatActivity {
     public void WebServiceSede(){
         dbSede = new DatabaseManagerSede(context);
         if (!(dbSede.verificarRegistros())) {
-            QUERY = "call SP_SEDE('" + ACCION + "');";
+            QUERY = "call SP_SEDE('" + ACCION + "',0);";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
