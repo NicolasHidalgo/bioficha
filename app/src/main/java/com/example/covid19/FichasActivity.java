@@ -75,6 +75,7 @@ public class FichasActivity extends AppCompatActivity {
             nEmpleado[i] = bio.getNUM_DOCUMENTO();
             nHora[i] = bio.getFEC_CREACION();
         }
+
         btnAgregarFicha = findViewById(R.id.btnAgregarFicha);
         lvFicha = findViewById(R.id.lvFicha);
         MyAdapter adapter = new MyAdapter(this, nFicha,nEmpleado,nHora,nID);
