@@ -12,6 +12,7 @@ import db.DatabaseManagerRol;
 import db.DatabaseManagerSede;
 import db.DatabaseManagerUsuario;
 import db.DatabaseManagerUsuarioSede;
+import helper.ConnectivityReceiver;
 import helper.Session;
 import util.Util;
 import ws.WebService;
@@ -30,9 +31,23 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MenuActivity extends AppCompatActivity {
     LinearLayout btnEmpresa, btnRegistrador, btnSede;
@@ -42,11 +57,18 @@ public class MenuActivity extends AppCompatActivity {
     Context context;
     DatabaseManagerSede dbSede;
     DatabaseManagerEmpresa dbEmpresa;
+    LinearLayout linearLayoutSeleccione;
 
     DatabaseManagerUsuario dbUsuario;
     DatabaseManagerUsuarioSede dbUsuarioSede;
     DatabaseManagerRol dbRol;
     private Session session;
+
+    public static final String SERVER = "https://bioficha.electocandidato.com/";
+    public String URL = SERVER + "select.php";
+    public String ACCION = "SELECT";
+    public String QUERY = "";
+    RequestQueue requestQueue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +80,7 @@ public class MenuActivity extends AppCompatActivity {
         btnEmpresa = findViewById(R.id.btnEmpresa);
         btnRegistrador = findViewById(R.id.btnRegistrador);
         btnSede = findViewById(R.id.btnSede);
+        linearLayoutSeleccione = findViewById(R.id.LinearLayoutSeleccione);
 
         btnEmpresa.setVisibility(LinearLayout.GONE);
         btnRegistrador.setVisibility(LinearLayout.GONE);
@@ -120,12 +143,36 @@ public class MenuActivity extends AppCompatActivity {
 
         spSede = (Spinner) findViewById(R.id.spSede);
         List<SpinnerBean> listaSede = null;
-        if (rolBean.getID().equals("1") || rolBean.getNOM_ROL().equals("SUPER-ADMIN")){
-            listaSede =  dbSede.getSpinnerAll();
+        if (rolBean.getNOM_ROL().equals("SUPER-ADMIN")){
+            btnEmpresa.setVisibility(LinearLayout.VISIBLE);
+            btnRegistrador.setVisibility(LinearLayout.INVISIBLE);
+            btnSede.setVisibility(LinearLayout.INVISIBLE);
+            spSede.setVisibility(View.INVISIBLE);
+            btnVerFichas.setVisibility(View.INVISIBLE);
+            linearLayoutSeleccione.setVisibility(View.INVISIBLE);
+
+            WebServiceEmpresa();
+
+        }else if (rolBean.getNOM_ROL().equals("ADMIN")) {
             btnEmpresa.setVisibility(LinearLayout.VISIBLE);
             btnRegistrador.setVisibility(LinearLayout.VISIBLE);
             btnSede.setVisibility(LinearLayout.VISIBLE);
-        }else {
+            spSede.setVisibility(View.INVISIBLE);
+            btnVerFichas.setVisibility(View.INVISIBLE);
+            linearLayoutSeleccione.setVisibility(View.INVISIBLE);
+
+            WebServiceEmpleado();
+            WebServiceSede();
+            WebServiceUsuarioSede();
+
+        }else if (rolBean.getNOM_ROL().equals("REGISTRADOR")) {
+            btnEmpresa.setVisibility(LinearLayout.INVISIBLE);
+            btnRegistrador.setVisibility(LinearLayout.INVISIBLE);
+            btnSede.setVisibility(LinearLayout.INVISIBLE);
+            spSede.setVisibility(View.VISIBLE);
+            btnVerFichas.setVisibility(View.VISIBLE);
+            linearLayoutSeleccione.setVisibility(View.VISIBLE);
+            listaSede =  dbSede.getSpinnerAll();
             List<UsuarioSedeBean> listaUsuarioSede = dbUsuarioSede.getList(usuarioBean.getID());
             String sedes = "";
             int i = 1;
@@ -137,14 +184,245 @@ public class MenuActivity extends AppCompatActivity {
             }
 
             listaSede =  dbSede.getSpinner(sedes);
+
+            ArrayAdapter<SpinnerBean> adapterTurno = new ArrayAdapter<SpinnerBean>(context, R.layout.custom_spinner, listaSede);
+            adapterTurno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spSede.setAdapter(adapterTurno);
         }
 
-        ArrayAdapter<SpinnerBean> adapterTurno = new ArrayAdapter<SpinnerBean>(context, R.layout.custom_spinner, listaSede);
-        adapterTurno.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spSede.setAdapter(adapterTurno);
+
 
     }
 
+    public void WebServiceEmpresa(){
+        if(!(ConnectivityReceiver.isConnected(context))){
+            Toast.makeText(this, "Necesitas contectarte a internet para sincronizar empresas", Toast.LENGTH_LONG).show();
+            return;
+        }
 
+        dbEmpresa = new DatabaseManagerEmpresa(context);
+        String descripcion = "XXX";
+        ACCION = "SELECT";
+        QUERY = "call SP_EMPRESA('" + ACCION + "');";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("[]") || response.equals("")){
+                    Toast.makeText(context, "No se encontraron datos SP_EMPRESA", Toast.LENGTH_LONG).show();
+                }else{
+                    dbEmpresa.eliminarTodo();
+                    try {
+                        EmpresaBean bean = null;
+                        JSONArray jsonArray = new JSONArray(response);
+                        JSONObject jsonObject = null;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            jsonObject = jsonArray.getJSONObject(i);
+                            bean = new EmpresaBean();
+                            bean.setID(jsonObject.getString("ID"));
+                            bean.setRUC(jsonObject.getString("RUC"));
+                            bean.setNOM_RAZON_SOCIAL(jsonObject.getString("NOM_RAZON_SOCIAL"));
+                            bean.setACT_ECONOMICAS(jsonObject.getString("ACT_ECONOMICAS"));
+                            bean.setDIRECCION(jsonObject.getString("DIRECCION"));
+                            bean.setID_DISTRITO(jsonObject.getString("ID_DISTRITO"));
+                            bean.setLATITUD(jsonObject.getString("LATITUD"));
+                            bean.setLONGITUD(jsonObject.getString("LONGITUD"));
+                            bean.setTELEFONO(jsonObject.getString("TELEFONO"));
+                            bean.setCORREO(jsonObject.getString("CORREO"));
+                            bean.setCONTACTO(jsonObject.getString("CONTACTO"));
+                            bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
+                            bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
+                            bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                            dbEmpresa.insertar(bean);
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(context, "Error en el registro json EMPRESA: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error servicio EMPRESA: " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("consulta", QUERY);
+                return parametros;
+            }
+        };
+        requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+    public void WebServiceEmpleado(){
+        dbUsuario = new DatabaseManagerUsuario(context);
+        String descripcion = "XXX";
+        String ACCION = "SELECT_POR_EMPRESA";
+        String Usuario = "";
+        String Password = "";
+        String IdEmpresa = session.getIdEmpresa();
+        final String QUERY = "call SP_USUARIO('" + ACCION  + "',"+ IdEmpresa +",'" + Usuario + "','" + Password + "');";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    if (response.equals("[]") || response.equals("")){
+                        Toast.makeText(context, "No se encontraron datos SP_EMPLEADO", Toast.LENGTH_LONG).show();
+                    }else{
+                        dbUsuario.eliminarTodo();
+                        UsuarioBean bean  = null;
+                        JSONArray jsonArray = new JSONArray(response);
+                        JSONObject jsonObject = null;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            jsonObject = jsonArray.getJSONObject(i);
+                            bean = new UsuarioBean();
+                            bean.setID(jsonObject.getString("ID"));
+                            bean.setID_TIPO_DOCUMENTO(jsonObject.getString("ID_TIPO_DOCUMENTO"));
+                            bean.setNUM_DOCUMENTO(jsonObject.getString("NUM_DOCUMENTO"));
+                            bean.setCOD_PAIS(jsonObject.getString("COD_PAIS"));
+                            bean.setNOMBRES(jsonObject.getString("NOMBRES"));
+                            bean.setAPELLIDO_PATERNO(jsonObject.getString("APELLIDO_PATERNO"));
+                            bean.setAPELLIDO_MATERNO(jsonObject.getString("APELLIDO_MATERNO"));
+                            bean.setID_EMPRESA(jsonObject.getString("ID_EMPRESA"));
+                            bean.setGENERO(jsonObject.getString("GENERO"));
+                            bean.setCORREO(jsonObject.getString("CORREO"));
+                            bean.setFECHA_NACIMIENTO(jsonObject.getString("FECHA_NACIMIENTO"));
+                            bean.setNOMBRES_CONTACTO(jsonObject.getString("NOMBRES_CONTACTO"));
+                            bean.setDIRECCION_CONTACTO(jsonObject.getString("DIRECCION_CONTACTO"));
+                            bean.setTELEFONO_CONTACTO(jsonObject.getString("TELEFONO_CONTACTO"));
+                            bean.setCORREO_CONTACTO(jsonObject.getString("CORREO_CONTACTO"));
+                            bean.setUSUARIO(jsonObject.getString("USUARIO"));
+                            bean.setCONTRASENA(jsonObject.getString("CONTRASENA"));
+                            bean.setCONTRASENA(jsonObject.getString("CONTRASENA"));
+                            bean.setID_ROL(jsonObject.getString("ID_ROL"));
+                            bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
+                            bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                            dbUsuario.insertar(bean);
+                        }
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(context, "Error en el registro json EMPLEADO: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Fallo el servicio de EMPLEADO: " + error.getMessage().toString() , Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> parametros = new HashMap<>();
+                parametros.put("consulta",QUERY);
+                return parametros;
+            }
+        };
+        requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+    public void WebServiceSede(){
+        String ACCION = "SELECT_POR_EMPRESA";
+        String IdEmpresa = session.getIdEmpresa();
+        dbSede = new DatabaseManagerSede(context);
+        final String QUERY = "call SP_SEDE('" + ACCION + "', " + IdEmpresa + ");";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("[]") || response.equals("")){
+                    Toast.makeText(context, "No se encontraron datos SP_SEDE", Toast.LENGTH_LONG).show();
+                }else{
+                    dbSede.eliminarTodo();
+                    try {
+                        SedeBean bean = null;
+                        JSONArray jsonArray = new JSONArray(response);
+                        JSONObject jsonObject = null;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            jsonObject = jsonArray.getJSONObject(i);
+                            bean = new SedeBean();
+                            bean.setID(jsonObject.getString("ID"));
+                            bean.setNOMBRE_SEDE(jsonObject.getString("NOMBRE_SEDE"));
+                            bean.setID_EMPRESA(jsonObject.getString("ID_EMPRESA"));
+                            bean.setDIRECCION(jsonObject.getString("DIRECCION"));
+                            bean.setID_DISTRITO(jsonObject.getString("ID_DISTRITO"));
+                            bean.setLATITUD(jsonObject.getString("LATITUD"));
+                            bean.setLONGITUD(jsonObject.getString("LONGITUD"));
+                            bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
+                            bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
+                            bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                            dbSede.insertar(bean);
+                        }
+                    } catch (JSONException e) {
+                        Toast.makeText(context, "Error en el registro json SEDE: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Fallo el servicio de SEDE: " + error.getMessage().toString() , Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("consulta", QUERY);
+                return parametros;
+            }
+        };
+        requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+
+    public void WebServiceUsuarioSede(){
+        String IdEmpresa = session.getIdEmpresa();
+        dbUsuarioSede = new DatabaseManagerUsuarioSede(context);
+        final String QUERY = "call SP_USUARIO_SEDE('" + ACCION + "_POR_EMPRESA',0," + IdEmpresa + ");";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("[]") || response.equals("")){
+                    Toast.makeText(context, "No se encontraron datos SP_USUARIO_SEDE", Toast.LENGTH_LONG).show();
+                }else {
+                    dbUsuarioSede.eliminarTodo();
+                    try {
+                        UsuarioSedeBean bean = null;
+                        JSONArray jsonArray = new JSONArray(response);
+                        JSONObject jsonObject = null;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            jsonObject = jsonArray.getJSONObject(i);
+                            bean = new UsuarioSedeBean();
+                            bean.setID_USUARIO(jsonObject.getString("ID_USUARIO"));
+                            bean.setID_SEDE(jsonObject.getString("ID_SEDE"));
+                            bean.setID_ROL(jsonObject.getString("ID_ROL"));
+                            dbUsuarioSede.insertar(bean);
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error servicio SP_USUARIO_SEDE: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("consulta", QUERY);
+                return parametros;
+            }
+        };
+        requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+
+    }
 
 }

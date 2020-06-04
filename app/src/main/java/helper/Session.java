@@ -28,6 +28,8 @@ public class Session {
         prefs.edit().putString("NomSede", Nom).commit();
     }
     public void setIdEmpleado(String Id){ prefs.edit().putString("IdEmpleado", Id).commit();}
+    public void setIdRol(String Id){ prefs.edit().putString("IdRol", Id).commit();}
+    public void setNomRol(String NomRol){ prefs.edit().putString("NomRol", NomRol).commit();}
 
     public String getIdUsuario() {
         String IdUsuario = prefs.getString("IdUsuario","");
@@ -52,5 +54,13 @@ public class Session {
     public String getIdEmpleado() {
         String IdEmpleado = prefs.getString("IdEmpleado","");
         return IdEmpleado;
+    }
+    public String getIdRol() {
+        String IdRol = prefs.getString("IdRol","");
+        return IdRol;
+    }
+    public String getNomRol() {
+        String NomRol = prefs.getString("NomRol","");
+        return NomRol;
     }
 }
