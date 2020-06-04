@@ -171,7 +171,29 @@ public class DatabaseManagerSede extends DatabaseManager {
         }
         return bean;
     }
+    public List<SedeBean> ListarPorSedeXEmpresa(String IdEmpresa){
+        List<SedeBean> list = new ArrayList<>();
+        String SQL = "Select bf."+ CN_ID +","+CN_NOMBRE_SEDE+","+CN_ID_EMPRESA+","+CN_DIRECCION+","+CN_ID_DISTRITO+","+CN_FEC_CREACION+"  from " + NOMBRE_TABLA + " bf  WHERE " + CN_ID_EMPRESA + " = " + IdEmpresa + " ORDER BY " + CN_FEC_CREACION + " DESC";
+        Cursor c = super.getDb().rawQuery(SQL, null);
 
+        try{
+            SedeBean bean = null;
+            while (c.moveToNext()){
+                bean = new SedeBean();
+                bean.setID(c.getString(0));
+                bean.setNOMBRE_SEDE(c.getString(1));
+                bean.setID_EMPRESA(c.getString(2));
+                bean.setDIRECCION(c.getString(3));
+                bean.setID_DISTRITO(c.getString(4));
+                bean.setFEC_CREACION(c.getString(5));
+                list.add(bean);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return list;
+    }
     public SedeBean getByName(String name){
         SedeBean bean = null;
         Cursor c = cargarPorTipo(name);
