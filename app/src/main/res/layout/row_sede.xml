@@ -17,7 +17,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/txtSede"
+                android:id="@+id/txtInfoSede1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Sede 1"
@@ -26,7 +26,7 @@
                 android:layout_margin="5dp"
                 android:textSize="20sp"/>
             <TextView
-                android:id="@+id/txtDireccionFiscal"
+                android:id="@+id/txtInfoSede2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Direccion"
@@ -45,16 +45,12 @@
                 android:orientation="vertical">
 
                 <TextView
-<<<<<<< HEAD
-                    android:id="@+id/txtInfoFichaId"
-=======
-                    android:id="@+id/txtIDSede"
->>>>>>> 5a3e17295ab957c9f278171add3fcc09c6e25bfe
+                    android:id="@+id/txtInfoSedeId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/txtInfoFicha3"
+                    android:id="@+id/txtInfoSede3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
