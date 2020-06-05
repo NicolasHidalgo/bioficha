@@ -26,10 +26,10 @@
                 android:layout_margin="5dp"
                 android:textSize="20sp"/>
             <TextView
-                android:id="@+id/txtNombreEmpresa"
+                android:id="@+id/txtDireccionFiscal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Nombre Empresa"
+                android:text="Direccion"
                 android:textColor="#A9A9A9"
                 android:textStyle="bold"
                 android:layout_margin="5dp"
@@ -45,7 +45,11 @@
                 android:orientation="vertical">
 
                 <TextView
+<<<<<<< HEAD
                     android:id="@+id/txtInfoFichaId"
+=======
+                    android:id="@+id/txtIDSede"
+>>>>>>> 5a3e17295ab957c9f278171add3fcc09c6e25bfe
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
