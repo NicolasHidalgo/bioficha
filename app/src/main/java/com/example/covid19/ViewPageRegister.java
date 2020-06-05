@@ -217,7 +217,7 @@ public class ViewPageRegister extends AppCompatActivity {
 
                 String pAccion = "INSERT";
                 String pId = "0";
-                final String ide = session.getIdEmpleado();
+                final String ide = session.getIdFicha();
                 if(!(ide.isEmpty())){
                     pAccion = "UPDATE";
                     pId = ide;

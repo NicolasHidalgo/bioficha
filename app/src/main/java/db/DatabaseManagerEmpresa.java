@@ -99,21 +99,21 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
     @Override
     public Cursor cargar() {
         String [] columnas = new String[]
-                {CN_ID,CN_NOM_RAZON_SOCIAL};
+                {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL};
         return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,null);
     }
 
     @Override
     public Cursor cargarById(String id) {
         String [] columnas = new String[]
-                {CN_ID,CN_NOM_RAZON_SOCIAL};
+                {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
     }
 
 
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
-                {CN_ID,CN_NOM_RAZON_SOCIAL};
+                {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
     }
 
@@ -157,7 +157,8 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         while (c.moveToNext()){
             bean = new EmpresaBean();
             bean.setID(c.getString(0));
-            bean.setNOM_RAZON_SOCIAL(c.getString(1));
+            bean.setRUC(c.getString(1));
+            bean.setNOM_RAZON_SOCIAL(c.getString(2));
 
             list.add(bean);
         }
@@ -172,7 +173,8 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         while (c.moveToNext()){
             bean = new EmpresaBean();
             bean.setID(c.getString(0));
-            bean.setNOM_RAZON_SOCIAL(c.getString(1));
+            bean.setRUC(c.getString(1));
+            bean.setNOM_RAZON_SOCIAL(c.getString(2));
         }
         return bean;
     }
@@ -182,7 +184,7 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         Cursor c = cargar();
 
         while (c.moveToNext()){
-            SpinnerBean bean = new SpinnerBean(c.getInt(0),c.getString(1));
+            SpinnerBean bean = new SpinnerBean(c.getInt(0),c.getString(2));
             list.add(bean);
         }
         return list;

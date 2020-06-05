@@ -521,6 +521,7 @@ public class WebService  {
                         bean.setUSUARIO(jsonObject.getString("USUARIO"));
                         bean.setCONTRASENA(jsonObject.getString("CONTRASENA"));
                         bean.setID_ROL(jsonObject.getString("ID_ROL"));
+                        bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
                         bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                         bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
                         dbUsuario.insertar(bean);
