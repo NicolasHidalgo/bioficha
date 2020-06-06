@@ -57,7 +57,6 @@ public class EmpresasActivity extends AppCompatActivity {
             listaEmpresa = dbEmpresa.getList(session.getIdEmpresa());
         }
 
-
         EmpresaBean user = null;
         int len = listaEmpresa.size();
         nInfoID = new String[len];
@@ -74,6 +73,11 @@ public class EmpresasActivity extends AppCompatActivity {
         }
 
         btnAgregarEmpresa = findViewById(R.id.btnAgregarEmpresa);
+
+        if(session.getNomRol().equals("ADMIN")){
+            btnAgregarEmpresa.hide();
+        }
+
         lvEmpresa = findViewById(R.id.lvEmpresa);
         EmpresasActivity.MyAdapter adapter = new EmpresasActivity.MyAdapter(this, nInfoID, nInfo1,nInfo2,nInfo3);
         lvEmpresa.setAdapter(adapter);

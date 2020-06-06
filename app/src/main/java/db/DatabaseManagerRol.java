@@ -73,11 +73,23 @@ public class DatabaseManagerRol extends DatabaseManager {
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
     }
 
+    public Cursor cargarNotSuperAdmin() {
+        String [] columnas = new String[]
+                {CN_ID,CN_NOM_ROL};
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "!= ?", new String[]{"1"},null,null,null);
+    }
+
 
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
                 {CN_ID,CN_NOM_ROL};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
+    }
+
+    public Cursor cargarPorNombre(String Nombre) {
+        String [] columnas = new String[]
+                {CN_ID,CN_NOM_ROL};
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_NOM_ROL+ " = ? ",new String[] { "'"+ Nombre + "'" },null,null,null);
     }
 
 
@@ -139,10 +151,44 @@ public class DatabaseManagerRol extends DatabaseManager {
         }
         return bean;
     }
+    public RolBean getByNombre(String nombre){
+        RolBean bean = null;
+        String SQL = "Select " + CN_ID + ", " + CN_NOM_ROL + " from " + NOMBRE_TABLA + " WHERE " + CN_NOM_ROL + " LIKE '%" + nombre + "%'";
+        Cursor c = super.getDb().rawQuery(SQL, null);
+
+        while (c.moveToNext()){
+            bean = new RolBean();
+            bean.setID(c.getString(0));
+            bean.setNOM_ROL(c.getString(1));
+        }
+        return bean;
+    }
 
     public List<SpinnerBean> getSpinner(){
         List<SpinnerBean> list = new ArrayList<>();
         Cursor c = cargar();
+
+        while (c.moveToNext()){
+            SpinnerBean bean = new SpinnerBean(c.getInt(0),c.getString(1));
+            list.add(bean);
+        }
+        return list;
+    }
+
+    public List<SpinnerBean> getSpinnerNotSuperAdmin(){
+        List<SpinnerBean> list = new ArrayList<>();
+        Cursor c = cargarNotSuperAdmin();
+
+        while (c.moveToNext()){
+            SpinnerBean bean = new SpinnerBean(c.getInt(0),c.getString(1));
+            list.add(bean);
+        }
+        return list;
+    }
+
+    public List<SpinnerBean> getSpinnerById(String Id){
+        List<SpinnerBean> list = new ArrayList<>();
+        Cursor c = cargarById(Id);
 
         while (c.moveToNext()){
             SpinnerBean bean = new SpinnerBean(c.getInt(0),c.getString(1));

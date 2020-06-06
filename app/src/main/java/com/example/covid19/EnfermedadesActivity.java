@@ -56,7 +56,7 @@ public class EnfermedadesActivity extends Fragment {
         adapterEnfermedad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lvEnfermedad.setAdapter(adapterEnfermedad);
 
-        String ide = session.getIdEmpleado();
+        String ide = session.getIdFicha();
         if (!(ide.isEmpty())){
             TraerEnfermedades(ide);
         }else{

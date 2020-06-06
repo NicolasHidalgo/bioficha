@@ -145,7 +145,7 @@ public class ViewPageRegister extends AppCompatActivity {
         final SintomasActivity sintomasActivity = new SintomasActivity();
         final EnfermedadesActivity enfermedadesActivity = new EnfermedadesActivity();
 
-        viewPagerAdapter.AddFragment(registroActivity, "Ficha");
+        viewPagerAdapter.AddFragment(registroActivity, "Datos Generales");
         viewPagerAdapter.AddFragment(sintomasActivity,"Síntomas");
         viewPagerAdapter.AddFragment(enfermedadesActivity,"Enfermedades");
 
@@ -201,7 +201,7 @@ public class ViewPageRegister extends AppCompatActivity {
                     Toast.makeText(context, "Necesita contectarte a internet para continuar", Toast.LENGTH_LONG).show();
                     return;
                 }
-                OpenProgressBar();
+
                 // Todo Location Already on  ... start
                 final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
                 // Todo Location Already on  ... end

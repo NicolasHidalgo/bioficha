@@ -68,23 +68,32 @@
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="4dp">
                     </EditText>
+                    <Button
+                        android:id="@+id/btnBuscarEmpleado"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/ic_search"
+                        android:padding="8dp"
+                        android:textColor="#fff"></Button>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
-                        android:text="CODIGO PAIS:"
-                        android:textColor="#000"
-                        android:textStyle="bold"
-                        android:gravity="end"
                         android:layout_marginTop="12dp"
-                        android:textSize="15dp">
-                    </TextView>
+                        android:gravity="end"
+                        android:text="PAIS:"
+                        android:textColor="#000"
+                        android:textSize="15dp"
+                        android:textStyle="bold"></TextView>
                     <Spinner
-                        android:id="@+id/spCodPais"
+                        android:id="@+id/spPais"
                         android:layout_width="175dp"
                         android:layout_height="45dp"
                         android:background="@drawable/spinner"
@@ -198,28 +207,30 @@
                         android:layout_marginLeft="4dp">
                     </EditText>
                 </LinearLayout>
+
                 <LinearLayout
+                    android:id="@+id/LinearLayoutEmpresa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
+
                     <TextView
                         android:layout_width="120dp"
                         android:layout_height="wrap_content"
-                        android:text="EMPRESA:"
-                        android:textStyle="bold"
-                        android:gravity="end"
-                        android:textColor="#000"
                         android:layout_marginTop="22dp"
-                        android:textSize="15dp">
-                    </TextView>
+                        android:gravity="end"
+                        android:text="EMPRESA:"
+                        android:textColor="#000"
+                        android:textSize="15dp"
+                        android:textStyle="bold"></TextView>
 
                     <Spinner
                         android:id="@+id/spEmpresa"
                         android:layout_width="175dp"
                         android:layout_height="45dp"
-                        android:background="@drawable/spinner"
                         android:layout_marginLeft="4dp"
-                        android:layout_marginTop="12dp"></Spinner>
+                        android:layout_marginTop="12dp"
+                        android:background="@drawable/spinner"></Spinner>
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
