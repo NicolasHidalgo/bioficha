@@ -136,6 +136,7 @@ public class MenuActivity extends AppCompatActivity {
 
         UsuarioBean usuarioBean = dbUsuario.get(session.getIdUsuario());
         RolBean rolBean = dbRol.get(usuarioBean.getID_ROL());
+        session.setNomRol(rolBean.getNOM_ROL());
 
         lblNomUsuario = (TextView) findViewById(R.id.lblNomUsuario);
         lblNomUsuario.setText(usuarioBean.getNOMBRES() + " " + usuarioBean.getAPELLIDO_PATERNO());
@@ -296,8 +297,8 @@ public class MenuActivity extends AppCompatActivity {
                             bean.setCORREO_CONTACTO(jsonObject.getString("CORREO_CONTACTO"));
                             bean.setUSUARIO(jsonObject.getString("USUARIO"));
                             bean.setCONTRASENA(jsonObject.getString("CONTRASENA"));
-                            bean.setCONTRASENA(jsonObject.getString("CONTRASENA"));
                             bean.setID_ROL(jsonObject.getString("ID_ROL"));
+                            bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
                             bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                             bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
                             dbUsuario.insertar(bean);

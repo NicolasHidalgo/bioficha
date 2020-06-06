@@ -244,7 +244,7 @@ public class RegistroActivity extends Fragment {
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(context, R.layout.custom_spinner, arrayList);
         spGenero.setAdapter(arrayAdapter);
 
-        String ide = session.getIdEmpleado();
+        String ide = session.getIdFicha();
         if (!(ide.isEmpty())){
             BloquearCampos();
             TraerFicha(ide);

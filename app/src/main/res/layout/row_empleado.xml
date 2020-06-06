@@ -17,8 +17,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
             <TextView
-                android:id="@+id/txtEmpleado"
-                android:layout_width="match_parent"
+                android:id="@+id/txtInfoEmp1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Empleado 1"
                 android:textColor="#000"
@@ -26,7 +26,7 @@
                 android:layout_margin="5dp"
                 android:textSize="20sp"/>
             <TextView
-                android:id="@+id/txtDNI"
+                android:id="@+id/txtInfoEmp2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="DNI"
@@ -45,12 +45,12 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txtID"
+                    android:id="@+id/txtInfoEmpId"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    android:id="@+id/txtHora"
+                    android:id="@+id/txtInfoEmp3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"

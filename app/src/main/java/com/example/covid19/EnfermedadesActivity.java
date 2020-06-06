@@ -36,6 +36,7 @@ public class EnfermedadesActivity extends Fragment {
 
     String[] arrayEnfermedades = {"Hipertensión arterial","Asma","Enfermedad cardiovascular","Enfermedad respiratoria crónica","Cáncer","Insuficiencia renal","Diabetes","Tratamiento Inmunosupresor"};
     public EnfermedadesActivity(){
+
     }
 
     @Nullable

@@ -1,17 +1,28 @@
 package com.example.covid19;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.widget.ListView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.tabs.TabLayout;
+
+import java.util.List;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
+import beans.BioFichaBean;
+import beans.UsuarioBean;
+import db.DatabaseManagerBioFicha;
+import db.DatabaseManagerEmpresa;
+import db.DatabaseManagerUsuario;
+import helper.Session;
 
 public class ViewPageRegisterEmpleado extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private  ViewPagerAdapter viewPagerAdapter;
+    private ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -112,6 +112,13 @@ public class DatabaseManagerSede extends DatabaseManager {
         return super.getDb().rawQuery(query, null);
     }
 
+    public Cursor cargarPorEmpresa(String IdEmpresa) {
+        String [] columnas = new String[]
+                {CN_ID,CN_NOMBRE_SEDE};
+        String query = "SELECT "+CN_ID+", " + CN_NOMBRE_SEDE +" FROM " + NOMBRE_TABLA + " WHERE " + CN_ID_EMPRESA +" = " + IdEmpresa ;
+        return super.getDb().rawQuery(query, null);
+    }
+
 
     @Override
     public Boolean compruebaRegistro(String id) {
@@ -220,6 +227,17 @@ public class DatabaseManagerSede extends DatabaseManager {
     public List<SpinnerBean> getSpinnerAll(){
         List<SpinnerBean> list = new ArrayList<>();
         Cursor c = cargar();
+
+        while (c.moveToNext()){
+            SpinnerBean bean = new SpinnerBean(c.getInt(0),c.getString(1));
+            list.add(bean);
+        }
+        return list;
+    }
+
+    public List<SpinnerBean> getSpinnerPorEmpresa(String IdEmpresa){
+        List<SpinnerBean> list = new ArrayList<>();
+        Cursor c = cargarPorEmpresa(IdEmpresa);
 
         while (c.moveToNext()){
             SpinnerBean bean = new SpinnerBean(c.getInt(0),c.getString(1));

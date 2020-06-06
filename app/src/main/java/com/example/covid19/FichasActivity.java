@@ -8,7 +8,6 @@ import beans.BioFichaBean;
 import db.DatabaseManagerBioFicha;
 import helper.Session;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -16,23 +15,15 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.stream.Collectors;
 
 public class FichasActivity extends AppCompatActivity {
 
@@ -44,10 +35,10 @@ public class FichasActivity extends AppCompatActivity {
     FloatingActionButton btnAgregarFicha;
     ListView lvFicha;
 
-    String nFicha[]; //= {"Ficha 01","Ficha 02","Ficha 03","Ficha 04","Ficha 05","Ficha 06","Ficha 07","Ficha 08","Ficha 09","Ficha 10"};
-    String nEmpleado[]; //= {"Juan Perez","María Vásquez","Guillermo Villavicencio","Andres Garay","Nicolas Hidalgo","Milagros Linares","Hector Mendoza","Marina Rubio","Alejandro Rosales","Edwin Bedregal"};
-    String nHora[]; //= {"10:35 pm","10:35 pm","10:35 pm","10:35 pm","10:35 pm","10:35 pm","10:35 pm","10:35 pm","10:35 pm","10:35 pm"};
-    String nID[];
+    String nInfoId[];
+    String nInfo1[];
+    String nInfo2[];
+    String nInfo3[];
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -63,29 +54,29 @@ public class FichasActivity extends AppCompatActivity {
 
         BioFichaBean bio = null;
         int len = listaFicha.size();
-        nID = new String[len];
-        nFicha = new String[len];
-        nEmpleado = new String[len];
-        nHora = new String[len];
+        nInfoId = new String[len];
+        nInfo1 = new String[len];
+        nInfo2 = new String[len];
+        nInfo3 = new String[len];
 
         for (int i=0; i<listaFicha.size(); i++) {
             bio = listaFicha.get(i);
-            nID[i] = bio.getID();
-            nFicha[i] = bio.getNOMBRES();
-            nEmpleado[i] = bio.getNUM_DOCUMENTO();
-            nHora[i] = bio.getFEC_CREACION();
+            nInfoId[i] = bio.getID();
+            nInfo1[i] = bio.getNOMBRES();
+            nInfo2[i] = bio.getNUM_DOCUMENTO();
+            nInfo3[i] = bio.getFEC_CREACION();
         }
 
         btnAgregarFicha = findViewById(R.id.btnAgregarFicha);
         lvFicha = findViewById(R.id.lvFicha);
-        MyAdapter adapter = new MyAdapter(this, nFicha,nEmpleado,nHora,nID);
+        MyAdapter adapter = new MyAdapter(this, nInfoId,nInfo1,nInfo2,nInfo3);
         lvFicha.setAdapter(adapter);
 
         btnAgregarFicha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent dsp = new Intent(FichasActivity.this, ViewPageRegister.class);
-                session.setIdEmpleado("");
+                session.setIdFicha("");
                 startActivity(dsp);
             }
         });
@@ -93,8 +84,8 @@ public class FichasActivity extends AppCompatActivity {
         lvFicha.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String ide =(String) ((TextView) view.findViewById(R.id.txtID)).getText();
-                session.setIdEmpleado(ide);
+                String ide =(String) ((TextView) view.findViewById(R.id.txtInfoFichaId)).getText();
+                session.setIdFicha(ide);
                 Intent intent = new Intent(context,ViewPageRegister.class);
                 startActivity(intent);
             }
@@ -110,21 +101,21 @@ public class FichasActivity extends AppCompatActivity {
         listaFicha = dbFicha.ListarPorSedeFechaV2(session.getIdSede(),fechaHoy);
         BioFichaBean bio = null;
         int len = listaFicha.size();
-        nID = new String[len];
-        nFicha = new String[len];
-        nEmpleado = new String[len];
-        nHora = new String[len];
+        nInfoId = new String[len];
+        nInfo1 = new String[len];
+        nInfo2 = new String[len];
+        nInfo3 = new String[len];
 
         for (int i=0; i<listaFicha.size(); i++) {
             bio = listaFicha.get(i);
-            nID[i] = bio.getID();
-            nFicha[i] = bio.getNOMBRES();
-            nEmpleado[i] = bio.getNUM_DOCUMENTO();
-            nHora[i] = bio.getFEC_CREACION();
+            nInfoId[i] = bio.getID();
+            nInfo1[i] = bio.getNOMBRES();
+            nInfo2[i] = bio.getNUM_DOCUMENTO();
+            nInfo3[i] = bio.getFEC_CREACION();
         }
         btnAgregarFicha = findViewById(R.id.btnAgregarFicha);
         lvFicha = findViewById(R.id.lvFicha);
-        MyAdapter adapter = new MyAdapter(this, nFicha,nEmpleado,nHora,nID);
+        MyAdapter adapter = new MyAdapter(this, nInfoId, nInfo1, nInfo2, nInfo3);
         lvFicha.setAdapter(adapter);
 
     }
@@ -132,18 +123,18 @@ public class FichasActivity extends AppCompatActivity {
     class MyAdapter extends ArrayAdapter<String>{
      Context context;
 
-     String nID[];
-     String nFicha[];
-     String nEmpleado[];
-     String nHora[];
+    String nInfoId[];
+    String nInfo1[];
+    String nInfo2[];
+    String nInfo3[];
 
-     MyAdapter(Context c, String ficha[], String empleado[], String hora[], String id[]){
-         super(c,R.layout.row, R.id.txtFicha, ficha);
+     MyAdapter(Context c, String nInfoId[], String nInfo1[], String nInfo2[], String nInfo3[]){
+         super(c,R.layout.row, R.id.txtInfoFichaId, nInfoId);
          this.context = c;
-         this.nID = id;
-         this.nFicha = ficha;
-         this.nEmpleado = empleado;
-         this.nHora = hora;
+         this.nInfoId = nInfoId;
+         this.nInfo1 = nInfo1;
+         this.nInfo2 = nInfo2;
+         this.nInfo3 = nInfo3;
      }
 
         @NonNull
@@ -151,15 +142,15 @@ public class FichasActivity extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             LayoutInflater layoutInflater = (LayoutInflater)getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View row = layoutInflater.inflate(R.layout.row, parent, false);
-            TextView id = row.findViewById(R.id.txtID);
-            TextView ficha = row.findViewById(R.id.txtFicha);
-            TextView empleado = row.findViewById(R.id.txtEmpleado);
-            TextView hora = row.findViewById(R.id.txtHora);
+            TextView id = row.findViewById(R.id.txtInfoFichaId);
+            TextView ficha = row.findViewById(R.id.txtInfoFicha1);
+            TextView empleado = row.findViewById(R.id.txtInfoFicha2);
+            TextView hora = row.findViewById(R.id.txtInfoFicha3);
 
-            id.setText(nID[position]);
-            ficha.setText(nFicha[position]);
-            empleado.setText(nEmpleado[position]);
-            hora.setText(nHora[position]);
+            id.setText(nInfoId[position]);
+            ficha.setText(nInfo1[position]);
+            empleado.setText(nInfo2[position]);
+            hora.setText(nInfo3[position]);
 
             return row;
         }

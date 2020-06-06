@@ -74,7 +74,7 @@ public class SedeActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent dsp = new Intent(SedeActivity.this, RegistroSedesActivity.class);
-                String ide =(String) ((TextView) view.findViewById(R.id.txtIDSede)).getText();
+                String ide =(String) ((TextView) view.findViewById(R.id.txtInfoSedeId)).getText();
                 session.setIdEmpleado(ide);
                 startActivity(dsp);
             }
@@ -89,7 +89,7 @@ public class SedeActivity extends AppCompatActivity {
         String nInfo3[];
 
         MyAdapter(Context c, String ID[], String Info1[], String Info2[], String Info3[]) {
-            super(c, R.layout.row_sede, R.id.txtIDSede, ID);
+            super(c, R.layout.row_sede, R.id.txtInfoSedeId, ID);
             this.context = c;
             this.nID = ID;
             this.nInfo1 = Info1;
@@ -102,10 +102,10 @@ public class SedeActivity extends AppCompatActivity {
         public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
             LayoutInflater layoutInflater = (LayoutInflater) getApplicationContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View row = layoutInflater.inflate(R.layout.row_sede, parent, false);
-            TextView id = row.findViewById(R.id.txtIDSede);
-            TextView nombre_sede = row.findViewById(R.id.txtSede);
-            TextView direccion = row.findViewById(R.id.txtDireccionFiscal);
-            TextView hora = row.findViewById(R.id.txtHora);
+            TextView id = row.findViewById(R.id.txtInfoSedeId);
+            TextView nombre_sede = row.findViewById(R.id.txtInfoSede1);
+            TextView direccion = row.findViewById(R.id.txtInfoSede2);
+            TextView hora = row.findViewById(R.id.txtInfoSede3);
             id.setText(nID[position]);
             nombre_sede.setText(nInfo1[position]);
             direccion.setText(nInfo2[position]);
