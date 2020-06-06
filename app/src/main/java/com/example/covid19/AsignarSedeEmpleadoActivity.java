@@ -15,7 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import beans.BioFichaEnfermedadBean;
 import beans.SpinnerBean;
+import beans.UsuarioSedeBean;
 import db.DatabaseManagerBioFichaEnfermedad;
 import db.DatabaseManagerEnfermedad;
 import db.DatabaseManagerSede;
@@ -49,12 +51,29 @@ public class AsignarSedeEmpleadoActivity extends Fragment {
         List<SpinnerBean> listaSede = null;
         listaSede = dbSede.getSpinnerPorEmpresa(session.getIdEmpresa());
 
-        ArrayAdapter<SpinnerBean> adapterEnfermedad = new ArrayAdapter<SpinnerBean>(context,android.R.layout.simple_list_item_multiple_choice,listaSede);
-        adapterEnfermedad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        lvSedes.setAdapter(adapterEnfermedad);
+        ArrayAdapter<SpinnerBean> adapterSedes = new ArrayAdapter<SpinnerBean>(context,android.R.layout.simple_list_item_multiple_choice,listaSede);
+        adapterSedes.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        lvSedes.setAdapter(adapterSedes);
+
+        String ide = session.getIdEmpleado();
+        if (!(ide.isEmpty())){
+            TraerEmpleados(ide);
+        }
 
         return view;
     }
 
+    public void TraerEmpleados(String ide){
+        List<UsuarioSedeBean> lista = dbUsuarioSede.ListarPorUsuario(ide);
+        for (UsuarioSedeBean item : lista){
+            for (int i = 0; i < lvSedes.getAdapter().getCount(); i++) {
+                String valor = lvSedes.getItemAtPosition(i).toString();
+                if (valor.equalsIgnoreCase(item.getNOM_SEDE())){
+                    lvSedes.setItemChecked(i,true);
+                    break;
+                }
+            }
+        }
+    }
 
 }

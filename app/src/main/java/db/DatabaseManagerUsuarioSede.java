@@ -8,6 +8,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import beans.BioFichaEnfermedadBean;
 import beans.RolBean;
 import beans.SpinnerBean;
 import beans.UsuarioSedeBean;
@@ -137,6 +138,21 @@ public class DatabaseManagerUsuarioSede extends DatabaseManager {
             bean.setID_ROL(c.getString(2));
         }
         return bean;
+    }
+
+    public List<UsuarioSedeBean> ListarPorUsuario(String Id) {
+        List<UsuarioSedeBean> list = new ArrayList<>();
+        String SQL = "Select e._ID, e.NOMBRE_SEDE FROM USUARIO bf INNER JOIN USUARIO_SEDE bfe ON bfe.ID_USUARIO = bf._ID INNER JOIN SEDE e ON e._ID = bfe.ID_SEDE WHERE bf._ID = " + Id;
+        Cursor c = super.getDb().rawQuery(SQL, null);
+
+        UsuarioSedeBean bean = null;
+        while (c.moveToNext()){
+            bean = new UsuarioSedeBean();
+            bean.setID_SEDE(c.getString(0));
+            bean.setNOM_SEDE(c.getString(1));
+            list.add(bean);
+        }
+        return list;
     }
 
     public List<SpinnerBean> getSpinner(){

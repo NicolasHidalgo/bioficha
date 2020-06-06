@@ -5,8 +5,17 @@ public class UsuarioSedeBean {
     private String ID_USUARIO;
     private String ID_SEDE;
     private String ID_ROL;
+    private String NOM_SEDE;
 
     public UsuarioSedeBean() {
+    }
+
+    public String getNOM_SEDE() {
+        return NOM_SEDE;
+    }
+
+    public void setNOM_SEDE(String NOM_SEDE) {
+        this.NOM_SEDE = NOM_SEDE;
     }
 
     public String getID_USUARIO() {
