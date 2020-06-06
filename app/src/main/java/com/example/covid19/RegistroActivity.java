@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -84,6 +85,8 @@ public class RegistroActivity extends Fragment {
     DatePickerDialog datePickerDialog;
     ProgressBar progressBar;
 
+    int check = 0;
+
     public RegistroActivity(){
 
     }
@@ -127,10 +130,10 @@ public class RegistroActivity extends Fragment {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                calendar.set(Calendar.YEAR, year);
-                calendar.set(Calendar.MONTH, monthOfYear);
-                calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                updateFecha();
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            updateFecha();
             }
 
         };
@@ -138,13 +141,13 @@ public class RegistroActivity extends Fragment {
         txtFechaNacimiento.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                if(hasFocus) {
-                    new DatePickerDialog(context, date, calendar
-                            .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
-                            calendar.get(Calendar.DAY_OF_MONTH)).show();
-                } else {
-                    // Hide your calender here
-                }
+            if(hasFocus) {
+                new DatePickerDialog(context, date, calendar
+                        .get(Calendar.YEAR), calendar.get(Calendar.MONTH),
+                        calendar.get(Calendar.DAY_OF_MONTH)).show();
+            } else {
+                // Hide your calender here
+            }
             }
         });
 
@@ -246,14 +249,30 @@ public class RegistroActivity extends Fragment {
 
         String ide = session.getIdFicha();
         if (!(ide.isEmpty())){
-            BloquearCampos();
+            BloquearCampos(false);
             TraerFicha(ide);
         }
+
+        spTipoDocumento.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                if(++check > 1) {
+                    LimpiarCampos();
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parentView) {
+                // your code here
+            }
+
+        });
 
         btnBuscarEmpleado.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
+                BloquearCampos(true);
                 String tipoDocumento = spTipoDocumento.getSelectedItem().toString();
                 if(!(tipoDocumento.equals("DNI"))){
                     Toast.makeText(context,"Solo puede buscar DNI", Toast.LENGTH_LONG).show();
@@ -298,6 +317,11 @@ public class RegistroActivity extends Fragment {
                         e.printStackTrace();
                     }
                     txtFechaNacimiento.setText(fecNac);
+
+                    BloquearCampos(false);
+                    spTipoDocumento.setEnabled(true);
+                    txtNumDocumento.setEnabled(true);
+                    btnBuscarEmpleado.setEnabled(true);
                     return;
                 }
 
@@ -307,24 +331,22 @@ public class RegistroActivity extends Fragment {
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (response.equals("[]")) {
+                    if (response.equals("[]") || response.equals("")) {
+                        CloseProgressBar();
+                        Toast.makeText(context, "No se encontraron datos", Toast.LENGTH_LONG).show();
+                        LimpiarCampos();
+                    }else {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            txtNombres.setText(jsonObject.getString("nombres"));
+                            txtApePaterno.setText(jsonObject.getString("apellidoPaterno"));
+                            txtApeMaterno.setText(jsonObject.getString("apellidoMaterno"));
+                        } catch (JSONException e) {
                             CloseProgressBar();
-                            Toast.makeText(context, "No se encontraron datos", Toast.LENGTH_LONG).show();
-                        }else if (response.equals("")){
-                            CloseProgressBar();
-                            Toast.makeText(context,"No se encontraron datos", Toast.LENGTH_LONG).show();
-                        }else {
-                            try {
-                                JSONObject jsonObject = new JSONObject(response);
-                                txtNombres.setText(jsonObject.getString("nombres"));
-                                txtApePaterno.setText(jsonObject.getString("apellidoPaterno"));
-                                txtApeMaterno.setText(jsonObject.getString("apellidoMaterno"));
-                            } catch (JSONException e) {
-                                CloseProgressBar();
-                                Toast.makeText(context,"Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
-                            }
-                            CloseProgressBar();
+                            Toast.makeText(context,"Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
+                        CloseProgressBar();
+                    }
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -372,17 +394,24 @@ public class RegistroActivity extends Fragment {
         layout.addView(rl, params);
     }
 
-    public void BloquearCampos(){
-        spTipoDocumento.setEnabled(false);
-        txtNumDocumento.setEnabled(false);
-        btnBuscarEmpleado.setEnabled(false);
-        spPais.setEnabled(false);
-        txtNombres.setEnabled(false);
-        txtApePaterno.setEnabled(false);
-        txtApeMaterno.setEnabled(false);
-        spGenero.setEnabled(false);
-        txtFechaNacimiento.setEnabled(false);
+    public void BloquearCampos(boolean x){
+        spTipoDocumento.setEnabled(x);
+        txtNumDocumento.setEnabled(x);
+        btnBuscarEmpleado.setEnabled(x);
+        spPais.setEnabled(x);
+        txtNombres.setEnabled(x);
+        txtApePaterno.setEnabled(x);
+        txtApeMaterno.setEnabled(x);
+        spGenero.setEnabled(x);
+        txtFechaNacimiento.setEnabled(x);
     }
+    public void LimpiarCampos(){
+        txtNombres.setText("");
+        txtApePaterno.setText("");
+        txtApeMaterno.setText("");
+        txtFechaNacimiento.setText("");
+    }
+
 
     public void TraerFicha(String ide){
         BioFichaBean bioFichaBean = null;

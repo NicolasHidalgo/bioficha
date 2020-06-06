@@ -46,7 +46,13 @@ public class RegistradorActivity extends AppCompatActivity {
         session = new Session(context);
         dbUsuario = new DatabaseManagerUsuario(context);
 
-        listaUsuario = dbUsuario.getList(session.getIdEmpresa());
+        if (session.getNomRol().equals("SUPER-ADMIN")){
+            // Solo traer a usuarios ADMIN
+            listaUsuario = dbUsuario.getListADMIN();
+        }else{
+            // Traer todos los usuarios
+            listaUsuario = dbUsuario.getList(session.getIdEmpresa());
+        }
 
         UsuarioBean user = null;
         int len = listaUsuario.size();
@@ -94,7 +100,14 @@ public class RegistradorActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
 
-        listaUsuario = dbUsuario.getList(session.getIdEmpresa());
+        if (session.getNomRol().equals("SUPER-ADMIN")){
+            // Solo traer a usuarios ADMIN
+            listaUsuario = dbUsuario.getListADMIN();
+        }else{
+            // Traer todos los usuarios
+            listaUsuario = dbUsuario.getList(session.getIdEmpresa());
+        }
+
         UsuarioBean user = null;
         int len = listaUsuario.size();
         nInfoID = new String[len];

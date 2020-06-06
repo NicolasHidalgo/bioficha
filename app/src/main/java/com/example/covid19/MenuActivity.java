@@ -146,13 +146,14 @@ public class MenuActivity extends AppCompatActivity {
         List<SpinnerBean> listaSede = null;
         if (rolBean.getNOM_ROL().equals("SUPER-ADMIN")){
             btnEmpresa.setVisibility(LinearLayout.VISIBLE);
-            btnRegistrador.setVisibility(LinearLayout.INVISIBLE);
+            btnRegistrador.setVisibility(LinearLayout.VISIBLE);
             btnSede.setVisibility(LinearLayout.INVISIBLE);
             spSede.setVisibility(View.INVISIBLE);
             btnVerFichas.setVisibility(View.INVISIBLE);
             linearLayoutSeleccione.setVisibility(View.INVISIBLE);
 
             WebServiceEmpresa();
+            WebServiceUsuarioADMIN();
 
         }else if (rolBean.getNOM_ROL().equals("ADMIN")) {
             btnEmpresa.setVisibility(LinearLayout.VISIBLE);
@@ -251,6 +252,73 @@ public class MenuActivity extends AppCompatActivity {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String, String> parametros = new HashMap<>();
                 parametros.put("consulta", QUERY);
+                return parametros;
+            }
+        };
+        requestQueue = Volley.newRequestQueue(context);
+        requestQueue.add(stringRequest);
+    }
+
+    public void WebServiceUsuarioADMIN(){
+        dbUsuario = new DatabaseManagerUsuario(context);
+        String descripcion = "XXX";
+        String ACCION = "SELECT_ADMIN";
+        String Usuario = "";
+        String Password = "";
+        String IdEmpresa = session.getIdEmpresa();
+        final String QUERY = "call SP_USUARIO('" + ACCION  + "',"+ IdEmpresa +",'" + Usuario + "','" + Password + "');";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    if (response.equals("[]") || response.equals("")){
+                        Toast.makeText(context, "No se encontraron datos SP_EMPLEADO", Toast.LENGTH_LONG).show();
+                    }else{
+                        dbUsuario.eliminarTodo();
+                        UsuarioBean bean  = null;
+                        JSONArray jsonArray = new JSONArray(response);
+                        JSONObject jsonObject = null;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            jsonObject = jsonArray.getJSONObject(i);
+                            bean = new UsuarioBean();
+                            bean.setID(jsonObject.getString("ID"));
+                            bean.setID_TIPO_DOCUMENTO(jsonObject.getString("ID_TIPO_DOCUMENTO"));
+                            bean.setNUM_DOCUMENTO(jsonObject.getString("NUM_DOCUMENTO"));
+                            bean.setCOD_PAIS(jsonObject.getString("COD_PAIS"));
+                            bean.setNOMBRES(jsonObject.getString("NOMBRES"));
+                            bean.setAPELLIDO_PATERNO(jsonObject.getString("APELLIDO_PATERNO"));
+                            bean.setAPELLIDO_MATERNO(jsonObject.getString("APELLIDO_MATERNO"));
+                            bean.setID_EMPRESA(jsonObject.getString("ID_EMPRESA"));
+                            bean.setGENERO(jsonObject.getString("GENERO"));
+                            bean.setCORREO(jsonObject.getString("CORREO"));
+                            bean.setFECHA_NACIMIENTO(jsonObject.getString("FECHA_NACIMIENTO"));
+                            bean.setNOMBRES_CONTACTO(jsonObject.getString("NOMBRES_CONTACTO"));
+                            bean.setDIRECCION_CONTACTO(jsonObject.getString("DIRECCION_CONTACTO"));
+                            bean.setTELEFONO_CONTACTO(jsonObject.getString("TELEFONO_CONTACTO"));
+                            bean.setCORREO_CONTACTO(jsonObject.getString("CORREO_CONTACTO"));
+                            bean.setUSUARIO(jsonObject.getString("USUARIO"));
+                            bean.setCONTRASENA(jsonObject.getString("CONTRASENA"));
+                            bean.setID_ROL(jsonObject.getString("ID_ROL"));
+                            bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
+                            bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
+                            bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                            dbUsuario.insertar(bean);
+                        }
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(context, "Error en el registro json EMPLEADO: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(getApplicationContext(), "Fallo el servicio de EMPLEADO: " + error.getMessage().toString() , Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> parametros = new HashMap<>();
+                parametros.put("consulta",QUERY);
                 return parametros;
             }
         };

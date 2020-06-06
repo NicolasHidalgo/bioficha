@@ -59,7 +59,7 @@ public class SintomasActivity extends Fragment {
         adapterSintoma.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         lvSintoma.setAdapter(adapterSintoma);
 
-        String ide = session.getIdEmpleado();
+        String ide = session.getIdFicha();
         if (!(ide.isEmpty())){
             TraerSintomas(ide);
         }else{

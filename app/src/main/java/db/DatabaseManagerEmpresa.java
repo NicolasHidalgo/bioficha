@@ -110,6 +110,12 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
     }
 
+    public Cursor cargarByRazonSocial(String RazonSocial) {
+        String [] columnas = new String[]
+                {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL};
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_NOM_RAZON_SOCIAL + "=?", new String[]{RazonSocial},null,null,null);
+    }
+
 
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
@@ -169,6 +175,19 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
     public EmpresaBean get(String id){
         EmpresaBean bean = null;
         Cursor c = cargarById(id);
+
+        while (c.moveToNext()){
+            bean = new EmpresaBean();
+            bean.setID(c.getString(0));
+            bean.setRUC(c.getString(1));
+            bean.setNOM_RAZON_SOCIAL(c.getString(2));
+        }
+        return bean;
+    }
+
+    public EmpresaBean getByRazonSocial(String RazonSocial){
+        EmpresaBean bean = null;
+        Cursor c = cargarByRazonSocial(RazonSocial);
 
         while (c.moveToNext()){
             bean = new EmpresaBean();
