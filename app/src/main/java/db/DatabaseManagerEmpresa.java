@@ -109,7 +109,6 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
                 {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
     }
-<<<<<<< HEAD
 
     public Cursor cargarByRazonSocial(String RazonSocial) {
         String [] columnas = new String[]
@@ -117,7 +116,6 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_NOM_RAZON_SOCIAL + "=?", new String[]{RazonSocial},null,null,null);
     }
 
-=======
     public Cursor cargarByIdObject(String id) {
         String sql = "SELECT EMP._ID, EMP.RUC, EMP.NOM_RAZON_SOCIAL, EMP.ACT_ECONOMICAS, EMP.DIRECCION, EMP.ID_DISTRITO, EMP.LATITUD, EMP.LONGITUD, EMP.TELEFONO, EMP.CORREO, EMP.CONTACTO, EMP.FEC_CREACION, EMP.FEC_ACTUALIZACION, " +
                 " EMP.FEC_ELIMINACION, PRO._ID AS ID_PROVINCIA, DEP._ID AS ID_DEPARTAMENTO FROM " + NOMBRE_TABLA + " EMP INNER JOIN DISTRITO DIS ON DIS._ID = EMP.ID_DISTRITO" +
@@ -125,14 +123,11 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         Cursor resultSet = super.getDb().rawQuery(sql, null);
         return resultSet;
     }
->>>>>>> 5cb8d5ae0e3342d47fa6e67b58dd7e0cb3b5f7ae
-
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
                 {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
     }
-
 
     @Override
     public Boolean compruebaRegistro(String id) {
@@ -219,7 +214,6 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         }
         return bean;
     }
-<<<<<<< HEAD
 
     public EmpresaBean getByRazonSocial(String RazonSocial){
         EmpresaBean bean = null;
@@ -234,8 +228,6 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         return bean;
     }
 
-=======
->>>>>>> 5cb8d5ae0e3342d47fa6e67b58dd7e0cb3b5f7ae
     public List<SpinnerBean> getSpinner(){
         List<SpinnerBean> list = new ArrayList<>();
         Cursor c = cargar();

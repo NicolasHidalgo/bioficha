@@ -57,7 +57,6 @@ public class EmpresasActivity extends AppCompatActivity {
             listaEmpresa = dbEmpresa.getList(session.getIdEmpresa());
         }
 
-
         EmpresaBean user = null;
         int len = listaEmpresa.size();
         nInfoID = new String[len];
