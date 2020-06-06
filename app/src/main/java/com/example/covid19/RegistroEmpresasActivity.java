@@ -33,13 +33,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import androidx.appcompat.app.AppCompatActivity;
+import beans.DepartamentoBean;
 import beans.EmpresaBean;
+import beans.ProvinciaBean;
 import beans.SpinnerBean;
 import db.DatabaseManagerDepartamento;
 import db.DatabaseManagerEmpresa;
 import db.DatabaseManagerProvincia;
 import db.DatabaseManagerDistrito;
 import helper.ConnectivityReceiver;
+import helper.Session;
 
 
 public class RegistroEmpresasActivity extends AppCompatActivity {
@@ -53,6 +56,7 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
     Context context;
     RequestQueue requestQueue;
     ProgressBar progressBar;
+    private Session session;
     final String URL = "https://bioficha.electocandidato.com/insert_id.php";
     DatabaseManagerDepartamento dbDepartamento;
     DatabaseManagerProvincia dbProvincia;
@@ -60,12 +64,14 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
     DatabaseManagerEmpresa dbEmpresa;
     public int id_departamento = 0;
     public int id_provincia = 0;
+    public int id_distrito = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registro_empresas);
         context = this;
+        session = new Session(context);
         btnBuscarRUC = findViewById(R.id.btnBuscarRUC);
         btnGrabar = findViewById(R.id.btnGrabar);
         txtRUC = findViewById(R.id.txtRUC);
@@ -151,6 +157,23 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
             }
         });
 
+        spDistrito.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                List<SpinnerBean> listaDistrito = dbDistrito.getListSpinner(Integer.toString(id_provincia));
+                id_distrito = listaDistrito.get(position).getID();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+        String ide = session.getIdEmpresa();
+        if (!(ide.isEmpty())){
+            TraerEmpresa(ide);
+        }
 
         btnBuscarRUC.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -201,7 +224,7 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                         .getText().toString();
                 final String pACT_ECONOMICAS = txtRubro.getText().toString();
                 final String pDIRECCION = txtDireccionFiscal.getText().toString();
-                final String pID_DISTRITO = Integer.toString(id_provincia);
+                final String pID_DISTRITO = Integer.toString(id_distrito);
                 final String pTELEFONO = txtTelefono.getText().toString();
                 final String pCORREO = txtCorreo.getText().toString();
                 final String pCONTACTO = txtContacto.getText().toString();
@@ -309,6 +332,41 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
         super.onResume();
         progressBar.setVisibility(View.INVISIBLE);
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+    }
+    public void TraerEmpresa(String ide){
+        EmpresaBean empresaBean = null;
+        empresaBean = dbEmpresa.getObject(ide);
+        txtRUC.setText(empresaBean.getRUC());
+        txtRazonSocial.setText(empresaBean.getNOM_RAZON_SOCIAL());
+        txtDireccionFiscal.setText(empresaBean.getDIRECCION());
+        txtRubro.setText(empresaBean.getACT_ECONOMICAS());
+        txtContacto.setText(empresaBean.getCONTACTO());
+        txtTelefono.setText(empresaBean.getTELEFONO());
+        DepartamentoBean departamentoBean = dbDepartamento.get(empresaBean.getID_DEPARTAMENTO());
+        int pos = 0;
+        for (int i=0;i<spDepartamento.getCount();i++){
+            if (spDepartamento.getItemAtPosition(i).toString().equalsIgnoreCase(departamentoBean.getNOM_DEPARTAMENTO())){
+                pos = i;
+                break;
+            }
+        }
+        spDepartamento.setSelection(pos);
+        List<SpinnerBean> listaProvincia = dbProvincia.getListSpinner(empresaBean.getID_DEPARTAMENTO());
+        ArrayAdapter adapterProvincia = new ArrayAdapter(context, R.layout.custom_spinner, listaProvincia);
+        adapterProvincia.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spProvincia.setAdapter(adapterProvincia);
+
+
+        ProvinciaBean provinciaBean = dbProvincia.get(empresaBean.getID_PROVINCIA());
+        int pos1 = 0;
+        for (int j=0;j<spProvincia.getCount();j++){
+            if (spProvincia.getItemAtPosition(j).toString().equalsIgnoreCase(provinciaBean.getNOM_PROVINCIA())){
+                pos1 = j;
+                break;
+            }
+        }
+        spProvincia.setSelection(pos1);
+
     }
 
 

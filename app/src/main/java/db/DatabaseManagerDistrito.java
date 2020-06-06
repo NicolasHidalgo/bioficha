@@ -141,6 +141,8 @@ public class DatabaseManagerDistrito extends DatabaseManager {
             c = cargarPorTipo(tipo);
 
         SpinnerBean bean = null;
+        bean = new SpinnerBean(-1,"Seleccione");
+        list.add(bean);
         while (c.moveToNext()){
             bean = new SpinnerBean();
             bean.setID(c.getInt(0));
