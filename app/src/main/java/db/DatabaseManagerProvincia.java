@@ -160,8 +160,7 @@ public class DatabaseManagerProvincia extends DatabaseManager {
         while (c.moveToNext()){
             bean = new ProvinciaBean();
             bean.setID(c.getString(0));
-            bean.setID_DEPARTAMENTO(c.getString(1));
-            bean.setNOM_PROVINCIA(c.getString(2));
+            bean.setNOM_PROVINCIA(c.getString(1));
         }
         return bean;
     }

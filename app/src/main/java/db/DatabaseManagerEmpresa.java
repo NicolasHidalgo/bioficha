@@ -28,7 +28,7 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
     public static final String CN_CONTACTO = "CONTACTO";
 
     public static final String CN_FEC_CREACION = "FEC_CREACION";
-    public static final String CN_FEC_ACTUALIZCION = "FEC_ACTUALIZCION";
+    public static final String CN_FEC_ACTUALIZACION = "FEC_ACTUALIZACION";
     public static final String CN_FEC_ELIMINACION = "FEC_ELIMINACION";
 
     public static final String CREATE_TABLE =  "create table " + NOMBRE_TABLA + " ("
@@ -44,7 +44,7 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
             + CN_CORREO + " text NULL,"
             + CN_CONTACTO + " text NULL,"
             + CN_FEC_CREACION + " datetime NULL,"
-            + CN_FEC_ACTUALIZCION + " datetime NULL,"
+            + CN_FEC_ACTUALIZACION + " datetime NULL,"
             + CN_FEC_ELIMINACION + " datetime NULL"
             + ");";
 
@@ -70,7 +70,7 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         valores.put(CN_CORREO,obj.getCORREO());
         valores.put(CN_CONTACTO,obj.getCONTACTO());
         valores.put(CN_FEC_CREACION,obj.getFEC_CREACION());
-        valores.put(CN_FEC_ACTUALIZCION,obj.getFEC_ACTUALIZACION());
+        valores.put(CN_FEC_ACTUALIZACION,obj.getFEC_ACTUALIZACION());
         valores.put(CN_FEC_ELIMINACION,obj.getFEC_ELIMINACION());
         return valores;
     }
@@ -109,7 +109,13 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
                 {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
     }
-
+    public Cursor cargarByIdObject(String id) {
+        String sql = "SELECT EMP._ID, EMP.RUC, EMP.NOM_RAZON_SOCIAL, EMP.ACT_ECONOMICAS, EMP.DIRECCION, EMP.ID_DISTRITO, EMP.LATITUD, EMP.LONGITUD, EMP.TELEFONO, EMP.CORREO, EMP.CONTACTO, EMP.FEC_CREACION, EMP.FEC_ACTUALIZACION, " +
+                " EMP.FEC_ELIMINACION, PRO._ID AS ID_PROVINCIA, DEP._ID AS ID_DEPARTAMENTO FROM " + NOMBRE_TABLA + " EMP INNER JOIN DISTRITO DIS ON DIS._ID = EMP.ID_DISTRITO" +
+                " INNER JOIN PROVINCIA PRO ON PRO._ID = DIS.ID_PROVINCIA INNER JOIN DEPARTAMENTO DEP ON DEP._ID = PRO.ID_DEPARTAMENTO WHERE EMP._ID  = " + id;
+        Cursor resultSet = super.getDb().rawQuery(sql, null);
+        return resultSet;
+    }
 
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
@@ -165,6 +171,31 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         return list;
     }
 
+    public EmpresaBean getObject(String id){
+        EmpresaBean bean = null;
+        Cursor c = cargarByIdObject(id);
+        while (c.moveToNext()){
+            bean = new EmpresaBean();
+            bean.setID(c.getString(0));
+            bean.setRUC(c.getString(1));
+            bean.setNOM_RAZON_SOCIAL(c.getString(2));
+            bean.setACT_ECONOMICAS(c.getString(3));
+            bean.setDIRECCION(c.getString(4));
+            bean.setID_DISTRITO(c.getString(5));
+            bean.setLATITUD(c.getString(6));
+            bean.setLONGITUD(c.getString(7));
+            bean.setTELEFONO(c.getString(8));
+            bean.setCORREO(c.getString(9));
+            bean.setFEC_CREACION(c.getString(10));
+            bean.setFEC_ACTUALIZACION(c.getString(11));
+            bean.setFEC_ELIMINACION(c.getString(12));
+            bean.setFEC_CREACION(c.getString(13));
+            bean.setID_PROVINCIA(c.getString(14));
+            bean.setID_DEPARTAMENTO(c.getString(15));
+        }
+        return bean;
+    }
+
     @Override
     public EmpresaBean get(String id){
         EmpresaBean bean = null;
@@ -178,7 +209,6 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         }
         return bean;
     }
-
     public List<SpinnerBean> getSpinner(){
         List<SpinnerBean> list = new ArrayList<>();
         Cursor c = cargar();

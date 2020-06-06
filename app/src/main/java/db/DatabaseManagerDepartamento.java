@@ -143,7 +143,8 @@ public class DatabaseManagerDepartamento extends DatabaseManager {
     public List<SpinnerBean> getSpinner(){
         List<SpinnerBean> list = new ArrayList<>();
         Cursor c = cargar();
-        SpinnerBean bean = new SpinnerBean(-1,"Seleccione");
+        SpinnerBean bean = null;
+        bean = new SpinnerBean(-1,"Seleccione");
         list.add(bean);
         while (c.moveToNext()){
             bean = new SpinnerBean(c.getInt(0),c.getString(1));
