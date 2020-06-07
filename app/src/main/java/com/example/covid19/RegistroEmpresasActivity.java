@@ -412,7 +412,7 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
         ArrayAdapter adapterProvincia = new ArrayAdapter(context, R.layout.custom_spinner, listaProvincia);
         adapterProvincia.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spProvincia.setAdapter(adapterProvincia);
-
+        id_departamento = Integer.parseInt(empresaBean.getID_DEPARTAMENTO());
         ProvinciaBean provinciaBean = dbProvincia.get(empresaBean.getID_PROVINCIA());
         int pos1 = 0;
         for (int j=0;j<spProvincia.getCount();j++){
@@ -427,6 +427,7 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
         ArrayAdapter adapterDistrito = new ArrayAdapter(context, R.layout.custom_spinner, listaDistrito);
         adapterDistrito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spDistrito.setAdapter(adapterDistrito);
+        id_provincia = Integer.parseInt(empresaBean.getID_PROVINCIA());
         DistritoBean distritoBean = dbDistrito.get(empresaBean.getID_DISTRITO());
         int pos2 = 0;
         for (int k=0;k<spDistrito.getCount();k++){
@@ -435,10 +436,8 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                 break;
             }
         }
-
         spDistrito.setSelection(pos2);
         spDistrito.setEnabled(true);
-
     }
 
 }

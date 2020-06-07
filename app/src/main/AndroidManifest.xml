@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".ViewPageRegisterSede"></activity>
+        <activity android:name=".RegistroGeolocalizacionActivity"></activity>
+        <activity android:name=".ViewPageRegisterSede" />
         <activity android:name=".AsignarSedeEmpleadoActivity" />
         <activity android:name=".ViewPageRegisterEmpleado" />
         <activity android:name=".RegistroRegistradorActivity" />
@@ -49,10 +50,10 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
     </application>
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>

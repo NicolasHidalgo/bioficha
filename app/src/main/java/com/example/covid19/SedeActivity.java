@@ -65,7 +65,7 @@ public class SedeActivity extends AppCompatActivity {
         btnAgregarSede.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent dsp = new Intent(SedeActivity.this, RegistroSedesActivity.class);
+                Intent dsp = new Intent(SedeActivity.this, ViewPageRegisterSede.class);
                 session.setIdSede("");
                 startActivity(dsp);
             }
@@ -73,7 +73,7 @@ public class SedeActivity extends AppCompatActivity {
         lvSede.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent dsp = new Intent(SedeActivity.this, RegistroSedesActivity.class);
+                Intent dsp = new Intent(SedeActivity.this, ViewPageRegisterSede.class);
                 String ide =(String) ((TextView) view.findViewById(R.id.txtInfoSedeId)).getText();
                 session.setIdEmpleado(ide);
                 startActivity(dsp);

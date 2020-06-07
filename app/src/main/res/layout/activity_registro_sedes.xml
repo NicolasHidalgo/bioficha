@@ -9,51 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="100dp"
-            android:orientation="vertical"
-            android:background="@color/menu_red"
-            android:padding="5dp">
-            <ImageView
-                android:layout_width="100dp"
-                android:layout_height="50dp"
-                android:src="@drawable/logo_white"
-                android:layout_marginLeft="20dp"/>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Cumplimiento de los protocolos de Bioseguridad, RM-239-2020-MINSA y jurisdicción distrital"
-                android:textColor="@color/colorPrimary"
-                android:textSize="15sp"
-                android:textStyle="bold"
-                android:layout_marginLeft="20dp"/>
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:elevation="1dp"
-            android:background="#fff"
-            android:orientation="vertical">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="SEDES"
-                android:textStyle="bold"
-                android:textSize="23sp"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:layout_marginLeft="15dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Añade una sede"
-                android:textStyle=""
-                android:textSize="18sp"
-                android:layout_marginLeft="15dp"
-                android:textColor="@color/colorPrimaryDark"/>
 
-        </LinearLayout>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -249,7 +205,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="60dp"
                     android:orientation="horizontal">
                     <TextView
                         android:layout_width="120dp"
@@ -275,13 +230,5 @@
                 </LinearLayout>
             </LinearLayout>
         </ScrollView>
-        <Button
-            android:id="@+id/btnGrabar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="-60dp"
-            android:background="#38b6ff"
-            android:text="Grabar"
-            android:textColor="#fff"></Button>
     </LinearLayout>
 </LinearLayout>
