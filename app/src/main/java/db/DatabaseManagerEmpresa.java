@@ -99,7 +99,7 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
     @Override
     public Cursor cargar() {
         String [] columnas = new String[]
-                {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL};
+                {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL,CN_FEC_CREACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,null);
     }
 
@@ -125,7 +125,7 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
     }
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
-                {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL};
+                {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL,CN_FEC_CREACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
     }
 
@@ -170,7 +170,7 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
             bean.setID(c.getString(0));
             bean.setRUC(c.getString(1));
             bean.setNOM_RAZON_SOCIAL(c.getString(2));
-
+            bean.setFEC_CREACION(c.getString(3));
             list.add(bean);
         }
         return list;

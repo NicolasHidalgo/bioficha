@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -67,14 +67,28 @@
 
         </LinearLayout>
     </LinearLayout>
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
+    <com.getbase.floatingactionbutton.FloatingActionsMenu
+        android:id="@+id/floating"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/btnAgregarEmpresa"
-        android:layout_gravity="end|bottom"
-        android:layout_margin="20dp"
-        android:backgroundTint="#38b6ff"
-        android:src="@drawable/ic_add"
-        app:fabSize="auto">
-    </com.google.android.material.floatingactionbutton.FloatingActionButton>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        app:fab_addButtonColorNormal="@color/menu_red">
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnAgregarEmpresa"
+            app:fab_colorNormal="@color/reg_stat"
+            app:fab_icon="@drawable/ic_add"
+            app:fab_size="mini" />
+        <com.getbase.floatingactionbutton.FloatingActionButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnAgregarRegistrador2"
+            app:fab_icon="@drawable/ic_file_download"
+            app:fab_size="mini"
+            app:fab_colorNormal="@color/reg_stat" />
+
+    </com.getbase.floatingactionbutton.FloatingActionsMenu>
+</RelativeLayout>

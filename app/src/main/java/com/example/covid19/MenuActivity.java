@@ -1,6 +1,7 @@
 package com.example.covid19;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import beans.EmpresaBean;
 import beans.RolBean;
 import beans.SedeBean;
@@ -69,12 +70,15 @@ public class MenuActivity extends AppCompatActivity {
     public String ACCION = "SELECT";
     public String QUERY = "";
     RequestQueue requestQueue;
-
+    SwipeRefreshLayout swipeRefreshLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu);
         //spSede = (Spinner) findViewById(R.id.spSede);
+        swipeRefreshLayout = findViewById(R.id.swiperefresh);
+        int color1 = getResources().getColor(R.color.menu_red);
+        swipeRefreshLayout.setColorSchemeColors(color1);
         btnVerFichas = findViewById(R.id.btnVerFichas);
 
         btnEmpresa = findViewById(R.id.btnEmpresa);

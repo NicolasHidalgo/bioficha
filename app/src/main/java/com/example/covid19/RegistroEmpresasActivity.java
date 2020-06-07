@@ -244,11 +244,34 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                 final String pCONTACTO = txtContacto.getText().toString();
                 final String pLATITUD = "0";
                 final String pLONGITUD = "0";
+
+                if(pRUC.equals("")){
+                    Toast.makeText(context, "Complete el campo RUC", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(pNOM_RAZON_SOCIAL.equals("")){
+                    Toast.makeText(context, "Complete el campo Razón Social", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(pACT_ECONOMICAS.equals("")){
+                    Toast.makeText(context, "Complete el campo Rubro", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(pDIRECCION.equals("")){
+                    Toast.makeText(context, "Complete el campo Dirección Fiscal", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                DistritoBean distritoBean = dbDistrito.getByName(pID_DISTRITO);
+                if(pID_DISTRITO.equals("Seleccione")){
+                    Toast.makeText(context, "Seleccione un distrito", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                final String id_distrito = distritoBean.getID();
                 String pAccion = "INSERT";
                 String pId = "0";
                 final String ide = session.getIdEmpresa();
                 if(!(ide.isEmpty())){
-                    BloquearCampos(true);
+                    BloquearCampos(false);
                     pAccion = "UPDATE";
                     pId = ide;
                 }
@@ -257,8 +280,6 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                     return;
                 }
                 OpenProgressBar();
-                DistritoBean distritoBean = dbDistrito.getByName(pID_DISTRITO);
-                final String id_distrito = distritoBean.getID();
                 String Params = "";
                 Params = Params + "'" + pAccion + "',";
                 Params = Params + pId + ",";
@@ -387,6 +408,7 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
 
     public void BloquearCampos(boolean x){
         txtRUC.setEnabled(x);
+
     }
 
     public void TraerEmpresa(String ide){
@@ -398,6 +420,7 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
         txtRubro.setText(empresaBean.getACT_ECONOMICAS());
         txtContacto.setText(empresaBean.getCONTACTO());
         txtTelefono.setText(empresaBean.getTELEFONO());
+        txtCorreo.setText(empresaBean.getCORREO());
         DepartamentoBean departamentoBean = dbDepartamento.get(empresaBean.getID_DEPARTAMENTO());
         int pos = 0;
         for (int i=0;i<spDepartamento.getCount();i++){
