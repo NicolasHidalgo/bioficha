@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Map;
 import androidx.appcompat.app.AppCompatActivity;
 import beans.DepartamentoBean;
+import beans.DistritoBean;
 import beans.EmpresaBean;
 import beans.ProvinciaBean;
 import beans.SpinnerBean;
@@ -181,10 +182,6 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
             }
         });
 
-        String ide = session.getIdEmpresa();
-        if (!(ide.isEmpty())){
-            TraerEmpresa(ide);
-        }
 
         btnBuscarRUC.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -227,25 +224,57 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                 requestQueue.add(stringRequest);
             }
         });
+
+        String ide = session.getIdEmpresa();
+        if (!(ide.isEmpty())){
+            BloquearCampos(false);
+            TraerEmpresa(ide);
+        }
+
         btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String pRUC = txtRUC.getText().toString();
-                final String pNOM_RAZON_SOCIAL = txtRazonSocial
-                        .getText().toString();
+                final String pNOM_RAZON_SOCIAL = txtRazonSocial.getText().toString();
                 final String pACT_ECONOMICAS = txtRubro.getText().toString();
                 final String pDIRECCION = txtDireccionFiscal.getText().toString();
-                final String pID_DISTRITO = Integer.toString(id_distrito);
+                final String pID_DISTRITO = spDistrito.getSelectedItem().toString();
                 final String pTELEFONO = txtTelefono.getText().toString();
                 final String pCORREO = txtCorreo.getText().toString();
                 final String pCONTACTO = txtContacto.getText().toString();
-
+                final String pLATITUD = "0";
+                final String pLONGITUD = "0";
+                String pAccion = "INSERT";
+                String pId = "0";
+                final String ide = session.getIdEmpresa();
+                if(!(ide.isEmpty())){
+                    BloquearCampos(true);
+                    pAccion = "UPDATE";
+                    pId = ide;
+                }
                 if (!(ConnectivityReceiver.isConnected(context))) {
                     Toast.makeText(context, "Necesitas contectarte a internet para continuar", Toast.LENGTH_LONG).show();
                     return;
                 }
                 OpenProgressBar();
-                final String QUERY = "call SP_UPDATE_EMPRESA('INSERT',NULL,'" + pRUC + "','" + pNOM_RAZON_SOCIAL + "','" + pACT_ECONOMICAS + "','" + pDIRECCION + "'," + pID_DISTRITO + ",NULL,NULL,'" + pTELEFONO + "','" + pCORREO + "','" + pCONTACTO + "',NULL,NULL,NULL );";
+                DistritoBean distritoBean = dbDistrito.getByName(pID_DISTRITO);
+                final String id_distrito = distritoBean.getID();
+                String Params = "";
+                Params = Params + "'" + pAccion + "',";
+                Params = Params + pId + ",";
+                Params = Params + "'" + pRUC + "',";
+                Params = Params + "'" + pNOM_RAZON_SOCIAL + "',";
+                Params = Params + "'" + pACT_ECONOMICAS + "',";
+                Params = Params + "'" + pDIRECCION + "',";
+                Params = Params + "'" + id_distrito + "',";
+                Params = Params + "'" + pLATITUD + "',";
+                Params = Params + "'" + pLONGITUD + "',";
+                Params = Params + "'" + pTELEFONO + "',";
+                Params = Params + "'" + pCORREO + "',";
+                Params = Params + "'" + pCONTACTO + "'";
+                final String QUERY = "call SP_UPDATE_EMPRESA(" + Params + ");";
+                final String finalAccion = pAccion;
+                final String finalId = pId;
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -278,20 +307,30 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                                 bioFichaEmpresaBean.setNOM_RAZON_SOCIAL(pNOM_RAZON_SOCIAL);
                                 bioFichaEmpresaBean.setACT_ECONOMICAS(pACT_ECONOMICAS);
                                 bioFichaEmpresaBean.setDIRECCION(pDIRECCION);
-                                bioFichaEmpresaBean.setID_DISTRITO(pID_DISTRITO);
+                                bioFichaEmpresaBean.setID_DISTRITO(id_distrito);
                                 bioFichaEmpresaBean.setTELEFONO(pTELEFONO);
                                 bioFichaEmpresaBean.setCORREO(pCORREO);
                                 bioFichaEmpresaBean.setCONTACTO(pCONTACTO);
                                 Date currentTime = Calendar.getInstance().getTime();
                                 String fecha = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new java.util.Date());
                                 bioFichaEmpresaBean.setFEC_CREACION(fecha);
-                                dbEmpresa.insertar(bioFichaEmpresaBean);
+                                if(finalAccion.equals("UPDATE")){
+                                    bioFichaEmpresaBean.setFEC_ACTUALIZACION(fecha);
+                                    dbEmpresa.actualizar(bioFichaEmpresaBean);
+                                }else{
+                                    dbEmpresa.insertar(bioFichaEmpresaBean);
+                                }
+
                             } catch (JSONException e) {
                                 CloseProgressBar();
                                 Toast.makeText(context,"Error:" + e.getMessage(),Toast.LENGTH_LONG).show();
                             }
                         CloseProgressBar();
-                        Toast.makeText(context,"Registro exitoso",Toast.LENGTH_LONG).show();
+                        if(finalAccion.equals("UPDATE")) {
+                            Toast.makeText(context, "Los datos han sido actualizados con éxito", Toast.LENGTH_LONG).show();
+                        }else{
+                            Toast.makeText(context, "Registro exitoso", Toast.LENGTH_LONG).show();
+                        }
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -342,8 +381,14 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         progressBar.setVisibility(View.INVISIBLE);
+
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
+
+    public void BloquearCampos(boolean x){
+        txtRUC.setEnabled(x);
+    }
+
     public void TraerEmpresa(String ide){
         EmpresaBean empresaBean = null;
         empresaBean = dbEmpresa.getObject(ide);
@@ -377,9 +422,24 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
             }
         }
         spProvincia.setSelection(pos1);
+        spProvincia.setEnabled(true);
+        List<SpinnerBean> listaDistrito = dbDistrito.getListSpinner(empresaBean.getID_PROVINCIA());
+        ArrayAdapter adapterDistrito = new ArrayAdapter(context, R.layout.custom_spinner, listaDistrito);
+        adapterDistrito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spDistrito.setAdapter(adapterDistrito);
+        DistritoBean distritoBean = dbDistrito.get(empresaBean.getID_DISTRITO());
+        int pos2 = 0;
+        for (int k=0;k<spDistrito.getCount();k++){
+            if (spDistrito.getItemAtPosition(k).toString().equalsIgnoreCase(distritoBean.getNOM_DISTRITO())){
+                pos2 = k;
+                break;
+            }
+        }
+
+        spDistrito.setSelection(pos2);
+        spDistrito.setEnabled(true);
 
     }
-
 
 }
 

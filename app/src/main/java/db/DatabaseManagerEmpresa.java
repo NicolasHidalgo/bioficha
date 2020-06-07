@@ -191,10 +191,10 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
             bean.setLONGITUD(c.getString(7));
             bean.setTELEFONO(c.getString(8));
             bean.setCORREO(c.getString(9));
-            bean.setFEC_CREACION(c.getString(10));
-            bean.setFEC_ACTUALIZACION(c.getString(11));
-            bean.setFEC_ELIMINACION(c.getString(12));
-            bean.setFEC_CREACION(c.getString(13));
+            bean.setCONTACTO(c.getString(10));
+            bean.setFEC_CREACION(c.getString(11));
+            bean.setFEC_ACTUALIZACION(c.getString(12));
+            bean.setFEC_ELIMINACION(c.getString(13));
             bean.setID_PROVINCIA(c.getString(14));
             bean.setID_DEPARTAMENTO(c.getString(15));
         }

@@ -83,6 +83,11 @@ public class DatabaseManagerDistrito extends DatabaseManager {
                 {CN_ID,CN_NOM_DISTRITO};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_PROVINCIA+ " = ?",new String[] { tipo },null,null,null);
     }
+    public Cursor cargarPorTipoByName(String tipo) {
+        String [] columnas = new String[]
+                {CN_ID,CN_NOM_DISTRITO};
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_NOM_DISTRITO+ " = ?",new String[] { tipo },null,null,null);
+    }
 
 
     @Override
@@ -160,12 +165,21 @@ public class DatabaseManagerDistrito extends DatabaseManager {
         while (c.moveToNext()){
             bean = new DistritoBean();
             bean.setID(c.getString(0));
-            bean.setID_PROVINCIA(c.getString(1));
-            bean.setNOM_DISTRITO(c.getString(2));
+            bean.setNOM_DISTRITO(c.getString(1));
         }
         return bean;
     }
+    public DistritoBean getByName(String name){
+        DistritoBean bean = null;
+        Cursor c = cargarPorTipoByName(name);
 
+        while (c.moveToNext()){
+            bean = new DistritoBean();
+            bean.setID(c.getString(0));
+            bean.setNOM_DISTRITO(c.getString(1));
+        }
+        return bean;
+    }
     public List<SpinnerBean> getSpinner(){
         List<SpinnerBean> list = new ArrayList<>();
         Cursor c = cargar();
