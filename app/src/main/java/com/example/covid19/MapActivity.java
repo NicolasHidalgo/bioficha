@@ -61,6 +61,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 // Build an AlertDialog
+                if(latLngsList.size() != 4)  { Toast.makeText(context, "Primero debe dibujar 4 puntos", Toast.LENGTH_SHORT).show(); return; }
                 AlertDialog.Builder builder = new AlertDialog.Builder(MapActivity.this);
 
                 // Set a title for alert dialog
@@ -124,7 +125,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(latLngsList.size() != 4)  {Toast.makeText(context, "Primero debe dibujar 4 los puntos", Toast.LENGTH_SHORT).show(); checkBox.setChecked(false); return;  }
+                if(latLngsList.size() != 4)  {Toast.makeText(context, "Primero debe dibujar 4 puntos", Toast.LENGTH_SHORT).show(); checkBox.setChecked(false); return; }
                     if (isChecked) {
                         if (polygon == null) return;
                         polygon.setFillColor(Color.RED);
