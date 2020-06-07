@@ -1,4 +1,5 @@
 package com.example.covid19;
+import android.os.Bundle;
 
 import android.app.Activity;
 import android.content.Context;
@@ -36,7 +37,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
