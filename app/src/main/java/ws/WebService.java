@@ -1,6 +1,7 @@
 package ws;
 
 import android.content.Context;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -15,6 +16,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +24,7 @@ import beans.DepartamentoBean;
 import beans.DistritoBean;
 import beans.EmpresaBean;
 import beans.EnfermedadBean;
+import beans.PaisBean;
 import beans.ProvinciaBean;
 import beans.RolBean;
 import beans.SedeBean;
@@ -34,6 +37,7 @@ import db.DatabaseManagerDepartamento;
 import db.DatabaseManagerDistrito;
 import db.DatabaseManagerEmpresa;
 import db.DatabaseManagerEnfermedad;
+import db.DatabaseManagerPais;
 import db.DatabaseManagerProvincia;
 import db.DatabaseManagerRol;
 import db.DatabaseManagerSede;
@@ -64,6 +68,7 @@ public class WebService  {
     DatabaseManagerUsuario dbUsuario;
     DatabaseManagerUsuarioSede dbUsuarioSede;
     DatabaseManagerSedePoligono dbSedePoligono;
+    DatabaseManagerPais dbPais;
 
     RequestQueue requestQueue;
     JSONArray jsonArray;
@@ -74,14 +79,60 @@ public class WebService  {
         requestQueue = Volley.newRequestQueue(context);
     }
 
-    public void WebService(){
+    public void WebServicePais(){
+        dbPais = new DatabaseManagerPais(context);
+        final String QUERY = "call SP_PAIS('" + ACCION + "');";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("[]") || response.equals("") || response.isEmpty()){
+                    Toast.makeText(context, "No se encontraron datos WebServicePais", Toast.LENGTH_LONG).show();
+                }else{
+                    dbPais.eliminarTodo();
+                    try {
+                        PaisBean bean = null;
+                        JSONArray jsonArray = new JSONArray(response);
+                        JSONObject jsonObject = null;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            jsonObject = jsonArray.getJSONObject(i);
+                            bean = new PaisBean();
+                            bean.setCOD(jsonObject.getString("COD"));
+                            bean.setNOMBRE(jsonObject.getString("NOMBRE"));
+                            bean.setORDEN(jsonObject.getString("ORDEN"));
+                            dbPais.insertar(bean);
+                        }
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "Error servicio WebServicePais: " + error.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("consulta", QUERY);
+                return parametros;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
+
+    public void WebServiceEnfermedad(){
         dbEnfermedad = new DatabaseManagerEnfermedad(context);
-        if (!(dbEnfermedad.verificarRegistros())) {
-            String descripcion = "XXX";
-            QUERY = "call SP_ENFERMEDAD('" + ACCION + "','" + descripcion + "');";
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
+        String descripcion = "XXX";
+        final String QUERY = "call SP_ENFERMEDAD('" + ACCION + "','" + descripcion + "');";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("[]") || response.equals("")){
+                    Toast.makeText(context, "No se encontraron datos WebServiceEnfermedad", Toast.LENGTH_LONG).show();
+                }else{
                     dbEnfermedad.eliminarTodo();
                     try {
                         EnfermedadBean bean = null;
@@ -91,43 +142,50 @@ public class WebService  {
                             jsonObject = jsonArray.getJSONObject(i);
                             bean = new EnfermedadBean();
                             bean.setID(jsonObject.getString("ID"));
-                            bean.setDESCRIPCION(jsonObject.getString("DESCRIPCION"));
+                            String encodedWithISO88591 = jsonObject.getString("DESCRIPCION");
+                            String decodedToUTF8 = "";
+
+                            try{
+                                decodedToUTF8 = new String(encodedWithISO88591.getBytes("ISO-8859-1"), "UTF-8");
+                            }
+                            catch(UnsupportedEncodingException e){
+                                e.printStackTrace();
+                            }
+                            bean.setDESCRIPCION(decodedToUTF8);
                             dbEnfermedad.insertar(bean);
                         }
-                        WebServiceRol();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    WebServiceRol();
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    RESPUESTA = error.toString();
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> parametros = new HashMap<>();
-                    parametros.put("consulta", QUERY);
-                    return parametros;
-                }
-            };
-            requestQueue.add(stringRequest);
-        }else {
-            WebServiceRol();
-        }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "ERROR WebServiceEnfermedad " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("consulta", QUERY);
+                return parametros;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
 
     public void WebServiceRol(){
         dbRol = new DatabaseManagerRol(context);
-        if (!(dbRol.verificarRegistros())) {
-            String descripcion = "XXX";
-            QUERY = "call SP_ROL('" + ACCION + "','" + descripcion + "');";
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
+        String descripcion = "XXX";
+        final String QUERY = "call SP_ROL('" + ACCION + "','" + descripcion + "');";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("[]") || response.equals("")){
+                    Toast.makeText(context, "No se encontraron datos WebServiceRol", Toast.LENGTH_LONG).show();
+                }else{
                     dbRol.eliminarTodo();
                     try {
                         RolBean bean = null;
@@ -143,35 +201,35 @@ public class WebService  {
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    WebServiceSintoma();
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    RESPUESTA = error.toString();
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> parametros = new HashMap<>();
-                    parametros.put("consulta", QUERY);
-                    return parametros;
-                }
-            };
-            requestQueue.add(stringRequest);
-        }else{
-            WebServiceSintoma();
-        }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "ERROR WebServiceRol " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("consulta", QUERY);
+                return parametros;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     public void WebServiceSintoma(){
         dbSintoma = new DatabaseManagerSintoma(context);
-        if (!(dbSintoma.verificarRegistros())) {
-            String descripcion = "XXX";
-            QUERY = "call SP_SINTOMA('" + ACCION + "','" + descripcion + "');";
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
+        String descripcion = "XXX";
+        final String QUERY = "call SP_SINTOMA('" + ACCION + "','" + descripcion + "');";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("[]") || response.equals("")){
+                    Toast.makeText(context, "No se encontraron datos WebServiceSintoma", Toast.LENGTH_LONG).show();
+                }else{
                     dbSintoma.eliminarTodo();
                     try {
                         SintomaBean bean = null;
@@ -181,31 +239,38 @@ public class WebService  {
                             jsonObject = jsonArray.getJSONObject(i);
                             bean = new SintomaBean();
                             bean.setID(jsonObject.getString("ID"));
-                            bean.setDESCRIPCION(jsonObject.getString("DESCRIPCION"));
+                            String encodedWithISO88591 = jsonObject.getString("DESCRIPCION");
+                            String decodedToUTF8 = "";
+
+                            try{
+                                decodedToUTF8 = new String(encodedWithISO88591.getBytes("ISO-8859-1"), "UTF-8");
+                            }
+                            catch(UnsupportedEncodingException e){
+                                e.printStackTrace();
+                            }
+                            bean.setDESCRIPCION(decodedToUTF8);
                             dbSintoma.insertar(bean);
                         }
-                        WebServiceDepartamento();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    RESPUESTA = error.toString();
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> parametros = new HashMap<>();
-                    parametros.put("consulta", QUERY);
-                    return parametros;
-                }
-            };
-            requestQueue.add(stringRequest);
-        }else{
-            WebServiceDepartamento();
-        }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "ERROR WebServiceSintoma " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("consulta", QUERY);
+                return parametros;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     public void WebServiceDepartamento(){
@@ -343,11 +408,13 @@ public class WebService  {
 
     public void WebServiceTipoDocumento(){
         dbTipoDocumento = new DatabaseManagerTipoDocumento(context);
-        if (!(dbTipoDocumento.verificarRegistros())) {
-            QUERY = "call SP_TIPO_DOCUMENTO('" + ACCION + "');";
-            StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
+        final String QUERY = "call SP_TIPO_DOCUMENTO('" + ACCION + "');";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                if (response.equals("[]") || response.equals("")){
+                    Toast.makeText(context, "No se encontraron datos WebServiceTipoDocumento", Toast.LENGTH_LONG).show();
+                }else{
                     dbTipoDocumento.eliminarTodo();
                     try {
                         TipoDocumentoBean bean = null;
@@ -360,28 +427,26 @@ public class WebService  {
                             bean.setNOM_DOCUMENTO(jsonObject.getString("NOM_DOCUMENTO"));
                             dbTipoDocumento.insertar(bean);
                         }
-                        WebServiceEmpresa();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-            }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    RESPUESTA = error.toString();
-                }
-            }) {
-                @Override
-                protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> parametros = new HashMap<>();
-                    parametros.put("consulta", QUERY);
-                    return parametros;
-                }
-            };
-            requestQueue.add(stringRequest);
-        }else{
-            WebServiceEmpresa();
-        }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(context, "ERROR WebServiceTipoDocumento " + error.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> parametros = new HashMap<>();
+                parametros.put("consulta", QUERY);
+                return parametros;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
     public void WebServiceEmpresa(){

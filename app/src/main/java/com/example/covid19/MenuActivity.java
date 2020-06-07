@@ -52,7 +52,7 @@ import java.util.Map;
 
 public class MenuActivity extends AppCompatActivity {
     LinearLayout btnEmpresa, btnRegistrador, btnSede;
-    Button btnVerFichas;
+    Button btnVerFichas, btnSincronizar;
     TextView lblNomUsuario, lblRol;
     Spinner spSede;
     Context context;
@@ -77,6 +77,7 @@ public class MenuActivity extends AppCompatActivity {
         setContentView(R.layout.activity_menu);
         //spSede = (Spinner) findViewById(R.id.spSede);
         btnVerFichas = findViewById(R.id.btnVerFichas);
+        btnSincronizar = findViewById(R.id.btnSincronizar);
 
         btnEmpresa = findViewById(R.id.btnEmpresa);
         btnRegistrador = findViewById(R.id.btnRegistrador);
@@ -108,10 +109,34 @@ public class MenuActivity extends AppCompatActivity {
                         startActivity(dsp);
                     }
                 });
+        btnSincronizar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+;
+                if(!(ConnectivityReceiver.isConnected(context))){
+                    Toast.makeText(context, "Necesita contectarte a internet para continuar", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                Toast.makeText(context, "Sincronizando...", Toast.LENGTH_SHORT).show();
+                WebService web = new WebService(context);
+                web.WebServiceRol();
+                web.WebServiceEnfermedad();
+                web.WebServiceSintoma();
+                web.WebServiceTipoDocumento();
+                web.WebServicePais();
+            }
+        });
         btnVerFichas.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String ItemSede = spSede.getSelectedItem().toString();
+
+                if (ItemSede.isEmpty() || ItemSede == null){
+                    Toast.makeText(context, "Usted no tiene sedes asignadas", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 SedeBean sedeBean = dbSede.getByName(ItemSede);
                 EmpresaBean empresaBean = dbEmpresa.get(session.getIdEmpresa());
 
@@ -494,5 +519,9 @@ public class MenuActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
 
     }
+
+
+
+
 
 }

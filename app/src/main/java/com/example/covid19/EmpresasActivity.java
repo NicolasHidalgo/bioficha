@@ -3,14 +3,17 @@ package com.example.covid19;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -24,6 +27,7 @@ import beans.EmpresaBean;
 import beans.UsuarioBean;
 import db.DatabaseManagerEmpresa;
 import db.DatabaseManagerUsuario;
+import helper.ConnectivityReceiver;
 import helper.Session;
 
 public class EmpresasActivity extends AppCompatActivity {
@@ -33,6 +37,7 @@ public class EmpresasActivity extends AppCompatActivity {
     DatabaseManagerEmpresa dbEmpresa;
     List<EmpresaBean> listaEmpresa;
     ListView lvEmpresa;
+    Button btnExportarExcel;
 
     String nInfoID[];
     String nInfo1[];
@@ -74,6 +79,7 @@ public class EmpresasActivity extends AppCompatActivity {
         }
 
         btnAgregarEmpresa = findViewById(R.id.btnAgregarEmpresa);
+        btnExportarExcel = findViewById(R.id.btnExportarExcel);
 
         if(session.getNomRol().equals("ADMIN")){
             btnAgregarEmpresa.hide();
@@ -82,6 +88,24 @@ public class EmpresasActivity extends AppCompatActivity {
         lvEmpresa = findViewById(R.id.lvEmpresa);
         EmpresasActivity.MyAdapter adapter = new EmpresasActivity.MyAdapter(this, nInfoID, nInfo1,nInfo2,nInfo3);
         lvEmpresa.setAdapter(adapter);
+
+        btnExportarExcel.setVisibility(View.INVISIBLE);
+        if(session.getNomRol().equals("ADMIN")){
+            btnExportarExcel.setVisibility(View.VISIBLE);
+        }
+
+        btnExportarExcel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!(ConnectivityReceiver.isConnected(context))){
+                    Toast.makeText(context, "Necesita contectarte a internet para continuar", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                String IdEmpresa = session.getIdEmpresa();
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://bioficha.electocandidato.com/exportar.php?ID_EMPRESA=" + IdEmpresa));
+                startActivity(browserIntent);
+            }
+        });
 
         btnAgregarEmpresa.setOnClickListener(new View.OnClickListener() {
             @Override
