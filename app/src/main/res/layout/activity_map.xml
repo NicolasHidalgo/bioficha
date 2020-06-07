@@ -11,16 +11,42 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"/>
-    <Button
-        android:id="@+id/btnPicker"
+        android:layout_alignParentBottom="true" />
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:background="#38b6ff"
-        android:text="ELEGIR UBICACION"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="10dp"
         android:layout_alignParentBottom="true"
-        android:drawableLeft="@drawable/ic_location"
-        android:paddingStart="120dp"
-        android:paddingEnd="120dp"
-        android:textColor="#fff"></Button>
+        android:background="@android:color/white">
+        <CheckBox
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/check_box"
+            android:text="Fill Polygon"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:weightSum="2"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:id="@+id/btnPicker"
+                android:text="draw polygon"/>
+            <Button
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:id="@+id/btnClear"
+                android:text="clear"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+
 </RelativeLayout>

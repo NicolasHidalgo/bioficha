@@ -12,8 +12,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.getbase.floatingactionbutton.FloatingActionButton;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
@@ -40,7 +40,6 @@ public class EmpresasActivity extends AppCompatActivity {
     String nInfo3[];
 
     FloatingActionButton btnAgregarEmpresa;
-    FloatingActionsMenu floating;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,10 +74,9 @@ public class EmpresasActivity extends AppCompatActivity {
         }
 
         btnAgregarEmpresa = findViewById(R.id.btnAgregarEmpresa);
-        floating = findViewById(R.id.floating);
 
         if(session.getNomRol().equals("ADMIN")){
-            floating.setVisibility(View.INVISIBLE);
+            btnAgregarEmpresa.hide();
         }
 
         lvEmpresa = findViewById(R.id.lvEmpresa);

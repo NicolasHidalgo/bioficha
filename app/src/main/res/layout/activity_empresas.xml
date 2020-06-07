@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -34,24 +34,46 @@
             android:layout_height="70dp"
             android:elevation="1dp"
             android:background="#fff"
-            android:orientation="vertical">
-            <TextView
+            android:orientation="horizontal">
+            <LinearLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="EMPRESAS"
-                android:textStyle="bold"
-                android:textSize="23sp"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:layout_marginLeft="15dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Listado de Empresas"
-                android:textStyle=""
-                android:textSize="18sp"
-                android:layout_marginLeft="15dp"
-                android:textColor="@color/colorPrimaryDark"/>
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="EMPRESAS"
+                    android:textStyle="bold"
+                    android:textSize="23sp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_marginLeft="15dp"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Listado de Empresas"
+                    android:textStyle=""
+                    android:textSize="18sp"
+                    android:layout_marginLeft="15dp"
+                    android:textColor="@color/colorPrimaryDark"/>
+                    </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                    <Button
+                        android:id="@+id/btnExportarExcel"
+                        android:layout_width="75dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="end"
+                        android:layout_marginRight="15dp"
+                        android:background="@drawable/ic_file_download" />
+            </LinearLayout>
 
         </LinearLayout>
         <LinearLayout
@@ -67,28 +89,14 @@
 
         </LinearLayout>
     </LinearLayout>
-    <com.getbase.floatingactionbutton.FloatingActionsMenu
-        android:id="@+id/floating"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        app:fab_addButtonColorNormal="@color/menu_red">
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnAgregarEmpresa"
-            app:fab_colorNormal="@color/reg_stat"
-            app:fab_icon="@drawable/ic_add"
-            app:fab_size="mini" />
-        <com.getbase.floatingactionbutton.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnAgregarRegistrador2"
-            app:fab_icon="@drawable/ic_file_download"
-            app:fab_size="mini"
-            app:fab_colorNormal="@color/reg_stat" />
-
-    </com.getbase.floatingactionbutton.FloatingActionsMenu>
-</RelativeLayout>
+        android:id="@+id/btnAgregarEmpresa"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="20dp"
+        android:backgroundTint="#38b6ff"
+        android:src="@drawable/ic_add"
+        app:fabSize="auto">
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
