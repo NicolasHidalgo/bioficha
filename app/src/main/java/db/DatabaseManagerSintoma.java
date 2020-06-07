@@ -162,13 +162,14 @@ public class DatabaseManagerSintoma extends DatabaseManager {
         return bean;
     }
 
-    public List<SpinnerBean> getSpinner() {
+    public List<SpinnerBean> getSpinner() throws UnsupportedEncodingException {
         List<SpinnerBean> list = new ArrayList<>();
         Cursor c = cargar();
 
         SpinnerBean bean = null;
         int ID = 0;
         String VALUE = "";
+
         while (c.moveToNext()){
             ID = c.getInt(0);
             VALUE = c.getString(1);

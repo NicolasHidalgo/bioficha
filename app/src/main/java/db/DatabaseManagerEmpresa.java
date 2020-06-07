@@ -239,4 +239,15 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         return list;
     }
 
+    public List<SpinnerBean> getSpinnerPorEmpresa(String IdEmpresa){
+        List<SpinnerBean> list = new ArrayList<>();
+        Cursor c = cargarById(IdEmpresa);
+
+        while (c.moveToNext()){
+            SpinnerBean bean = new SpinnerBean(c.getInt(0),c.getString(2));
+            list.add(bean);
+        }
+        return list;
+    }
+
 }

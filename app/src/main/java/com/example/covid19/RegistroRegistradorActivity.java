@@ -155,7 +155,13 @@ public class RegistroRegistradorActivity extends Fragment {
         adapterPais.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spPais.setAdapter(adapterPais);
 
-        List<SpinnerBean> listaEmpresa = dbEmpresa.getSpinner();
+        List<SpinnerBean> listaEmpresa = null;
+        if(session.getNomRol().equals("SUPER-ADMIN")){
+            listaEmpresa = dbEmpresa.getSpinner();
+        }else{
+            listaEmpresa = dbEmpresa.getSpinnerPorEmpresa(session.getIdEmpresa());
+        }
+
         ArrayAdapter<SpinnerBean> adapterEmpresa = new ArrayAdapter<SpinnerBean>(context, R.layout.custom_spinner, listaEmpresa);
         adapterEmpresa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spEmpresa.setAdapter(adapterEmpresa);

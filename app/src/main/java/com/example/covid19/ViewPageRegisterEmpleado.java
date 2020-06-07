@@ -210,9 +210,25 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                     return;
                 }
 
+                if (!(Util.isValidEmail(pCorreo))){
+                    Toast.makeText(context, "Debe ingresar un correo valido", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 final String fechaNacimiento = registroRegistradorActivity.txtFechaNacimiento.getText().toString();
                 if (fechaNacimiento.isEmpty()){
                     Toast.makeText(context, "Debe seleccionar la fecha de nacimiento", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                String [] dateParts = fechaNacimiento.split("/");
+                int day = Integer.parseInt(dateParts[0]);
+                int month = Integer.parseInt(dateParts[1]);
+                int year = Integer.parseInt(dateParts[2]);
+
+                int edad = Util.getAge(year,month,day);
+                if (edad < 18){
+                    Toast.makeText(context, "La persona debe ser mayor de edad (18).", Toast.LENGTH_LONG).show();
                     return;
                 }
 
