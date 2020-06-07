@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +31,7 @@ import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -39,12 +41,15 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 import beans.BioFichaBean;
+import beans.BioFichaEnfermedadBean;
 import beans.EmpresaBean;
 import beans.PaisBean;
 import beans.RolBean;
 import beans.SedeBean;
+import beans.SintomaBean;
 import beans.TipoDocumentoBean;
 import beans.UsuarioBean;
+import beans.UsuarioSedeBean;
 import db.DatabaseManagerBioFicha;
 import db.DatabaseManagerBioFichaEnfermedad;
 import db.DatabaseManagerBioFichaSintoma;
@@ -57,6 +62,7 @@ import db.DatabaseManagerSedePoligono;
 import db.DatabaseManagerSintoma;
 import db.DatabaseManagerTipoDocumento;
 import db.DatabaseManagerUsuario;
+import db.DatabaseManagerUsuarioSede;
 import helper.ConnectivityReceiver;
 import helper.Session;
 import util.Util;
@@ -78,6 +84,8 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
     DatabaseManagerUsuario dbUsuario;
     DatabaseManagerEmpresa dbEmpresa;
     DatabaseManagerRol dbRol;
+    DatabaseManagerSede dbSede;
+    DatabaseManagerUsuarioSede dbUsuarioSede;
 
     ProgressBar progressBar;
     Button btnGrabar;
@@ -99,8 +107,8 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
         final RegistroRegistradorActivity registroRegistradorActivity = new RegistroRegistradorActivity();
         viewPagerAdapter.AddFragment(registroRegistradorActivity, "Datos Generales");
 
+        final AsignarSedeEmpleadoActivity asignarSedeEmpleadoActivity = new AsignarSedeEmpleadoActivity();
         if (!(session.getNomRol().equals("SUPER-ADMIN"))){
-            final AsignarSedeEmpleadoActivity asignarSedeEmpleadoActivity = new AsignarSedeEmpleadoActivity();
             viewPagerAdapter.AddFragment(asignarSedeEmpleadoActivity,"Sedes");
         }
 
@@ -118,6 +126,8 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
         dbUsuario = new DatabaseManagerUsuario(context);
         dbEmpresa = new DatabaseManagerEmpresa(context);
         dbRol = new DatabaseManagerRol(context);
+        dbSede = new DatabaseManagerSede(context);
+        dbUsuarioSede = new DatabaseManagerUsuarioSede(context);
 
         btnGrabar = (Button) findViewById(R.id.btnGrabar);
 
@@ -312,6 +322,76 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                                     dbUsuario.actualizar(usuarioBean);
                                 }else{
                                     dbUsuario.insertar(usuarioBean);
+                                }
+
+                                // REGISTRO DE SEDES, SOLO CUANDO SEA ADMIN
+                                if(session.getNomRol().equals("ADMIN")){
+                                    SparseBooleanArray checked = null;
+                                    String SEDES = "";//"1"; // SET 1 "NINGUNO"
+                                    checked = asignarSedeEmpleadoActivity.lvSedes.getCheckedItemPositions();
+                                    if (checked != null){
+                                        SedeBean sedeBean = null;
+                                        String name = "";
+                                        String ID_SEDE = "";
+                                        for (int i = 0; i < checked.size() ; ++i) {
+                                            if (checked.valueAt(i)) {
+                                                int pos = checked.keyAt(i);
+                                                name = asignarSedeEmpleadoActivity.lvSedes.getAdapter().getItem(pos).toString();
+                                                sedeBean = dbSede.getByName(name);
+                                                ID_SEDE = sedeBean.getID();
+                                                if (SEDES.isEmpty())
+                                                    SEDES = ID_SEDE;
+                                                else
+                                                    SEDES = SEDES + "," + ID_SEDE;
+                                            }
+                                        }
+                                    }
+
+                                    final String QUERY = "call SP_USUARIO_SEDE_UPDATE('INSERT'," + ID_USUARIO + "," + pIdRol + ",'" + SEDES + "');";
+                                    final String SEDESK = SEDES;
+                                    final String ID_USUARIOK = ID_USUARIO;
+                                    StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            try {
+                                                //JSONArray jsonArray = new JSONArray(response);
+                                                // INSERTARMOS FICHA_SINTOMA EN EL SQLITE
+                                                dbUsuarioSede.eliminar(ID_USUARIOK);
+                                                List<String> lista = Arrays.asList(SEDESK.split(","));
+                                                UsuarioSedeBean bean = null;
+                                                for (int i = 0; i < lista.size() ; ++i) {
+                                                    String ID = lista.get(i);
+                                                    bean = new UsuarioSedeBean();
+                                                    bean.setID_USUARIO(ID_USUARIOK);
+                                                    bean.setID_SEDE(ID);
+                                                    bean.setID_ROL(pIdRol);
+                                                    dbUsuarioSede.insertar(bean);
+                                                }
+                                            } catch (Exception e) {
+                                                CloseProgressBar();
+                                                Toast.makeText(context,"Error:" + e.getMessage(),Toast.LENGTH_LONG).show();
+                                            }
+                                            CloseProgressBar();
+                                            if(finalAccion.equals("INSERT"))
+                                                Toast.makeText(context,"Registro exitoso",Toast.LENGTH_LONG).show();
+                                            else
+                                                Toast.makeText(context,"Actualizacion exitosa",Toast.LENGTH_LONG).show();
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            CloseProgressBar();
+                                            Toast.makeText(context,"Error:" + error.getMessage(),Toast.LENGTH_LONG).show();
+                                        }
+                                    }) {
+                                        @Override
+                                        protected Map<String, String> getParams() throws AuthFailureError {
+                                            Map<String, String> parametros = new HashMap<>();
+                                            parametros.put("consulta", QUERY);
+                                            return parametros;
+                                        }
+                                    };
+                                    requestQueue.add(stringRequest);
                                 }
 
                             } catch (Exception e) {

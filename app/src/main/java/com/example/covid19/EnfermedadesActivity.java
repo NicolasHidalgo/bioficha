@@ -96,7 +96,6 @@ public class EnfermedadesActivity extends Fragment {
                     break;
                 }
             }
-
         }
     }
 }
