@@ -311,7 +311,16 @@ public class LoginActivity extends AppCompatActivity {
                                 jsonObject = jsonArray.getJSONObject(i);
                                 bean = new EnfermedadBean();
                                 bean.setID(jsonObject.getString("ID"));
-                                bean.setDESCRIPCION(jsonObject.getString("DESCRIPCION"));
+                                String encodedWithISO88591 = jsonObject.getString("DESCRIPCION");
+                                String decodedToUTF8 = "";
+
+                                try{
+                                    decodedToUTF8 = new String(encodedWithISO88591.getBytes("ISO-8859-1"), "UTF-8");
+                                }
+                                catch(UnsupportedEncodingException e){
+                                    e.printStackTrace();
+                                }
+                                bean.setDESCRIPCION(decodedToUTF8);
                                 dbEnfermedad.insertar(bean);
                             }
                         } catch (JSONException e) {
@@ -413,7 +422,17 @@ public class LoginActivity extends AppCompatActivity {
                                 bean = new SintomaBean();
                                 bean.setID(jsonObject.getString("ID"));
                                 String descr = jsonObject.getString("DESCRIPCION");
-                                bean.setDESCRIPCION(descr);
+                                String encodedWithISO88591 = descr;
+                                String decodedToUTF8 = "";
+
+                                try{
+                                    decodedToUTF8 = new String(encodedWithISO88591.getBytes("ISO-8859-1"), "UTF-8");
+                                }
+                                catch(UnsupportedEncodingException e){
+                                    e.printStackTrace();
+                                }
+
+                                bean.setDESCRIPCION(decodedToUTF8);
                                 dbSintoma.insertar(bean);
                             }
 

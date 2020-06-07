@@ -12,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -53,7 +54,11 @@ public class SintomasActivity extends Fragment {
         dbSintoma = new DatabaseManagerSintoma(context);
         dbFichaSintoma = new DatabaseManagerBioFichaSintoma(context);
         List<SpinnerBean> listaSintoma = null;
-        listaSintoma = dbSintoma.getSpinner();
+        try {
+            listaSintoma = dbSintoma.getSpinner();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
 
         ArrayAdapter<SpinnerBean> adapterSintoma = new ArrayAdapter<SpinnerBean>(context,android.R.layout.simple_list_item_multiple_choice,listaSintoma);
         adapterSintoma.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

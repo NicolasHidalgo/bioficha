@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -158,6 +159,7 @@ public class DatabaseManagerEnfermedad extends DatabaseManager {
             bean = new EnfermedadBean();
             bean.setID(c.getString(0));
             bean.setDESCRIPCION(c.getString(1));
+
         }
         return bean;
     }
@@ -166,8 +168,15 @@ public class DatabaseManagerEnfermedad extends DatabaseManager {
         List<SpinnerBean> list = new ArrayList<>();
         Cursor c = cargar();
 
+        SpinnerBean bean = null;
+        int ID = 0;
+        String VALUE = "";
+
         while (c.moveToNext()){
-            SpinnerBean bean = new SpinnerBean(c.getInt(0),c.getString(1));
+            ID = c.getInt(0);
+            VALUE = c.getString(1);
+            bean = new SpinnerBean(ID, VALUE);
+
             list.add(bean);
         }
         return list;

@@ -279,6 +279,17 @@ public class ViewPageRegister extends AppCompatActivity {
                     return;
                 }
 
+                String [] dateParts = fechaNacimiento.split("/");
+                int day = Integer.parseInt(dateParts[0]);
+                int month = Integer.parseInt(dateParts[1]);
+                int year = Integer.parseInt(dateParts[2]);
+
+                int edad = Util.getAge(year,month,day);
+                if (edad < 18){
+                    Toast.makeText(context, "La persona debe ser mayor de edad (18).", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 String fecNac = "";
                 try {
                     fecNac = Util.formatDate(fechaNacimiento,"dd/MM/yyyy","yyyy-MM-dd");
