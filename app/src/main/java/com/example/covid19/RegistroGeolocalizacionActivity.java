@@ -17,14 +17,19 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import beans.SedePoligonoBean;
+import db.DatabaseManagerSedePoligono;
+import helper.Session;
 
 public class RegistroGeolocalizacionActivity extends Fragment {
     Context context;
     Button btnBuscarXY;
+    Session session;
     EditText txtCoordenadaX1, txtCoordenadaX2,txtCoordenadaX3,txtCoordenadaX4;
     EditText txtCoordenadaY1, txtCoordenadaY2,txtCoordenadaY3,txtCoordenadaY4;
     int request_code = 1;
     View view;
+    DatabaseManagerSedePoligono dbSedePoligono;
     List<LatLng> latLng;
     public RegistroGeolocalizacionActivity(){
 
@@ -34,6 +39,8 @@ public class RegistroGeolocalizacionActivity extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.activity_registro_geolocalizacion,container,false);
         context = this.getActivity();
+        session = new Session(context);
+        dbSedePoligono = new DatabaseManagerSedePoligono(context);
         btnBuscarXY = view.findViewById(R.id.btnBuscarXY);
         txtCoordenadaX1 = view.findViewById(R.id.txtCoordenadaX1);
         txtCoordenadaX2 = view.findViewById(R.id.txtCoordenadaX2);
@@ -44,6 +51,10 @@ public class RegistroGeolocalizacionActivity extends Fragment {
         txtCoordenadaY3 = view.findViewById(R.id.txtCoordenadaY3);
         txtCoordenadaY4 = view.findViewById(R.id.txtCoordenadaY4);
 
+        String ide = session.getIdSede();
+        if (!(ide.isEmpty())){
+            TraerGeolocalizacion(ide);
+        }
         btnBuscarXY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -67,6 +78,25 @@ public class RegistroGeolocalizacionActivity extends Fragment {
             txtCoordenadaX4.setText(String.valueOf(latLngsList.get(3).latitude));
             txtCoordenadaY4.setText(String.valueOf(latLngsList.get(3).longitude));
 
+        }
+    }
+
+    public void TraerGeolocalizacion(String ide){
+        List<SedePoligonoBean> sedePoligonoBean = dbSedePoligono.getList(ide);
+        for (int i=0;i<sedePoligonoBean.size();i++){
+            if(i==0){
+                txtCoordenadaX1.setText(sedePoligonoBean.get(i).getLATITUD().toString());
+                txtCoordenadaY1.setText(sedePoligonoBean.get(i).getLONGITUD().toString());
+            }else if(i==1){
+                txtCoordenadaX2.setText(sedePoligonoBean.get(i).getLATITUD().toString());
+                txtCoordenadaY2.setText(sedePoligonoBean.get(i).getLONGITUD().toString());
+            }else if(i==2){
+                txtCoordenadaX3.setText(sedePoligonoBean.get(i).getLATITUD().toString());
+                txtCoordenadaY3.setText(sedePoligonoBean.get(i).getLONGITUD().toString());
+            }else{
+                txtCoordenadaX4.setText(sedePoligonoBean.get(i).getLATITUD().toString());
+                txtCoordenadaY4.setText(sedePoligonoBean.get(i).getLONGITUD().toString());
+            }
         }
     }
 }

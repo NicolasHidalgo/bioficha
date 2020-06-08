@@ -66,6 +66,9 @@
                         android:inputType="text"
                         android:paddingLeft="10dp"
                         android:textSize="15dp"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:clickable="false"
                         android:background="@drawable/edit"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="4dp">
@@ -77,6 +80,9 @@
                         android:inputType="text"
                         android:paddingLeft="10dp"
                         android:textSize="15dp"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:clickable="false"
                         android:background="@drawable/edit"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="4dp"/>
@@ -112,6 +118,9 @@
                         android:inputType="text"
                         android:paddingLeft="10dp"
                         android:textSize="15dp"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:clickable="false"
                         android:background="@drawable/edit"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="4dp"/>
@@ -122,6 +131,9 @@
                         android:inputType="text"
                         android:paddingLeft="10dp"
                         android:textSize="15dp"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:clickable="false"
                         android:background="@drawable/edit"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="4dp">
@@ -149,6 +161,9 @@
                         android:inputType="text"
                         android:paddingLeft="10dp"
                         android:textSize="15dp"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:clickable="false"
                         android:background="@drawable/edit"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="4dp"/>
@@ -159,6 +174,9 @@
                         android:inputType="text"
                         android:paddingLeft="10dp"
                         android:textSize="15dp"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:clickable="false"
                         android:background="@drawable/edit"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="4dp">
@@ -186,6 +204,9 @@
                         android:inputType="text"
                         android:paddingLeft="10dp"
                         android:textSize="15dp"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:clickable="false"
                         android:background="@drawable/edit"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="4dp"/>
@@ -196,6 +217,9 @@
                         android:inputType="text"
                         android:paddingLeft="10dp"
                         android:textSize="15dp"
+                        android:focusable="false"
+                        android:cursorVisible="false"
+                        android:clickable="false"
                         android:background="@drawable/edit"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="4dp">

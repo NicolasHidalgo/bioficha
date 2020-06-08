@@ -118,7 +118,12 @@ public class DatabaseManagerSede extends DatabaseManager {
         String query = "SELECT "+CN_ID+", " + CN_NOMBRE_SEDE +" FROM " + NOMBRE_TABLA + " WHERE " + CN_ID_EMPRESA +" = " + IdEmpresa ;
         return super.getDb().rawQuery(query, null);
     }
-
+    public Cursor cargarByIdObject(String id) {
+        String sql = "SELECT SEDE._ID, SEDE.NOMBRE_SEDE, SEDE.ID_EMPRESA, SEDE.DIRECCION, SEDE.ID_DISTRITO, SEDE.LATITUD, SEDE.LONGITUD, SEDE.FEC_CREACION, PRO._ID AS ID_PROVINCIA, DEP._ID AS ID_DEPARTAMENTO FROM " + NOMBRE_TABLA + " SEDE INNER JOIN DISTRITO DIS ON DIS._ID = SEDE.ID_DISTRITO" +
+                " INNER JOIN PROVINCIA PRO ON PRO._ID = DIS.ID_PROVINCIA INNER JOIN DEPARTAMENTO DEP ON DEP._ID = PRO.ID_DEPARTAMENTO WHERE SEDE._ID  = " + id;
+        Cursor resultSet = super.getDb().rawQuery(sql, null);
+        return resultSet;
+    }
 
     @Override
     public Boolean compruebaRegistro(String id) {
@@ -178,6 +183,25 @@ public class DatabaseManagerSede extends DatabaseManager {
         }
         return bean;
     }
+    public SedeBean getObject(String id){
+        SedeBean bean = null;
+        Cursor c = cargarByIdObject(id);
+        while (c.moveToNext()){
+            bean = new SedeBean();
+            bean.setID(c.getString(0));
+            bean.setNOMBRE_SEDE(c.getString(1));
+            bean.setID_EMPRESA(c.getString(2));
+            bean.setDIRECCION(c.getString(3));
+            bean.setID_DISTRITO(c.getString(4));
+            bean.setLATITUD(c.getString(5));
+            bean.setLONGITUD(c.getString(6));
+            bean.setFEC_CREACION(c.getString(7));
+            bean.setID_PROVINCIA(c.getString(8));
+            bean.setID_DEPARTAMENTO(c.getString(9));
+        }
+        return bean;
+    }
+
     public List<SedeBean> ListarPorSedeXEmpresa(String IdEmpresa){
         List<SedeBean> list = new ArrayList<>();
         String SQL = "Select bf."+ CN_ID +","+CN_NOMBRE_SEDE+","+CN_ID_EMPRESA+","+CN_DIRECCION+","+CN_ID_DISTRITO+","+CN_FEC_CREACION+"  from " + NOMBRE_TABLA + " bf  WHERE " + CN_ID_EMPRESA + " = " + IdEmpresa + " ORDER BY " + CN_FEC_CREACION + " DESC";

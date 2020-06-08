@@ -75,7 +75,7 @@ public class SedeActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent dsp = new Intent(SedeActivity.this, ViewPageRegisterSede.class);
                 String ide =(String) ((TextView) view.findViewById(R.id.txtInfoSedeId)).getText();
-                session.setIdEmpleado(ide);
+                session.setIdSede(ide);
                 startActivity(dsp);
             }
         });

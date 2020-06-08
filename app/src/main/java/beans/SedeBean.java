@@ -14,6 +14,24 @@ public class SedeBean {
     private String FEC_CREACION;
     private String FEC_ACTUALIZACION;
     private String FEC_ELIMINACION;
+    private String ID_DEPARTAMENTO;
+    private String ID_PROVINCIA;
+
+    public String getID_DEPARTAMENTO() {
+        return ID_DEPARTAMENTO;
+    }
+
+    public void setID_DEPARTAMENTO(String ID_DEPARTAMENTO) {
+        this.ID_DEPARTAMENTO = ID_DEPARTAMENTO;
+    }
+
+    public String getID_PROVINCIA() {
+        return ID_PROVINCIA;
+    }
+
+    public void setID_PROVINCIA(String ID_PROVINCIA) {
+        this.ID_PROVINCIA = ID_PROVINCIA;
+    }
 
     public SedeBean() {
     }

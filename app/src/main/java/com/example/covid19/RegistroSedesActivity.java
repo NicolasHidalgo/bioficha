@@ -25,12 +25,19 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import beans.DepartamentoBean;
+import beans.DistritoBean;
+import beans.EmpresaBean;
+import beans.ProvinciaBean;
+import beans.SedeBean;
+import beans.SedePoligonoBean;
 import beans.SpinnerBean;
 import db.DatabaseManagerDepartamento;
 import db.DatabaseManagerDistrito;
 import db.DatabaseManagerEmpresa;
 import db.DatabaseManagerProvincia;
 import db.DatabaseManagerSede;
+import db.DatabaseManagerSedePoligono;
 import helper.Session;
 
 
@@ -96,19 +103,21 @@ public class RegistroSedesActivity extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 id_departamento = listaDepartamento.get(position).getID();
-                if (id_departamento == -1) {
-                    String[] provincia = {"Seleccione"};
-                    ArrayAdapter adapterProvincia = new ArrayAdapter(context, R.layout.custom_spinner, provincia);
+                if (++checkDep > 1) {
+                    if (id_departamento == -1) {
+                        String[] provincia = {"Seleccione"};
+                        ArrayAdapter adapterProvincia = new ArrayAdapter(context, R.layout.custom_spinner, provincia);
+                        adapterProvincia.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spProvincia.setAdapter(adapterProvincia);
+                        spProvincia.setEnabled(false);
+                        return;
+                    }
+                    List<SpinnerBean> listaProvincia = dbProvincia.getListSpinner(Integer.toString(id_departamento));
+                    ArrayAdapter adapterProvincia = new ArrayAdapter(context, R.layout.custom_spinner, listaProvincia);
                     adapterProvincia.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spProvincia.setAdapter(adapterProvincia);
-                    spProvincia.setEnabled(false);
-                    return;
+                    spProvincia.setEnabled(true);
                 }
-                List<SpinnerBean> listaProvincia = dbProvincia.getListSpinner(Integer.toString(id_departamento));
-                ArrayAdapter adapterProvincia = new ArrayAdapter(context, R.layout.custom_spinner, listaProvincia);
-                adapterProvincia.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spProvincia.setAdapter(adapterProvincia);
-                spProvincia.setEnabled(true);
             }
 
             @Override
@@ -119,22 +128,24 @@ public class RegistroSedesActivity extends Fragment {
         spProvincia.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                List<SpinnerBean> listaProvincia = dbProvincia.getListSpinner(Integer.toString(id_departamento));
-                id_provincia = listaProvincia.get(position).getID();
-                if (id_provincia == -1) {
-                    String[] distrito = {"Seleccione"};
-                    ArrayAdapter adapterDistrito = new ArrayAdapter(context, R.layout.custom_spinner, distrito);
+                if (++checkProv > 1) {
+                    List<SpinnerBean> listaProvincia = dbProvincia.getListSpinner(Integer.toString(id_departamento));
+                    id_provincia = listaProvincia.get(position).getID();
+                    if (id_provincia == -1) {
+                        String[] distrito = {"Seleccione"};
+                        ArrayAdapter adapterDistrito = new ArrayAdapter(context, R.layout.custom_spinner, distrito);
+                        adapterDistrito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        spDistrito.setAdapter(adapterDistrito);
+                        spDistrito.setEnabled(false);
+                        return;
+                    }
+
+                    List<SpinnerBean> listaDistrito = dbDistrito.getListSpinner(Integer.toString(id_provincia));
+                    ArrayAdapter adapterDistrito = new ArrayAdapter(context, R.layout.custom_spinner, listaDistrito);
                     adapterDistrito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                     spDistrito.setAdapter(adapterDistrito);
-                    spDistrito.setEnabled(false);
-                    return;
+                    spDistrito.setEnabled(true);
                 }
-
-                List<SpinnerBean> listaDistrito = dbDistrito.getListSpinner(Integer.toString(id_provincia));
-                ArrayAdapter adapterDistrito = new ArrayAdapter(context, R.layout.custom_spinner, listaDistrito);
-                adapterDistrito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spDistrito.setAdapter(adapterDistrito);
-                spDistrito.setEnabled(true);
             }
 
             @Override
@@ -145,8 +156,10 @@ public class RegistroSedesActivity extends Fragment {
         spDistrito.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                List<SpinnerBean> listaDistrito = dbDistrito.getListSpinner(Integer.toString(id_provincia));
-                id_distrito = listaDistrito.get(position).getID();
+                if (++checkDis > 1) {
+                    List<SpinnerBean> listaDistrito = dbDistrito.getListSpinner(Integer.toString(id_provincia));
+                    id_distrito = listaDistrito.get(position).getID();
+                }
             }
 
             @Override
@@ -165,7 +178,7 @@ public class RegistroSedesActivity extends Fragment {
         adapterEmpresa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spEmpresa.setAdapter(adapterEmpresa);
 
-        String ide = session.getIdEmpresa();
+        String ide = session.getIdSede();
         if (!(ide.isEmpty())){
             TraerSede(ide);
         }
@@ -200,7 +213,59 @@ public class RegistroSedesActivity extends Fragment {
         CloseProgressBar();
     }
     public void TraerSede(String ide){
+        SedeBean sedeBean = null;
+        sedeBean = dbSede.getObject(ide);
+        txtNombreSede.setText(sedeBean.getNOMBRE_SEDE());
+        txtDireccionFiscal.setText(sedeBean.getDIRECCION());
+        DepartamentoBean departamentoBean = dbDepartamento.get(sedeBean.getID_DEPARTAMENTO());
+        int pos = 0;
+        for (int i=0;i<spDepartamento.getCount();i++){
+            if (spDepartamento.getItemAtPosition(i).toString().equalsIgnoreCase(departamentoBean.getNOM_DEPARTAMENTO())){
+                pos = i;
+                break;
+            }
+        }
+        spDepartamento.setSelection(pos);
+        List<SpinnerBean> listaProvincia = dbProvincia.getListSpinner(sedeBean.getID_DEPARTAMENTO());
+        ArrayAdapter adapterProvincia = new ArrayAdapter(context, R.layout.custom_spinner, listaProvincia);
+        adapterProvincia.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spProvincia.setAdapter(adapterProvincia);
+        id_departamento = Integer.parseInt(sedeBean.getID_DEPARTAMENTO());
+        ProvinciaBean provinciaBean = dbProvincia.get(sedeBean.getID_PROVINCIA());
+        int pos1 = 0;
+        for (int j=0;j<spProvincia.getCount();j++){
+            if (spProvincia.getItemAtPosition(j).toString().equalsIgnoreCase(provinciaBean.getNOM_PROVINCIA())){
+                pos1 = j;
+                break;
+            }
+        }
+        spProvincia.setSelection(pos1);
+        spProvincia.setEnabled(true);
+        List<SpinnerBean> listaDistrito = dbDistrito.getListSpinner(sedeBean.getID_PROVINCIA());
+        ArrayAdapter adapterDistrito = new ArrayAdapter(context, R.layout.custom_spinner, listaDistrito);
+        adapterDistrito.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spDistrito.setAdapter(adapterDistrito);
+        id_provincia = Integer.parseInt(sedeBean.getID_PROVINCIA());
+        DistritoBean distritoBean = dbDistrito.get(sedeBean.getID_DISTRITO());
+        int pos2 = 0;
+        for (int k=0;k<spDistrito.getCount();k++){
+            if (spDistrito.getItemAtPosition(k).toString().equalsIgnoreCase(distritoBean.getNOM_DISTRITO())){
+                pos2 = k;
+                break;
+            }
+        }
+        spDistrito.setSelection(pos2);
+        spDistrito.setEnabled(true);
+        List<SpinnerBean> listaEmpresa = null;
+        if(session.getNomRol().equals("SUPER-ADMIN")){
+            listaEmpresa = dbEmpresa.getSpinner();
+        }else{
+            listaEmpresa = dbEmpresa.getSpinnerPorEmpresa(sedeBean.getID_EMPRESA());
+        }
 
+        ArrayAdapter<SpinnerBean> adapterEmpresa = new ArrayAdapter<SpinnerBean>(context, R.layout.custom_spinner, listaEmpresa);
+        adapterEmpresa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spEmpresa.setAdapter(adapterEmpresa);
     }
 
 
