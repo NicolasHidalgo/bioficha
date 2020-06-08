@@ -305,7 +305,7 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                         } else if (response.equals("")) {
                             CloseProgressBar();
                             Toast.makeText(context, "Error en el servicio", Toast.LENGTH_LONG).show();
-                        } else
+                        } else {
                             try {
                                 JSONArray jsonArray = new JSONArray(response);
                                 JSONObject jsonObject = null;
@@ -335,17 +335,18 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                                 Date currentTime = Calendar.getInstance().getTime();
                                 String fecha = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new java.util.Date());
                                 bioFichaEmpresaBean.setFEC_CREACION(fecha);
-                                if(finalAccion.equals("UPDATE")){
+                                if (finalAccion.equals("UPDATE")) {
                                     bioFichaEmpresaBean.setFEC_ACTUALIZACION(fecha);
                                     dbEmpresa.actualizar(bioFichaEmpresaBean);
-                                }else{
+                                } else {
                                     dbEmpresa.insertar(bioFichaEmpresaBean);
                                 }
 
                             } catch (JSONException e) {
                                 CloseProgressBar();
-                                Toast.makeText(context,"Error:" + e.getMessage(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(context, "Error:" + e.getMessage(), Toast.LENGTH_LONG).show();
                             }
+                        }
                         CloseProgressBar();
                         if(finalAccion.equals("UPDATE")) {
                             Toast.makeText(context, "Los datos han sido actualizados con éxito", Toast.LENGTH_LONG).show();

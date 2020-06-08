@@ -666,7 +666,6 @@ public class WebService  {
                     for (int i = 0; i < jsonArray.length(); i++) {
                         jsonObject = jsonArray.getJSONObject(i);
                         bean  = new SedePoligonoBean();
-                        bean.setID(jsonObject.getString("ID"));
                         bean.setLATITUD(jsonObject.getDouble("LATITUD"));
                         bean.setLONGITUD(jsonObject.getDouble("LONGITUD"));
                         bean.setID_SEDE(jsonObject.getString("ID_SEDE"));

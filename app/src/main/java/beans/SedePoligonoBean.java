@@ -1,7 +1,6 @@
 package beans;
 
 public class SedePoligonoBean {
-    private String ID;
     private double LATITUD;
     private double LONGITUD;
     private String ID_SEDE;
@@ -9,13 +8,6 @@ public class SedePoligonoBean {
     public SedePoligonoBean() {
     }
 
-    public String getID() {
-        return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
 
     public Double getLATITUD() {
         return LATITUD;
