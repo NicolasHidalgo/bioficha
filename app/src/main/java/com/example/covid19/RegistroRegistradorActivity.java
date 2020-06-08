@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -70,7 +71,7 @@ public class RegistroRegistradorActivity extends Fragment {
     Context context;
     EditText txtNumDocumento, txtNombres, txtApePaterno, txtApeMaterno, txtCorreo;
     EditText txtFechaNacimiento, txtUsuario, txtClave;
-    LinearLayout linearLayoutEmpresa;
+    LinearLayout linearLayoutEmpresa, linearLayoutUsuario, linearLayoutClave;
     RequestQueue requestQueue;
     Button btnBuscarEmpleado;
 
@@ -115,6 +116,8 @@ public class RegistroRegistradorActivity extends Fragment {
 
         // Se ocultara cuando la empresa este en session
         linearLayoutEmpresa = (LinearLayout) view.findViewById(R.id.LinearLayoutEmpresa);
+        linearLayoutUsuario = (LinearLayout) view.findViewById(R.id.LinearLayoutUsuario);
+        linearLayoutClave = (LinearLayout) view.findViewById(R.id.LinearLayoutClave);
         linearLayoutEmpresa.setVisibility(View.VISIBLE);
 
         calendar = Calendar.getInstance();
@@ -188,6 +191,37 @@ public class RegistroRegistradorActivity extends Fragment {
             TraerEmpleado(ide);
         }
 
+        linearLayoutUsuario.setVisibility(View.INVISIBLE);
+        linearLayoutClave.setVisibility(View.INVISIBLE);
+
+        String NomRol = spRol.getSelectedItem().toString();
+        if(NomRol.equals("ADMIN") || NomRol.equals("REGISTRADOR")){
+            linearLayoutUsuario.setVisibility(View.VISIBLE);
+            linearLayoutClave.setVisibility(View.VISIBLE);
+        }
+
+        spRol.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                String NomRol = spRol.getItemAtPosition(position).toString();
+                if(NomRol.equals("ADMIN") || NomRol.equals("REGISTRADOR")){
+                    linearLayoutUsuario.setVisibility(View.VISIBLE);
+                    linearLayoutClave.setVisibility(View.VISIBLE);
+                }else{
+                    linearLayoutUsuario.setVisibility(View.INVISIBLE);
+                    linearLayoutClave.setVisibility(View.INVISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+
+        });
+
+
         btnBuscarEmpleado.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -201,6 +235,10 @@ public class RegistroRegistradorActivity extends Fragment {
                 String NumDocumento = txtNumDocumento.getText().toString();
                 if (NumDocumento.isEmpty()){
                     Toast.makeText(context,"Debe ingresar un numero de documento", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(NumDocumento.length() != 8){
+                    Toast.makeText(context,"El numero de documento debe contener 8 digitos", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -330,8 +368,8 @@ public class RegistroRegistradorActivity extends Fragment {
         //spGenero.setEnabled(x);
         //txtFechaNacimiento.setEnabled(x);
         spEmpresa.setEnabled(x);
-        txtUsuario.setEnabled(x);
-        txtClave.setEnabled(x);
+        //txtUsuario.setEnabled(x);
+        //txtClave.setEnabled(x);
     }
     public void LimpiarCampos(){
         txtNombres.setText("");

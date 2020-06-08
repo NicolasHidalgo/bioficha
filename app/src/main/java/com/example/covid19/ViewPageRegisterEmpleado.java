@@ -164,6 +164,13 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                     return;
                 }
 
+                if(pTipoDocumento.equals("DNI")){
+                    if(pNumDocumento.length() != 8){
+                        Toast.makeText(context,"El numero de documento debe contener 8 digitos", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+
                 final String pPais = registroRegistradorActivity.spPais.getSelectedItem().toString();
                 if (pPais.isEmpty()){
                     Toast.makeText(context, "Debe seleccionar un pais", Toast.LENGTH_LONG).show();
@@ -248,6 +255,22 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                     Toast.makeText(context, "Debe seleccionar un tipo de documento", Toast.LENGTH_LONG).show();
                     return;
                 }
+
+                String username = "";
+                String clave = "";
+                if (pNomRol.equals("ADMIN") || pNomRol.equals("REGISTRADOR")){
+                    username = registroRegistradorActivity.txtUsuario.getText().toString();
+                    if (username.isEmpty()){
+                        Toast.makeText(context, "Debe ingresar un nombre de usuario", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                    clave = registroRegistradorActivity.txtClave.getText().toString();
+                    if (clave.isEmpty()){
+                        Toast.makeText(context, "Debe ingresar una clave", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+
                 RolBean rolBean = dbRol.getByNombre(pNomRol);
                 final String pIdRol = rolBean.getID();
 
@@ -256,8 +279,8 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                 final String pTelefonoContacto = "";
                 final String pCorreoContacto = "";
 
-                final String pUsuario = registroRegistradorActivity.txtUsuario.getText().toString();
-                final String pContrasena = registroRegistradorActivity.txtClave.getText().toString();
+                final String pUsuario = username;
+                final String pContrasena = clave;
 
                 OpenProgressBar();
                 String Params = "";

@@ -87,7 +87,7 @@ public class DatabaseManagerSede extends DatabaseManager {
     public Cursor cargar() {
         String [] columnas = new String[]
                 {CN_ID,CN_NOMBRE_SEDE};
-        return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,CN_FEC_CREACION + " ASC");
     }
 
     @Override
@@ -101,7 +101,7 @@ public class DatabaseManagerSede extends DatabaseManager {
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
                 {CN_ID,CN_NOMBRE_SEDE};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_NOMBRE_SEDE+ " = ?",new String[] { tipo },null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_NOMBRE_SEDE+ " = ?",new String[] { tipo },null,null,CN_FEC_CREACION + " ASC");
     }
 
     public Cursor cargarPorPermiso(String permiso) {

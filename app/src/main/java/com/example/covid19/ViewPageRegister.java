@@ -239,6 +239,13 @@ public class ViewPageRegister extends AppCompatActivity {
                     return;
                 }
 
+                if(pTipoDocumento.equals("DNI")){
+                    if(pNumDocumento.length() != 8){
+                        Toast.makeText(context,"El numero de documento debe contener 8 digitos", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+                }
+
                 final String pPais = registroActivity.spPais.getSelectedItem().toString();
                 if (pPais.isEmpty()){
                     Toast.makeText(context, "Debe seleccionar un pais", Toast.LENGTH_LONG).show();
@@ -339,8 +346,23 @@ public class ViewPageRegister extends AppCompatActivity {
                 Date currentTime = Calendar.getInstance().getTime();
                 final String pFecha = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new java.util.Date());
 
-                final String pMensaje = "message in a bottle";
-                final String pOtroSintoma = "otro sintoma";
+
+                double grados = Double.parseDouble(pGrados);
+                String mensaje = "Temperatura humana normal";
+                if(grados >= 36.0 && grados <= 37.0 ){
+                    mensaje = "Temperatura humana normal";
+                }else if(grados >= 37.1 && grados <= 38.1 ){
+                    mensaje = "Febricula";
+                }else if(grados >= 38.2 && grados <= 38.5 ){
+                    mensaje = "Fiebre leve";
+                }else if(grados >= 38.6 && grados <= 39.0 ){
+                    mensaje = "Fiebre moderada";
+                }else if(grados > 39.0){
+                    mensaje = "Fiebre alta";
+                }
+                final String pMensaje = mensaje;
+
+                final String pOtroSintoma = "";
 
                 // Validar si existe ficha localmente (por Tipo Document, Num Documento y Fecha Registro)
                 if (pAccion.equals("INSERT")){

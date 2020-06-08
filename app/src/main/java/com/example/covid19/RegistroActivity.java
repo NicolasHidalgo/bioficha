@@ -78,7 +78,6 @@ public class RegistroActivity extends Fragment {
     RequestQueue requestQueue;
     TextView lblNomEmpresa, lblNomSede, lblIMC;
     private Session session;
-    LinearLayout linearLayoutCorreo;
     Button btnBuscarEmpleado;
 
     Calendar calendar;
@@ -120,9 +119,6 @@ public class RegistroActivity extends Fragment {
         txtPeso = (EditText) view.findViewById(R.id.txtPeso);
         txtGrados = (EditText) view.findViewById(R.id.txtGrados);
         lblIMC = (TextView) view.findViewById(R.id.lblIMC);
-
-        linearLayoutCorreo = (LinearLayout) view.findViewById(R.id.LinearLayoutCorreo);
-        linearLayoutCorreo.setVisibility(View.INVISIBLE);
 
         calendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -282,6 +278,11 @@ public class RegistroActivity extends Fragment {
                 String NumDocumento = txtNumDocumento.getText().toString();
                 if (NumDocumento.isEmpty()){
                     Toast.makeText(context,"Debe ingresar un numero de documento", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if(NumDocumento.length() != 8){
+                    Toast.makeText(context,"El numero de documento debe contener 8 digitos", Toast.LENGTH_LONG).show();
                     return;
                 }
 

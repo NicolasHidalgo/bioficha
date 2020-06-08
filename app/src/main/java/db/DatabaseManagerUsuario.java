@@ -123,7 +123,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
                 {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
                         CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
                 CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
-        return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,CN_FEC_CREACION + " ASC");
     }
 
     public Cursor cargarPorTipoDocumentoNumDocumento(String TipoDocumento, String NumDocumento) {
@@ -131,7 +131,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
                 {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
                         CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
                         CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_TIPO_DOCUMENTO + " =? AND " + CN_NUM_DOCUMENTO + " =?", new String[]{TipoDocumento,NumDocumento},null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_TIPO_DOCUMENTO + " =? AND " + CN_NUM_DOCUMENTO + " =?", new String[]{TipoDocumento,NumDocumento},null,null,CN_FEC_CREACION + " ASC");
     }
 
     @Override
@@ -140,7 +140,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
                 {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
                         CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
                         CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,CN_FEC_CREACION + " ASC");
     }
 
 
@@ -149,14 +149,14 @@ public class DatabaseManagerUsuario extends DatabaseManager {
                 {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
                         CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
                         CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_EMPRESA+ " = ? AND " + CN_ID_ROL + " != ? ",new String[] { tipo, "1" },null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_EMPRESA+ " = ? AND " + CN_ID_ROL + " != ? ",new String[] { tipo, "1" },null,null,CN_FEC_CREACION + " ASC");
     }
 
     public Cursor cargarADMIN() {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
                         CN_ID_ROL,CN_FEC_CREACION};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_ROL+ " = ? ",new String[] { "2" },null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_ROL+ " = ? ",new String[] { "2" },null,null,CN_FEC_CREACION + " ASC");
     }
 
 

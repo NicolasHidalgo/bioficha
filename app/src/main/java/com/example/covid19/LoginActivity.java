@@ -45,6 +45,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -70,6 +71,7 @@ public class LoginActivity extends AppCompatActivity {
     Button btnIngresar;
     EditText txtUsuario, txtPassword;
     private Session session;
+    TextView lblOlvidaste;
 
     public static final String SERVER = "https://bioficha.electocandidato.com/";
     public String URL = SERVER + "select.php";
@@ -107,6 +109,8 @@ public class LoginActivity extends AppCompatActivity {
         ProgressBarHandler(context);
         progressBar.setVisibility(View.INVISIBLE);
 
+        lblOlvidaste = (TextView) findViewById(R.id.lblOlvidaste);
+        lblOlvidaste.setVisibility(View.INVISIBLE);
     }
 
     @Override

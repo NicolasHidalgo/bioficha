@@ -100,7 +100,7 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
     public Cursor cargar() {
         String [] columnas = new String[]
                 {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL,CN_FEC_CREACION};
-        return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,CN_FEC_CREACION + " ASC");
     }
 
     @Override
@@ -126,7 +126,7 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
                 {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL,CN_FEC_CREACION};
-        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
+        return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,CN_FEC_CREACION + " ASC");
     }
 
     @Override
