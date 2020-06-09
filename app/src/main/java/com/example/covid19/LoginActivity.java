@@ -242,8 +242,8 @@ public class LoginActivity extends AppCompatActivity {
     // UsuarioSede
     public void WebService(String IdUsuario){
         dbUsuarioSede = new DatabaseManagerUsuarioSede(context);
-        if (!(dbUsuarioSede.verificarRegistros())) {
-            QUERY = "call SP_USUARIO_SEDE('" + ACCION + "_BY_USUARIO'," + IdUsuario + ",0);";
+        //if (!(dbUsuarioSede.verificarRegistros())) {
+            final String QUERY = "call SP_USUARIO_SEDE('" + ACCION + "_BY_USUARIO'," + IdUsuario + ",0);";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -285,9 +285,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             };
             requestQueue.add(stringRequest);
-        }else{
-            WebServiceEnfermedad();
-        }
+        //}else{
+            //WebServiceEnfermedad();
+        //}
     }
 
 
@@ -734,8 +734,13 @@ public class LoginActivity extends AppCompatActivity {
 
     public void WebServiceSede(){
         dbSede = new DatabaseManagerSede(context);
-        if (!(dbSede.verificarRegistros())) {
-            QUERY = "call SP_SEDE('" + ACCION + "',0);";
+        //if (!(dbSede.verificarRegistros())) {
+            String pIdEmpresa = "0";
+            String ACCION = "SELECT_POR_EMPRESA";
+            if (!(session.getIdEmpresa().isEmpty())){
+                pIdEmpresa = session.getIdEmpresa();
+            }
+            final String QUERY = "call SP_SEDE('" + ACCION + "'," + pIdEmpresa + ");";
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
@@ -786,9 +791,9 @@ public class LoginActivity extends AppCompatActivity {
                 }
             };
             requestQueue.add(stringRequest);
-        }else{
-            WebServicePais();
-        }
+        //}else{
+            //WebServicePais();
+        //}
     }
 
     public void WebServicePais(){
