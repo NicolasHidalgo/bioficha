@@ -68,7 +68,7 @@ public class RegistroGeolocalizacionActivity extends Fragment {
                     Toast.makeText(context, "Necesita habilitar el GPS", Toast.LENGTH_LONG).show();
                     return;
                 }
-                
+
                 Intent dsp = new Intent(context, MapActivity.class);
                 startActivityForResult(dsp, request_code);
             }
