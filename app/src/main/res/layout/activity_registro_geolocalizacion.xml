@@ -34,7 +34,7 @@
                         android:layout_marginTop="12dp"
                         android:textSize="15dp"/>
                     <TextView
-                        android:layout_width="120dp"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="Y"
                         android:gravity="end"
@@ -88,7 +88,7 @@
                         android:layout_marginLeft="4dp"/>
                     <Button
                         android:id="@+id/btnBuscarXY"
-                        android:layout_width="40dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_marginLeft="4dp"
                         android:layout_marginTop="12dp"
