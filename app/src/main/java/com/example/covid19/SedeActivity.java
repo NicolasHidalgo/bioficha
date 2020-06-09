@@ -21,6 +21,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import beans.BioFichaBean;
 import beans.SedeBean;
 import db.DatabaseManagerSede;
 import helper.Session;
@@ -79,6 +80,31 @@ public class SedeActivity extends AppCompatActivity {
                 startActivity(dsp);
             }
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        listaSede = dbSede.ListarPorSedeXEmpresa(session.getIdEmpresa());
+        SedeBean sede = null;
+        int len = listaSede.size();
+        nID = new String[len];
+        nInfo1 = new String[len];
+        nInfo2 = new String[len];
+        nInfo3 = new String[len];
+        for (int i = 0; i < listaSede.size(); i++) {
+            sede = listaSede.get(i);
+            nID[i] = sede.getID();
+            nInfo1[i] = sede.getNOMBRE_SEDE();
+            nInfo2[i] = sede.getDIRECCION();
+            nInfo3[i] = sede.getFEC_CREACION();
+        }
+        btnAgregarSede = findViewById(R.id.btnAgregarSede);
+        lvSede = findViewById(R.id.lvSede);
+        SedeActivity.MyAdapter adapter = new SedeActivity.MyAdapter(this, nID, nInfo1, nInfo2, nInfo3);
+        lvSede.setAdapter(adapter);
+
     }
 
     class MyAdapter extends ArrayAdapter<String> {
