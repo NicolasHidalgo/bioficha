@@ -278,8 +278,6 @@ public class ViewPageRegister extends AppCompatActivity {
                     return;
                 }
 
-                String pCorreo = registroActivity.txtCorreo.getText().toString();
-
                 final String fechaNacimiento = registroActivity.txtFechaNacimiento.getText().toString();
                 if (fechaNacimiento.isEmpty()){
                     Toast.makeText(context, "Debe seleccionar la fecha de nacimiento", Toast.LENGTH_LONG).show();
