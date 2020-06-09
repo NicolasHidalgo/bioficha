@@ -82,7 +82,7 @@ public class ViewPageRegister extends AppCompatActivity {
     Context context;
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    private  ViewPagerAdapter viewPagerAdapter;
+    private ViewPagerAdapter viewPagerAdapter;
     Button btnGrabar;
     private Session session;
     RequestQueue requestQueue;
@@ -147,8 +147,8 @@ public class ViewPageRegister extends AppCompatActivity {
         final EnfermedadesActivity enfermedadesActivity = new EnfermedadesActivity();
 
         viewPagerAdapter.AddFragment(registroActivity, "Datos Generales");
-        viewPagerAdapter.AddFragment(sintomasActivity,"Síntomas");
-        viewPagerAdapter.AddFragment(enfermedadesActivity,"Enfermedades");
+        viewPagerAdapter.AddFragment(sintomasActivity, "Síntomas");
+        viewPagerAdapter.AddFragment(enfermedadesActivity, "Enfermedades");
 
         viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(viewPagerAdapter);
@@ -183,13 +183,9 @@ public class ViewPageRegister extends AppCompatActivity {
             }
         };
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{
-                        Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_COARSE_LOCATION
-                },10);
-                return;
-            }
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
         }
         locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
 

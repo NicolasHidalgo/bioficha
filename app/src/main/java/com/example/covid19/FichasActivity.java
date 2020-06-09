@@ -7,9 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import beans.BioFichaBean;
 import db.DatabaseManagerBioFicha;
 import helper.Session;
+import util.Util;
 
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -75,6 +78,14 @@ public class FichasActivity extends AppCompatActivity {
         btnAgregarFicha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Todo Location Already on  ... start
+                final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                // Todo Location Already on  ... end
+                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && Util.hasGPSDevice(context)) {
+                    Toast.makeText(context, "Necesita habilitar el GPS", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 Intent dsp = new Intent(FichasActivity.this, ViewPageRegister.class);
                 session.setIdFicha("");
                 startActivity(dsp);
@@ -84,6 +95,14 @@ public class FichasActivity extends AppCompatActivity {
         lvFicha.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // Todo Location Already on  ... start
+                final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                // Todo Location Already on  ... end
+                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && Util.hasGPSDevice(context)) {
+                    Toast.makeText(context, "Necesita habilitar el GPS", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 String ide =(String) ((TextView) view.findViewById(R.id.txtInfoFichaId)).getText();
                 session.setIdFicha(ide);
                 Intent intent = new Intent(context,ViewPageRegister.class);
