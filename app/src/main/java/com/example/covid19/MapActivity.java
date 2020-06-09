@@ -130,6 +130,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         if (polygon == null) return;
                         polygon.setFillColor(Color.RED);
                     } else {
+                        if (polygon == null) return;
                         polygon.setFillColor(Color.TRANSPARENT);
 
                     }

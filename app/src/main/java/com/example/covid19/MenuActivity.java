@@ -203,7 +203,6 @@ public class MenuActivity extends AppCompatActivity {
             btnRegistrador.getLayoutParams().height = 0;
             btnEmpresa.getLayoutParams().height = 0;
             btnSede.getLayoutParams().height = 0;
-
             listaSede =  dbSede.getSpinnerAll();
             List<UsuarioSedeBean> listaUsuarioSede = dbUsuarioSede.getList(usuarioBean.getID());
             String sedes = "";
