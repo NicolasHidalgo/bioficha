@@ -173,7 +173,7 @@ public class MenuActivity extends AppCompatActivity {
         if (rolBean.getNOM_ROL().equals("SUPER-ADMIN")){
             btnEmpresa.setVisibility(LinearLayout.VISIBLE);
             btnRegistrador.setVisibility(LinearLayout.VISIBLE);
-            btnSede.setVisibility(LinearLayout.INVISIBLE);
+            btnSede.setVisibility(LinearLayout.VISIBLE);
             spSede.setVisibility(View.INVISIBLE);
             btnVerFichas.setVisibility(View.INVISIBLE);
             linearLayoutSeleccione.setVisibility(View.INVISIBLE);
@@ -200,6 +200,10 @@ public class MenuActivity extends AppCompatActivity {
             spSede.setVisibility(View.VISIBLE);
             btnVerFichas.setVisibility(View.VISIBLE);
             linearLayoutSeleccione.setVisibility(View.VISIBLE);
+            btnRegistrador.getLayoutParams().height = 0;
+            btnEmpresa.getLayoutParams().height = 0;
+            btnSede.getLayoutParams().height = 0;
+
             listaSede =  dbSede.getSpinnerAll();
             List<UsuarioSedeBean> listaUsuarioSede = dbUsuarioSede.getList(usuarioBean.getID());
             String sedes = "";
