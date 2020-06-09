@@ -87,6 +87,7 @@
                         android:inputType="number"
                         android:paddingLeft="10dp"
                         android:textSize="15dp"
+                        android:maxLength="11"
                         android:background="@drawable/edit"
                         android:layout_marginTop="12dp"
                         android:layout_marginLeft="4dp">

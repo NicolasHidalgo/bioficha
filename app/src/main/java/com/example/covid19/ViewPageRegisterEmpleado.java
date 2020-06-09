@@ -197,7 +197,14 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                     return;
                 }
 
-                String pRazonSocial = registroRegistradorActivity.spEmpresa.getSelectedItem().toString();
+                String pRazonSocial = "";
+                if(registroRegistradorActivity.spEmpresa != null && registroRegistradorActivity.spEmpresa.getSelectedItem() !=null ) {
+                    pRazonSocial = registroRegistradorActivity.spEmpresa.getSelectedItem().toString();
+                } else  {
+                    Toast.makeText(context, "Debe crear una empresa antes de registrar un usuario.", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 if (pTipoDocumento.isEmpty()){
                     Toast.makeText(context, "Debe seleccionar un tipo de documento", Toast.LENGTH_LONG).show();
                     return;

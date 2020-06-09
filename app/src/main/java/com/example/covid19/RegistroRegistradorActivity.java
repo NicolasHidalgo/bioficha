@@ -378,7 +378,7 @@ public class RegistroRegistradorActivity extends Fragment {
         txtFechaNacimiento.setText("");
         txtUsuario.setText("");
         txtClave.setText("");
-        txtCorreo.setText("");
+        //txtCorreo.setText("");
     }
 
     public void TraerEmpleado(String ide){

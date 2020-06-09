@@ -44,6 +44,7 @@ import db.DatabaseManagerProvincia;
 import db.DatabaseManagerDistrito;
 import helper.ConnectivityReceiver;
 import helper.Session;
+import util.Util;
 
 
 public class RegistroEmpresasActivity extends AppCompatActivity {
@@ -91,8 +92,10 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
         spDistrito = findViewById(R.id.spDistrito);
         spProvincia.setEnabled(false);
         spDistrito.setEnabled(false);
+
         ProgressBarHandler(context);
         progressBar.setVisibility(View.INVISIBLE);
+
         dbDepartamento = new DatabaseManagerDepartamento(context);
         dbProvincia = new DatabaseManagerProvincia(context);
         dbDistrito = new DatabaseManagerDistrito(context);
@@ -196,6 +199,12 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                     Toast.makeText(context, "Debe ingresar un ruc válido", Toast.LENGTH_LONG).show();
                     return;
                 }
+                if (RUC.length() != 11) {
+                    Toast.makeText(context, "RUC debe contener 11 digitos", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                OpenProgressBar();
                 String URL = "https://dniruc.apisperu.com/api/v1/ruc/" + RUC + "?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5pY29sYXNoaWRhbGdvY29ycmVhQGhvdG1haWwuY29tIn0.vRpQYdBvxUFwsXFehU1KpQzNJhl08IBR69hHBcefGno";
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
                     @Override
@@ -213,11 +222,13 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
+                        CloseProgressBar();
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-
+                        CloseProgressBar();
+                        Toast.makeText(context, "ERROR WS RUC " + error.getMessage(), Toast.LENGTH_LONG).show();
                     }
                 });
                 requestQueue = Volley.newRequestQueue(context);
@@ -249,6 +260,10 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                     Toast.makeText(context, "Complete el campo RUC", Toast.LENGTH_LONG).show();
                     return;
                 }
+                if (pRUC.length() != 11) {
+                    Toast.makeText(context, "RUC debe contener 11 digitos", Toast.LENGTH_LONG).show();
+                    return;
+                }
                 if(pNOM_RAZON_SOCIAL.equals("")){
                     Toast.makeText(context, "Complete el campo Razón Social", Toast.LENGTH_LONG).show();
                     return;
@@ -266,6 +281,26 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                     Toast.makeText(context, "Seleccione un distrito", Toast.LENGTH_LONG).show();
                     return;
                 }
+                /*
+                if(pCONTACTO.isEmpty()){
+                    Toast.makeText(context, "Ingrese un contacto", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                if(pTELEFONO.isEmpty()){
+                    Toast.makeText(context, "Ingrese un telefono", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if(pCORREO.isEmpty()){
+                    Toast.makeText(context, "Ingrese un correo", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (!(Util.isValidEmail(pCORREO))){
+                    Toast.makeText(context, "Debe ingresar un correo valido", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                */
+
                 final String id_distrito = distritoBean.getID();
                 String pAccion = "INSERT";
                 String pId = "0";
@@ -358,7 +393,7 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         CloseProgressBar();
-                        Toast.makeText(context,"Error:" + error.getMessage(),Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,"Error, no se pudo encontrar RUC:" + error.getMessage(),Toast.LENGTH_LONG).show();
                     }
                 }) {
                     @Override
@@ -403,7 +438,6 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         progressBar.setVisibility(View.INVISIBLE);
-
         getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
     }
 

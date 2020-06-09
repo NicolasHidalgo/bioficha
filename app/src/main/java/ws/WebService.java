@@ -97,7 +97,16 @@ public class WebService  {
                             jsonObject = jsonArray.getJSONObject(i);
                             bean = new PaisBean();
                             bean.setCOD(jsonObject.getString("COD"));
-                            bean.setNOMBRE(jsonObject.getString("NOMBRE"));
+                            String encodedWithISO88591 = jsonObject.getString("NOMBRE");
+                            String decodedToUTF8 = "";
+
+                            try{
+                                decodedToUTF8 = new String(encodedWithISO88591.getBytes("ISO-8859-1"), "UTF-8");
+                            }
+                            catch(UnsupportedEncodingException e){
+                                e.printStackTrace();
+                            }
+                            bean.setNOMBRE(decodedToUTF8);
                             bean.setORDEN(jsonObject.getString("ORDEN"));
                             dbPais.insertar(bean);
                         }
@@ -289,7 +298,16 @@ public class WebService  {
                             jsonObject = jsonArray.getJSONObject(i);
                             bean = new DepartamentoBean();
                             bean.setID(jsonObject.getString("iddepartamento"));
-                            bean.setNOM_DEPARTAMENTO(jsonObject.getString("nombre_departamento"));
+                            String encodedWithISO88591 = jsonObject.getString("nombre_departamento");
+                            String decodedToUTF8 = "";
+
+                            try{
+                                decodedToUTF8 = new String(encodedWithISO88591.getBytes("ISO-8859-1"), "UTF-8");
+                            }
+                            catch(UnsupportedEncodingException e){
+                                e.printStackTrace();
+                            }
+                            bean.setNOM_DEPARTAMENTO(decodedToUTF8);
                             dbDepartamento.insertar(bean);
                         }
                         WebServiceProvincia();
@@ -333,7 +351,16 @@ public class WebService  {
                             bean = new ProvinciaBean();
                             bean.setID(jsonObject.getString("idprovincia"));
                             bean.setID_DEPARTAMENTO(jsonObject.getString("iddepartamento"));
-                            bean.setNOM_PROVINCIA(jsonObject.getString("nombre_provincia"));
+                            String encodedWithISO88591 = jsonObject.getString("nombre_provincia");
+                            String decodedToUTF8 = "";
+
+                            try{
+                                decodedToUTF8 = new String(encodedWithISO88591.getBytes("ISO-8859-1"), "UTF-8");
+                            }
+                            catch(UnsupportedEncodingException e){
+                                e.printStackTrace();
+                            }
+                            bean.setNOM_PROVINCIA(decodedToUTF8);
                             dbProvincia.insertar(bean);
                         }
                         WebServiceDistrito();
@@ -377,7 +404,16 @@ public class WebService  {
                             bean  = new DistritoBean();
                             bean.setID(jsonObject.getString("iddistrito"));
                             bean.setID_PROVINCIA(jsonObject.getString("idprovincia"));
-                            bean.setNOM_DISTRITO(jsonObject.getString("nombre_distrito"));
+                            String encodedWithISO88591 = jsonObject.getString("nombre_distrito");
+                            String decodedToUTF8 = "";
+
+                            try{
+                                decodedToUTF8 = new String(encodedWithISO88591.getBytes("ISO-8859-1"), "UTF-8");
+                            }
+                            catch(UnsupportedEncodingException e){
+                                e.printStackTrace();
+                            }
+                            bean.setNOM_DISTRITO(decodedToUTF8);
                             dbDistrito.insertar(bean);
                         }
                         WebServiceTipoDocumento();
@@ -424,7 +460,16 @@ public class WebService  {
                             jsonObject = jsonArray.getJSONObject(i);
                             bean = new TipoDocumentoBean();
                             bean.setID(jsonObject.getString("ID"));
-                            bean.setNOM_DOCUMENTO(jsonObject.getString("NOM_DOCUMENTO"));
+                            String encodedWithISO88591 = jsonObject.getString("NOM_DOCUMENTO");
+                            String decodedToUTF8 = "";
+
+                            try{
+                                decodedToUTF8 = new String(encodedWithISO88591.getBytes("ISO-8859-1"), "UTF-8");
+                            }
+                            catch(UnsupportedEncodingException e){
+                                e.printStackTrace();
+                            }
+                            bean.setNOM_DOCUMENTO(decodedToUTF8);
                             dbTipoDocumento.insertar(bean);
                         }
                     } catch (JSONException e) {

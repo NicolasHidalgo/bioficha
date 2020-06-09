@@ -174,6 +174,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
+                    dbUsuario.eliminarPorUsuarioPassword(Usuario,Password);
                     if (response.equals("[]")){
                         CloseProgressBar();
                         Toast.makeText(context, "Usuario y Password invalidos", Toast.LENGTH_LONG).show();
@@ -181,7 +182,6 @@ public class LoginActivity extends AppCompatActivity {
                         CloseProgressBar();
                         Toast.makeText(context, "No se encontraron datos SP_USUARIO", Toast.LENGTH_LONG).show();
                     }else{
-                        dbUsuario.eliminarPorUsuarioPassword(Usuario,Password);
                         UsuarioBean bean  = null;
                         JSONArray jsonArray = new JSONArray(response);
                         JSONObject jsonObject = null;
@@ -247,14 +247,11 @@ public class LoginActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
-                    if (response.equals("[]")){
-                        //CloseProgressBar();
-                        //Toast.makeText(context, "No se encontraron datos SP_USUARIO_SEDE", Toast.LENGTH_LONG).show();
-                    }else if (response.equals("")){
+                    dbUsuarioSede.eliminarTodo();
+                    if (response.equals("[]") || response.equals("")){
                         //CloseProgressBar();
                         //Toast.makeText(context, "No se encontraron datos SP_USUARIO_SEDE", Toast.LENGTH_LONG).show();
                     }else {
-                        dbUsuarioSede.eliminarTodo();
                         try {
                             UsuarioSedeBean bean = null;
                             JSONArray jsonArray = new JSONArray(response);
@@ -302,11 +299,11 @@ public class LoginActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    dbEnfermedad.eliminarTodo();
                     if (response.equals("[]") || response.equals("") || response.isEmpty()){
                         //CloseProgressBar();
                         //Toast.makeText(context, "No se encontraron datos SP_USUARIO_SEDE", Toast.LENGTH_LONG).show();
                     }else{
-                        dbEnfermedad.eliminarTodo();
                         try {
                             EnfermedadBean bean = null;
                             JSONArray jsonArray = new JSONArray(response);
@@ -362,11 +359,11 @@ public class LoginActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    dbRol.eliminarTodo();
                     if (response.equals("[]") || response.equals("") || response.isEmpty()){
                         //CloseProgressBar();
                         //Toast.makeText(context, "No se encontraron datos SP_ROL", Toast.LENGTH_LONG).show();
                     }else{
-                        dbRol.eliminarTodo();
                         try {
                             RolBean bean = null;
                             JSONArray jsonArray = new JSONArray(response);
@@ -412,11 +409,11 @@ public class LoginActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    dbSintoma.eliminarTodo();
                     if (response.equals("[]") || response.equals("") || response.isEmpty()){
                         //CloseProgressBar();
                         //Toast.makeText(context, "No se encontraron datos SP_SINTOMA", Toast.LENGTH_LONG).show();
                     }else{
-                        dbSintoma.eliminarTodo();
                         try {
                             SintomaBean bean = null;
                             JSONArray jsonArray = new JSONArray(response);
@@ -473,11 +470,11 @@ public class LoginActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    dbDepartamento.eliminarTodo();
                     if (response.equals("[]") || response.equals("") || response.isEmpty()){
                         //CloseProgressBar();
                         //Toast.makeText(context, "No se encontraron datos SP_UBIGEO DEPARTAMENTO", Toast.LENGTH_LONG).show();
                     }else{
-                        dbDepartamento.eliminarTodo();
                         try {
                             DepartamentoBean bean = null;
                             JSONArray jsonArray = new JSONArray(response);
@@ -524,11 +521,12 @@ public class LoginActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    dbProvincia.eliminarTodo();
                     if (response.equals("[]") || response.equals("") || response.isEmpty()){
                         //CloseProgressBar();
                         //Toast.makeText(context, "No se encontraron datos SP_UBIGEO PROVINCIA", Toast.LENGTH_LONG).show();
                     }else{
-                        dbProvincia.eliminarTodo();
+
                         try {
                             ProvinciaBean bean = null;
                             JSONArray jsonArray = new JSONArray(response);
@@ -575,11 +573,11 @@ public class LoginActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    dbDistrito.eliminarTodo();
                     if (response.equals("[]") || response.equals("") || response.isEmpty()){
                         //CloseProgressBar();
                         //Toast.makeText(context, "No se encontraron datos SP_UBIGEO DISTRITO", Toast.LENGTH_LONG).show();
                     }else{
-                        dbDistrito.eliminarTodo();
                         try {
                             DistritoBean bean  = null;
                             JSONArray jsonArray = new JSONArray(response);
@@ -627,11 +625,12 @@ public class LoginActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    dbTipoDocumento.eliminarTodo();
                     if (response.equals("[]") || response.equals("") || response.isEmpty()){
                         //CloseProgressBar();
                         //Toast.makeText(context, "No se encontraron datos SP_TIPO_DOCUMENTO", Toast.LENGTH_LONG).show();
                     }else{
-                        dbTipoDocumento.eliminarTodo();
+
                         try {
                             TipoDocumentoBean bean = null;
                             JSONArray jsonArray = new JSONArray(response);
@@ -678,11 +677,11 @@ public class LoginActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    dbEmpresa.eliminarTodo();
                     if (response.equals("[]") || response.equals("") || response.isEmpty()){
                         //CloseProgressBar();
                         //Toast.makeText(context, "No se encontraron datos SP_EMPRESA", Toast.LENGTH_LONG).show();
                     }else{
-                        dbEmpresa.eliminarTodo();
                         try {
                             EmpresaBean bean = null;
                             JSONArray jsonArray = new JSONArray(response);
@@ -740,11 +739,12 @@ public class LoginActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    dbSede.eliminarTodo();
                     if (response.equals("[]") || response.equals("") || response.isEmpty()){
                         //CloseProgressBar();
                         //Toast.makeText(context, "No se encontraron datos SP_SEDE", Toast.LENGTH_LONG).show();
                     }else{
-                        dbSede.eliminarTodo();
+
                         try {
                             SedeBean bean = null;
                             JSONArray jsonArray = new JSONArray(response);
@@ -798,11 +798,12 @@ public class LoginActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    dbPais.eliminarTodo();
                     if (response.equals("[]") || response.equals("") || response.isEmpty()){
                         //CloseProgressBar();
                         //Toast.makeText(context, "No se encontraron datos SP_PAIS", Toast.LENGTH_LONG).show();
                     }else{
-                        dbPais.eliminarTodo();
+
                         try {
                             PaisBean bean = null;
                             JSONArray jsonArray = new JSONArray(response);
@@ -849,11 +850,11 @@ public class LoginActivity extends AppCompatActivity {
             StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
+                    dbSedePoligono.eliminarTodo();
                     if (response.equals("[]") || response.equals("") || response.isEmpty()){
                         //CloseProgressBar();
                         //Toast.makeText(context, "No se encontraron datos SP_SEDE_POLIGONO", Toast.LENGTH_LONG).show();
                     }else{
-                        dbSedePoligono.eliminarTodo();
                         try {
                             SedePoligonoBean bean = null;
                             JSONArray jsonArray = new JSONArray(response);

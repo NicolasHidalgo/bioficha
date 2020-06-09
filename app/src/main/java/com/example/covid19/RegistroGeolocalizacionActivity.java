@@ -3,12 +3,14 @@ package com.example.covid19;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -20,6 +22,7 @@ import androidx.fragment.app.Fragment;
 import beans.SedePoligonoBean;
 import db.DatabaseManagerSedePoligono;
 import helper.Session;
+import util.Util;
 
 public class RegistroGeolocalizacionActivity extends Fragment {
     Context context;
@@ -58,6 +61,14 @@ public class RegistroGeolocalizacionActivity extends Fragment {
         btnBuscarXY.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Todo Location Already on  ... start
+                final LocationManager manager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+                // Todo Location Already on  ... end
+                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER) && Util.hasGPSDevice(context)) {
+                    Toast.makeText(context, "Necesita habilitar el GPS", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                
                 Intent dsp = new Intent(context, MapActivity.class);
                 startActivityForResult(dsp, request_code);
             }
