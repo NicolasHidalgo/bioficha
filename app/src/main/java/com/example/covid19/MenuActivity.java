@@ -173,7 +173,7 @@ public class MenuActivity extends AppCompatActivity {
         if (rolBean.getNOM_ROL().equals("SUPER-ADMIN")){
             btnEmpresa.setVisibility(LinearLayout.VISIBLE);
             btnRegistrador.setVisibility(LinearLayout.VISIBLE);
-            btnSede.setVisibility(LinearLayout.VISIBLE);
+            btnSede.setVisibility(LinearLayout.INVISIBLE);
             spSede.setVisibility(View.INVISIBLE);
             btnVerFichas.setVisibility(View.INVISIBLE);
             linearLayoutSeleccione.setVisibility(View.INVISIBLE);
