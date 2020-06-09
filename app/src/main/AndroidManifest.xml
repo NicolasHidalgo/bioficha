@@ -16,24 +16,24 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".RegistroGeolocalizacionActivity"/>
-        <activity android:name=".ViewPageRegisterSede" />
-        <activity android:name=".AsignarSedeEmpleadoActivity" />
-        <activity android:name=".ViewPageRegisterEmpleado" />
-        <activity android:name=".RegistroRegistradorActivity" />
-        <activity android:name=".MapActivity" />
-        <activity android:name=".RegistroSedesActivity" />
-        <activity android:name=".RegistroEmpresasActivity" />
-        <activity android:name=".SedeActivity" />
-        <activity android:name=".RegistradorActivity" />
-        <activity android:name=".EmpresasActivity" />
-        <activity android:name=".SintomasActivity" />
-        <activity android:name=".EnfermedadesActivity" />
-        <activity android:name=".RegistroActivity" />
-        <activity android:name=".ViewPageRegister" />
-        <activity android:name=".FichasActivity" />
-        <activity android:name=".MenuActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".RegistroGeolocalizacionActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ViewPageRegisterSede" android:screenOrientation="portrait" />
+        <activity android:name=".AsignarSedeEmpleadoActivity" android:screenOrientation="portrait" />
+        <activity android:name=".ViewPageRegisterEmpleado" android:screenOrientation="portrait"/>
+        <activity android:name=".RegistroRegistradorActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".MapActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".RegistroSedesActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".RegistroEmpresasActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SedeActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".RegistradorActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".EmpresasActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".SintomasActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".EnfermedadesActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".RegistroActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".ViewPageRegister" android:screenOrientation="portrait"/>
+        <activity android:name=".FichasActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".MenuActivity" android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -41,7 +41,7 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".LoginActivity">
+        <activity android:name=".LoginActivity" android:screenOrientation="portrait">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
