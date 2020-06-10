@@ -416,8 +416,9 @@ public class ViewPageRegister extends AppCompatActivity {
                                 bioFichaBean.setESTATURA(pEstatura);
                                 bioFichaBean.setPESO(pPeso);
                                 bioFichaBean.setIMC(pIMC);
+                                bioFichaBean.setMENSAJE_IMC("");
                                 bioFichaBean.setGRADO_CELSIUS(pGrados);
-                                bioFichaBean.setMENSAJE_ESTADO(pMensaje);
+                                bioFichaBean.setMENSAJE_GRADO(pMensaje);
                                 bioFichaBean.setLATITUD(latitud);
                                 bioFichaBean.setLONGITUD(longitud);
                                 bioFichaBean.setOTRO_SINTOMA(pOtroSintoma);
@@ -430,8 +431,9 @@ public class ViewPageRegister extends AppCompatActivity {
                                     bioFichaBean.setESTATURA(pEstatura);
                                     bioFichaBean.setPESO(pPeso);
                                     bioFichaBean.setIMC(pIMC);
+                                    bioFichaBean.setMENSAJE_IMC("");
                                     bioFichaBean.setGRADO_CELSIUS(pGrados);
-                                    bioFichaBean.setMENSAJE_ESTADO(pMensaje);
+                                    bioFichaBean.setMENSAJE_GRADO(pMensaje);
                                     bioFichaBean.setLATITUD(latitud);
                                     bioFichaBean.setLONGITUD(longitud);
                                     bioFichaBean.setOTRO_SINTOMA(pOtroSintoma);

@@ -18,9 +18,10 @@ public class BioFichaBean {
     private String GENERO;
     private String ESTATURA;
     private String PESO;
+    private String MENSAJE_IMC;
     private String IMC;
     private String GRADO_CELSIUS;
-    private String MENSAJE_ESTADO;
+    private String MENSAJE_GRADO;
     private double LATITUD;
     private double LONGITUD;
     private String OTRO_SINTOMA;
@@ -98,12 +99,20 @@ public class BioFichaBean {
         this.GRADO_CELSIUS = GRADO_CELSIUS;
     }
 
-    public String getMENSAJE_ESTADO() {
-        return MENSAJE_ESTADO;
+    public String getMENSAJE_IMC() {
+        return MENSAJE_IMC;
     }
 
-    public void setMENSAJE_ESTADO(String MENSAJE_ESTADO) {
-        this.MENSAJE_ESTADO = MENSAJE_ESTADO;
+    public void setMENSAJE_IMC(String MENSAJE_IMC) {
+        this.MENSAJE_IMC = MENSAJE_IMC;
+    }
+
+    public String getMENSAJE_GRADO() {
+        return MENSAJE_GRADO;
+    }
+
+    public void setMENSAJE_GRADO(String MENSAJE_GRADO) {
+        this.MENSAJE_GRADO = MENSAJE_GRADO;
     }
 
     public String getOTRO_SINTOMA() {

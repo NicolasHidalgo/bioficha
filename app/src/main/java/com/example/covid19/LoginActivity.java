@@ -1,6 +1,7 @@
 package com.example.covid19;
 
 import androidx.appcompat.app.AppCompatActivity;
+import beans.BioFichaBean;
 import beans.DepartamentoBean;
 import beans.DistritoBean;
 import beans.EmpresaBean;
@@ -14,6 +15,7 @@ import beans.SintomaBean;
 import beans.TipoDocumentoBean;
 import beans.UsuarioBean;
 import beans.UsuarioSedeBean;
+import db.DatabaseManagerBioFicha;
 import db.DatabaseManagerDepartamento;
 import db.DatabaseManagerDistrito;
 import db.DatabaseManagerEmpresa;
@@ -94,6 +96,7 @@ public class LoginActivity extends AppCompatActivity {
     DatabaseManagerUsuarioSede dbUsuarioSede;
     DatabaseManagerSedePoligono dbSedePoligono;
     DatabaseManagerPais dbPais;
+    DatabaseManagerBioFicha dbFicha;
 
     RequestQueue requestQueue;
     ProgressBar progressBar;
@@ -876,9 +879,7 @@ public class LoginActivity extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     }
-                    CloseProgressBar();
-                    Intent k = new Intent(getApplicationContext(), MenuActivity.class);
-                    startActivity(k);
+                    WebServiceFichas();
                 }
             }, new Response.ErrorListener() {
                 @Override
@@ -896,10 +897,76 @@ public class LoginActivity extends AppCompatActivity {
             };
             requestQueue.add(stringRequest);
         }else{
-            CloseProgressBar();
-            Intent k = new Intent(getApplicationContext(), MenuActivity.class);
-            startActivity(k);
+            WebServiceFichas();
         }
     }
 
+    public void WebServiceFichas(){
+        dbFicha = new DatabaseManagerBioFicha(context);
+        String descripcion = "XXX";
+        String ACCION = "SELECT_POR_EMPRESA";
+        String IdEmpresa = session.getIdEmpresa();
+        final String QUERY = "call SP_FICHA_SELECT('" + ACCION  + "',"+IdEmpresa+");";
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    dbFicha.eliminarTodo();
+                    if (response.equals("[]") || response.isEmpty()){
+                        CloseProgressBar();
+                    }else{
+                        BioFichaBean bean  = null;
+                        JSONArray jsonArray = new JSONArray(response);
+                        JSONObject jsonObject = null;
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            jsonObject = jsonArray.getJSONObject(i);
+                            bean = new BioFichaBean();
+                            bean.setID(jsonObject.getString("ID"));
+                            bean.setID_SEDE(jsonObject.getString("ID_SEDE"));
+                            bean.setID_TIPO_DOCUMENTO(jsonObject.getString("ID_TIPO_DOCUMENTO"));
+                            bean.setNUM_DOCUMENTO(jsonObject.getString("NUM_DOCUMENTO"));
+                            bean.setCOD_PAIS(jsonObject.getString("COD_PAIS"));
+                            bean.setNOMBRES(jsonObject.getString("NOMBRES"));
+                            bean.setAPELLIDO_PATERNO(jsonObject.getString("APELLIDO_PATERNO"));
+                            bean.setAPELLIDO_MATERNO(jsonObject.getString("APELLIDO_MATERNO"));
+                            bean.setFECHA_NACIMIENTO(jsonObject.getString("FECHA_NACIMIENTO"));
+                            bean.setGENERO(jsonObject.getString("GENERO"));
+                            bean.setESTATURA(jsonObject.getString("ESTATURA"));
+                            bean.setPESO(jsonObject.getString("PESO"));
+                            bean.setIMC(jsonObject.getString("IMC"));
+                            bean.setMENSAJE_IMC(jsonObject.getString("MENSAJE_IMC"));
+                            bean.setGRADO_CELSIUS(jsonObject.getString("GRADO_CELSIUS"));
+                            bean.setMENSAJE_GRADO(jsonObject.getString("MENSAJE_GRADO"));
+                            bean.setLATITUD(jsonObject.getDouble("LATITUD"));
+                            bean.setLONGITUD(jsonObject.getDouble("LONGITUD"));
+                            bean.setOTRO_SINTOMA(jsonObject.getString("OTRO_SINTOMA"));
+                            bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
+                            bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
+                            bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                            dbFicha.insertar(bean);
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                CloseProgressBar();
+                Intent k = new Intent(getApplicationContext(), MenuActivity.class);
+                startActivity(k);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                CloseProgressBar();
+                Toast.makeText(getApplicationContext(), "Fallo el servicio WebServiceFichas: " + error.getMessage().toString() , Toast.LENGTH_LONG).show();
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> parametros = new HashMap<>();
+                parametros.put("consulta",QUERY);
+                return parametros;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
 }
