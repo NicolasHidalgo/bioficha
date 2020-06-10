@@ -369,7 +369,30 @@ public class ViewPageRegister extends AppCompatActivity {
                 }
 
                 OpenProgressBar();
-                final String QUERY = "CALL SP_FICHA('"+pAccion+"',"+pId+","+pIdSede+","+pIdTipoDocumento+",'"+pNumDocumento+"','"+pCodPais+"','"+pNombres+"','"+pApePaterno+"','"+pApeMaterno+"','" + pFechaNacimiento +"','"+pGenero+"',"+pEstatura+","+pPeso+","+pIMC+","+pGrados+",'"+ pMensaje+ "'," + latitud + "," + longitud +",'"+ pOtroSintoma +"');";
+                String Params = "";
+                Params = Params + "'" + pAccion + "',";
+                Params = Params + pId + ",";
+                Params = Params + pIdSede + ",";
+                Params = Params + pIdTipoDocumento + ",";
+                Params = Params + "'" + pNumDocumento + "',";
+                Params = Params + "'" + pCodPais + "',";
+                Params = Params + "'" + pNombres + "',";
+                Params = Params + "'" + pApePaterno + "',";
+                Params = Params + "'" + pApeMaterno + "',";
+                Params = Params + "'" + pFechaNacimiento + "',";
+                Params = Params + "'" + pGenero + "',";
+                Params = Params + pEstatura + ",";
+                Params = Params + pPeso + ",";
+                Params = Params + pIMC + ",";
+                Params = Params + pGrados + ",";
+                Params = Params + "'" + pMensaje + "',";
+                Params = Params + latitud + ",";
+                Params = Params + longitud + ",";
+                Params = Params + "'" + pOtroSintoma + "',";
+                Params = Params + session.getIdUsuario();
+
+                final String QUERY = "CALL SP_FICHA(" + Params  + ");";
+                //final String QUERY = "CALL SP_FICHA('"+pAccion+"',"+pId+","+pIdSede+","+pIdTipoDocumento+",'"+pNumDocumento+"','"+pCodPais+"','"+pNombres+"','"+pApePaterno+"','"+pApeMaterno+"','" + pFechaNacimiento +"','"+pGenero+"',"+pEstatura+","+pPeso+","+pIMC+","+pGrados+",'"+ pMensaje+ "'," + latitud + "," + longitud +",'"+ pOtroSintoma +"');";
                 final String finalAccion = pAccion;
                 final String finalId = pId;
                 StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
