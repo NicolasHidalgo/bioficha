@@ -312,7 +312,7 @@ public class ViewPageRegister extends AppCompatActivity {
                     return;
                 }
 
-                final String pIMC = registroActivity.lblIMC.getText().toString();
+                final String pIMC = registroActivity.lblIMC.getText().toString().replace(",",".");
                 final String pGrados = registroActivity.txtGrados.getText().toString();
                 if (pGrados.isEmpty()){
                     Toast.makeText(context, "Debe ingresar el campo Grados", Toast.LENGTH_LONG).show();
