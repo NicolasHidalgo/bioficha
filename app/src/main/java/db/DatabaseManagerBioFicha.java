@@ -28,8 +28,9 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
     public static final String CN_ESTATURA = "ESTATURA";
     public static final String CN_PESO = "PESO";
     public static final String CN_IMC = "IMC";
+    public static final String CN_MENSAJE_IMC = "MENSAJE_IMC";
     public static final String CN_GRADO_CELSIUS = "GRADO_CELSIUS";
-    public static final String CN_MENSAJE_ESTADO = "MENSAJE_ESTADO";
+    public static final String CN_MENSAJE_GRADO = "MENSAJE_GRADO";
     public static final String CN_LATITUD = "LATITUD";
     public static final String CN_LONGITUD = "LONGITUD";
     public static final String CN_OTRO_SINTOMA = "OTRO_SINTOMA";
@@ -54,8 +55,9 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
             + CN_ESTATURA + " float NULL,"
             + CN_PESO + " float NULL,"
             + CN_IMC + " float NULL,"
-            + CN_GRADO_CELSIUS + " integer NULL,"
-            + CN_MENSAJE_ESTADO + " text NULL,"
+            + CN_MENSAJE_IMC + " text NULL,"
+            + CN_GRADO_CELSIUS + " float NULL,"
+            + CN_MENSAJE_GRADO + " text NULL,"
             + CN_LATITUD + " double NULL,"
             + CN_LONGITUD + " double NULL,"
             + CN_OTRO_SINTOMA + " text NULL,"
@@ -87,8 +89,9 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         valores.put(CN_ESTATURA,obj.getESTATURA());
         valores.put(CN_PESO,obj.getPESO());
         valores.put(CN_IMC,obj.getIMC());
+        valores.put(CN_MENSAJE_IMC,obj.getMENSAJE_IMC());
         valores.put(CN_GRADO_CELSIUS,obj.getGRADO_CELSIUS());
-        valores.put(CN_MENSAJE_ESTADO,obj.getMENSAJE_ESTADO());
+        valores.put(CN_MENSAJE_GRADO,obj.getMENSAJE_GRADO());
         valores.put(CN_LATITUD,obj.getLATITUD());
         valores.put(CN_LONGITUD,obj.getLONGITUD());
         valores.put(CN_OTRO_SINTOMA,obj.getOTRO_SINTOMA());
@@ -123,7 +126,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
     public Cursor cargar() {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_SEDE,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO
-                        ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_ESTADO,CN_LATITUD,CN_LONGITUD
+                        ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_MENSAJE_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_GRADO,CN_LATITUD,CN_LONGITUD
                         ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,null);
     }
@@ -132,7 +135,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
     public Cursor cargarById(String id) {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_SEDE,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO
-                        ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_ESTADO,CN_LATITUD,CN_LONGITUD
+                        ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_MENSAJE_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_GRADO,CN_LATITUD,CN_LONGITUD
                         ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
     }
@@ -141,14 +144,14 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_SEDE,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO
-                        ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_ESTADO,CN_LATITUD,CN_LONGITUD
+                        ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_MENSAJE_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_GRADO,CN_LATITUD,CN_LONGITUD
                         ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
     }
     public Cursor cargarPorSedeFecha(String IdSede, String Fecha) {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_SEDE,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO
-                        ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_ESTADO,CN_LATITUD,CN_LONGITUD
+                        ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_MENSAJE_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_GRADO,CN_LATITUD,CN_LONGITUD
                         ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_SEDE+ " = ? AND strftime('%Y-%m-%d'," + CN_FEC_CREACION + ") = ?",new String[] { IdSede, Fecha },null,null,null);
     }
@@ -221,14 +224,15 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
                 bean.setESTATURA(c.getString(10));
                 bean.setPESO(c.getString(11));
                 bean.setIMC(c.getString(12));
-                bean.setGRADO_CELSIUS(c.getString(13));
-                bean.setMENSAJE_ESTADO(c.getString(14));
-                bean.setLATITUD(c.getDouble(15));
-                bean.setLONGITUD(c.getDouble(16));
-                bean.setOTRO_SINTOMA(c.getString(17));
-                bean.setFEC_CREACION(c.getString(18));
-                bean.setFEC_ACTUALIZACION(c.getString(19));
-                bean.setFEC_ELIMINACION(c.getString(20));
+                bean.setMENSAJE_IMC(c.getString(13));
+                bean.setGRADO_CELSIUS(c.getString(14));
+                bean.setMENSAJE_GRADO(c.getString(15));
+                bean.setLATITUD(c.getDouble(16));
+                bean.setLONGITUD(c.getDouble(17));
+                bean.setOTRO_SINTOMA(c.getString(18));
+                bean.setFEC_CREACION(c.getString(19));
+                bean.setFEC_ACTUALIZACION(c.getString(20));
+                bean.setFEC_ELIMINACION(c.getString(21));
 
                 list.add(bean);
             }
@@ -285,14 +289,15 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
                 bean.setESTATURA(c.getString(10));
                 bean.setPESO(c.getString(11));
                 bean.setIMC(c.getString(12));
-                bean.setGRADO_CELSIUS(c.getString(13));
-                bean.setMENSAJE_ESTADO(c.getString(14));
-                bean.setLATITUD(c.getDouble(15));
-                bean.setLONGITUD(c.getDouble(16));
-                bean.setOTRO_SINTOMA(c.getString(17));
-                bean.setFEC_CREACION(c.getString(18));
-                bean.setFEC_ACTUALIZACION(c.getString(19));
-                bean.setFEC_ELIMINACION(c.getString(20));
+                bean.setMENSAJE_IMC(c.getString(13));
+                bean.setGRADO_CELSIUS(c.getString(14));
+                bean.setMENSAJE_GRADO(c.getString(15));
+                bean.setLATITUD(c.getDouble(16));
+                bean.setLONGITUD(c.getDouble(17));
+                bean.setOTRO_SINTOMA(c.getString(18));
+                bean.setFEC_CREACION(c.getString(19));
+                bean.setFEC_ACTUALIZACION(c.getString(20));
+                bean.setFEC_ELIMINACION(c.getString(21));
 
                 list.add(bean);
             }
@@ -323,14 +328,15 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
                 bean.setESTATURA(c.getString(10));
                 bean.setPESO(c.getString(11));
                 bean.setIMC(c.getString(12));
-                bean.setGRADO_CELSIUS(c.getString(13));
-                bean.setMENSAJE_ESTADO(c.getString(14));
-                bean.setLATITUD(c.getDouble(15));
-                bean.setLONGITUD(c.getDouble(16));
-                bean.setOTRO_SINTOMA(c.getString(17));
-                bean.setFEC_CREACION(c.getString(18));
-                bean.setFEC_ACTUALIZACION(c.getString(19));
-                bean.setFEC_ELIMINACION(c.getString(20));
+                bean.setMENSAJE_IMC(c.getString(13));
+                bean.setGRADO_CELSIUS(c.getString(14));
+                bean.setMENSAJE_GRADO(c.getString(15));
+                bean.setLATITUD(c.getDouble(16));
+                bean.setLONGITUD(c.getDouble(17));
+                bean.setOTRO_SINTOMA(c.getString(18));
+                bean.setFEC_CREACION(c.getString(19));
+                bean.setFEC_ACTUALIZACION(c.getString(20));
+                bean.setFEC_ELIMINACION(c.getString(21));
             }
         }catch (Exception e){
             e.printStackTrace();
