@@ -173,6 +173,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         LatLng peru = new LatLng(latitud,longitud);
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(peru,zoom));
+        MarkerOptions markerOptions = new MarkerOptions().position(peru);
+        mMap.addMarker(markerOptions);
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
@@ -181,7 +183,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     return;
                 }
                 MarkerOptions markerOptions = new MarkerOptions().position(latLng);
-                Marker marker = googleMap.addMarker(markerOptions);
+                Marker marker = mMap.addMarker(markerOptions);
                 latLngsList.add(latLng);
                 markerList.add(marker);
 
