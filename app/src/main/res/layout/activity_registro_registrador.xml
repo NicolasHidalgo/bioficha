@@ -227,7 +227,7 @@
 
                     <Spinner
                         android:id="@+id/spEmpresa"
-                        android:layout_width="175dp"
+                        android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:layout_marginLeft="4dp"
                         android:layout_marginTop="12dp"

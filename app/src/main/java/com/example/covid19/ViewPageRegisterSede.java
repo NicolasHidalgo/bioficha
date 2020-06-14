@@ -145,7 +145,7 @@ public class ViewPageRegisterSede extends AppCompatActivity {
                 }
                 if(CoordenadaX1.equals("") || CoordenadaX2.equals("") || CoordenadaX3.equals("") || CoordenadaX4.equals("") ||
                         CoordenadaY1.equals("") || CoordenadaY2.equals("") || CoordenadaY3.equals("") || CoordenadaY4.equals("")){
-                    Toast.makeText(context, "Dibuje las coordenadas en el mapa", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Ir a geolocalización y registrar coordenadas", Toast.LENGTH_LONG).show();
                     return;
                 }
                 final String formatoCoordenada = CoordenadaX1 + "," + CoordenadaY1 + "|" + CoordenadaX2 + "," +CoordenadaY2 + "|" + CoordenadaX3 + "," + CoordenadaY3 + "|" + CoordenadaX4 + "," + CoordenadaY4;
