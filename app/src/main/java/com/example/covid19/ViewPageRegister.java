@@ -207,7 +207,7 @@ public class ViewPageRegister extends AppCompatActivity {
                 }
 
                 if(!(VerificarSedeGPS())){
-                    Toast.makeText(context, "Para registrar una ficha usted debe encontrarse dentro del perimetro de la sede " + session.getNomSede(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, "Para registrar una ficha usted debe encontrarse dentro del perimetro de la sede " + session.getNomSede(), Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -676,6 +676,7 @@ public class ViewPageRegister extends AppCompatActivity {
                 }else {
                     builder = null;
                     resultado = false;
+                    Toast.makeText(context,"No se encontro LATITUD:" + latitud.toString() + " LONGITUD:" + longitud.toString(), Toast.LENGTH_LONG).show();
                 }
             }
 
