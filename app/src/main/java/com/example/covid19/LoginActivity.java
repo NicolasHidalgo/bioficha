@@ -56,6 +56,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HurlStack;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -107,6 +108,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         session = new Session(this);
         context = this;
+
         requestQueue = Volley.newRequestQueue(this);
 
         ProgressBarHandler(context);
@@ -238,7 +240,11 @@ public class LoginActivity extends AppCompatActivity {
                 return parametros;
             }
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
+
 
     }
 
@@ -287,7 +293,11 @@ public class LoginActivity extends AppCompatActivity {
                     return parametros;
                 }
             };
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
+
         //}else{
             //WebServiceEnfermedad();
         //}
@@ -347,7 +357,11 @@ public class LoginActivity extends AppCompatActivity {
                     return parametros;
                 }
             };
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
+
         }else {
             WebServiceRol();
         }
@@ -398,7 +412,11 @@ public class LoginActivity extends AppCompatActivity {
                     return parametros;
                 }
             };
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
+
         }else{
             WebServiceSintoma();
         }
@@ -460,7 +478,11 @@ public class LoginActivity extends AppCompatActivity {
                     return parametros;
                 }
             };
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
+
         }else{
             WebServiceDepartamento();
         }
@@ -510,8 +532,11 @@ public class LoginActivity extends AppCompatActivity {
                     return parametros;
                 }
             };
-
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
+
         }else {
             WebServiceProvincia();
         }
@@ -563,7 +588,11 @@ public class LoginActivity extends AppCompatActivity {
                     return parametros;
                 }
             };
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
+
         }else{
             WebServiceDistrito();
         }
@@ -614,7 +643,11 @@ public class LoginActivity extends AppCompatActivity {
                     return parametros;
                 }
             };
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
+
         }else{
             WebServiceTipoDocumento();
         }
@@ -666,7 +699,11 @@ public class LoginActivity extends AppCompatActivity {
                     return parametros;
                 }
             };
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
+
         }else{
             WebServiceEmpresa();
         }
@@ -729,7 +766,11 @@ public class LoginActivity extends AppCompatActivity {
                     return parametros;
                 }
             };
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
+
         }else {
             WebServiceSede();
         }
@@ -793,7 +834,11 @@ public class LoginActivity extends AppCompatActivity {
                     return parametros;
                 }
             };
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
+
         //}else{
             //WebServicePais();
         //}
@@ -845,7 +890,11 @@ public class LoginActivity extends AppCompatActivity {
                     return parametros;
                 }
             };
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
+
         }else{
             WebServiceSedePoligono();
         }
@@ -895,7 +944,11 @@ public class LoginActivity extends AppCompatActivity {
                     return parametros;
                 }
             };
+            stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
             requestQueue.add(stringRequest);
+
         }else{
             WebServiceFichas();
         }
@@ -967,6 +1020,10 @@ public class LoginActivity extends AppCompatActivity {
                 return parametros;
             }
         };
+        stringRequest.setRetryPolicy(new DefaultRetryPolicy(10000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(stringRequest);
+
     }
 }
