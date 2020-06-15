@@ -136,7 +136,6 @@ public class ViewPageRegister extends AppCompatActivity {
         dbUsuario = new DatabaseManagerUsuario(context);
 
         final String pIdSede = session.getIdSede();
-        listaVertice = dbSedePoligono.getList(pIdSede);
 
         tabLayout = (TabLayout) findViewById(R.id.tabLayout_id);
         viewPager = (ViewPager) findViewById(R.id.viewpager_id);
@@ -208,7 +207,7 @@ public class ViewPageRegister extends AppCompatActivity {
                 }
 
                 if(!(VerificarSedeGPS())){
-                    Toast.makeText(context, "Para registrar una ficha usted debe encontrarse dentro del perimetro de la sede " + session.getNomSede(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(context, "Para registrar una ficha usted debe encontrarse dentro del perimetro de la sede " + session.getNomSede(), Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -657,40 +656,30 @@ public class ViewPageRegister extends AppCompatActivity {
         builder = null;
         builder = new Polygon.Builder();
         flag = 0;
-        sedeBean = dbSede.get(session.getIdSede());
 
-        for (int i = 0; i < listaVertice.size(); i++){
-            cIdSede = Integer.parseInt(listaVertice.get(i).getID_SEDE());
-            verLat = listaVertice.get(i).getLATITUD();
-            verLon = listaVertice.get(i).getLONGITUD();
-            if (i > 0){
-                cIdSedeAux = Integer.parseInt(listaVertice.get(i - 1).getID_SEDE());
-                if (i == listaVertice.size() - 1){
-                    cIdSedeAux = cIdSede;
-                    flag = 1;
+        listaVertice = dbSedePoligono.getList(session.getIdSede());
+        //sedeBean = dbSede.get(session.getIdSede());
+
+        if (listaVertice != null){
+            if (listaVertice.size() > 0){
+                for (int i = 0; i < listaVertice.size(); i++){
+                    cIdSede = Integer.parseInt(listaVertice.get(i).getID_SEDE());
+                    verLat = listaVertice.get(i).getLATITUD();
+                    verLon = listaVertice.get(i).getLONGITUD();
                     builder.addVertex(new Point(verLat,verLon));
                 }
-                if (cIdSede != cIdSedeAux){
-                    flag = 1;
-                }
-            }
-            if (flag == 0)
-                builder.addVertex(new Point(verLat,verLon));
-
-            if (flag == 1){
-                flag = 0;
                 polygon = builder.build();
                 point = new Point(latitud, longitud);
                 contains = polygon.contains(point);
                 if(contains){
                     resultado = true;
-                    //Toast.makeText(context, "Estas dentro de " + sedeBean.getNOMBRE_SEDE(),Toast.LENGTH_SHORT).show();
                 }else {
                     builder = null;
                     resultado = false;
-                    //Toast.makeText(context, "Estas fuera de " + sedeBean.getNOMBRE_SEDE(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context,"No se encontro LATITUD:" + latitud.toString() + " LONGITUD:" + longitud.toString(), Toast.LENGTH_LONG).show();
                 }
             }
+
         }
         return resultado;
     }
