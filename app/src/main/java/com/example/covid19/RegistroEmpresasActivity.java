@@ -209,7 +209,7 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if (response.equals("[]")) {
+                        if (response.equals("[]") || response.equals("")) {
                             Toast.makeText(context, "No se encontraron datos", Toast.LENGTH_LONG).show();
                         } else {
                             try {
@@ -228,7 +228,7 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         CloseProgressBar();
-                        Toast.makeText(context, "ERROR WS RUC " + error.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context, "RUC no existe", Toast.LENGTH_LONG).show();
                     }
                 });
                 requestQueue = Volley.newRequestQueue(context);
