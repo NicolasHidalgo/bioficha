@@ -24,6 +24,9 @@ import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -44,6 +47,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.internal.Objects;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -76,6 +80,7 @@ public class MenuActivity extends AppCompatActivity {
     public String QUERY = "";
     RequestQueue requestQueue;
     SwipeRefreshLayout swipeRefreshLayout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -212,6 +217,8 @@ public class MenuActivity extends AppCompatActivity {
             List<UsuarioSedeBean> listaUsuarioSede = dbUsuarioSede.getList(usuarioBean.getID());
             String sedes = "";
             int i = 1;
+
+
             for (UsuarioSedeBean us: listaUsuarioSede) {
                 sedes = sedes + us.getID_SEDE();
                 if (i != listaUsuarioSede.size())

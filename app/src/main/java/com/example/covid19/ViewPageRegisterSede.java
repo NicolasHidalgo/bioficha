@@ -101,6 +101,7 @@ public class ViewPageRegisterSede extends AppCompatActivity {
         btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if(!(ConnectivityReceiver.isConnected(context))){
                     Toast.makeText(context, "Necesita contectarte a internet para continuar", Toast.LENGTH_LONG).show();
                     return;

@@ -7,10 +7,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -32,6 +32,11 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.tabs.TabLayout;
 import com.snatik.polygon.Point;
 import com.snatik.polygon.Polygon;
@@ -50,12 +55,15 @@ import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import java.util.Map;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.viewpager.widget.ViewPager;
 import beans.BioFichaBean;
 import beans.BioFichaEnfermedadBean;
 import beans.BioFichaSintomaBean;
+import beans.EmpresaBean;
 import beans.EnfermedadBean;
 import beans.PaisBean;
 import beans.SedeBean;
@@ -74,10 +82,15 @@ import db.DatabaseManagerSintoma;
 import db.DatabaseManagerTipoDocumento;
 import db.DatabaseManagerUsuario;
 import helper.ConnectivityReceiver;
+import helper.LocationResolver;
 import helper.Session;
 import util.Util;
 
 public class ViewPageRegister extends AppCompatActivity {
+
+    private GoogleApiClient mGoogleApiClient;
+    private LocationResolver mLocationResolver;
+
 
     Context context;
     private TabLayout tabLayout;
@@ -102,9 +115,10 @@ public class ViewPageRegister extends AppCompatActivity {
 
     ProgressBar progressBar;
 
-    private LocationManager locationManager; // Para capturar GPS
-    private LocationListener locationListener; // Para capturar GPS
+    //protected LocationManager locationManager; // Para capturar GPS
+    //protected LocationListener locationListener; // Para capturar GPS
     Double latitud = 0.0, longitud = 0.0, verLat = 0.0, verLon = 0.0;
+
     Polygon polygon;
     Point point;
     Polygon.Builder builder;
@@ -113,6 +127,7 @@ public class ViewPageRegister extends AppCompatActivity {
     List<SedePoligonoBean> listaVertice;
     int cIdSede = 0;
     int cIdSedeAux = 0;
+    private Location MobLoc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,40 +173,14 @@ public class ViewPageRegister extends AppCompatActivity {
 
         WebServiceSedePoligono();
 
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-        locationListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                latitud = location.getLatitude();
-                longitud = location.getLongitude();
-            }
-
-            @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String provider) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String provider) {
-
-            }
-        };
-
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            return;
-        }
-        locationManager.requestLocationUpdates("gps", 5000, 0, locationListener);
+        mLocationResolver=new LocationResolver(this);
+        retrieveLocation();
 
         btnGrabar = (Button) findViewById(R.id.btnGrabar);
         btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Toast.makeText(context,"No se encontro LATITUD:" + latitud.toString() + " LONGITUD:" + longitud.toString(), Toast.LENGTH_LONG).show();
 
                 if(!(ConnectivityReceiver.isConnected(context))){
                     Toast.makeText(context, "Necesita contectarte a internet para continuar", Toast.LENGTH_LONG).show();
@@ -645,11 +634,14 @@ public class ViewPageRegister extends AppCompatActivity {
 
     }
 
+
     @Override
     public void onResume() {
         super.onResume();
+        //locationManager.removeUpdates(locationListener);
         CloseProgressBar();
     }
+
 
     public boolean VerificarSedeGPS(){
         boolean resultado = true;
@@ -683,6 +675,7 @@ public class ViewPageRegister extends AppCompatActivity {
         }
         return resultado;
     }
+
 
     public void CloseProgressBar(){
         progressBar.setVisibility(View.INVISIBLE);
@@ -753,5 +746,24 @@ public class ViewPageRegister extends AppCompatActivity {
         };
         requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
+    }
+
+
+    void retrieveLocation() {
+        mLocationResolver.resolveLocation(this, new LocationResolver.OnLocationResolved() {
+            @Override
+            public void onLocationResolved(Location location) {
+                // Do what ever you want
+                latitud = location.getLatitude();
+                longitud = location.getLongitude();
+            }
+        });
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        mLocationResolver.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }
