@@ -234,6 +234,11 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                     Toast.makeText(context, "Debe seleccionar la fecha de nacimiento", Toast.LENGTH_LONG).show();
                     return;
                 }
+                String regex = "^([0-2][0-9]|(3)[0-1])(\\/)(((0)[0-9])|((1)[0-2]))(\\/)\\d{4}$";
+                if(!fechaNacimiento.matches(regex)){
+                    Toast.makeText(context, "Ingrese una fecha válida dd/mm/YYYY", Toast.LENGTH_LONG).show();
+                    return;
+                }
 
                 String [] dateParts = fechaNacimiento.split("/");
                 int day = Integer.parseInt(dateParts[0]);

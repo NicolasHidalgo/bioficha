@@ -64,7 +64,7 @@
                     </TextView>
                     <Spinner
                         android:id="@+id/spEmpresa"
-                        android:layout_width="175dp"
+                        android:layout_width="match_parent"
                         android:layout_height="45dp"
                         android:background="@drawable/spinner"
                         android:layout_marginLeft="4dp"
