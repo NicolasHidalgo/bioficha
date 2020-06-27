@@ -149,6 +149,7 @@ public class ViewPageRegisterSede extends AppCompatActivity {
                     Toast.makeText(context, "Ir a geolocalización y registrar coordenadas", Toast.LENGTH_LONG).show();
                     return;
                 }
+
                 final String formatoCoordenada = CoordenadaX1 + "," + CoordenadaY1 + "|" + CoordenadaX2 + "," +CoordenadaY2 + "|" + CoordenadaX3 + "," + CoordenadaY3 + "|" + CoordenadaX4 + "," + CoordenadaY4;
                 final String id_distrito = distritoBean.getID();
                 OpenProgressBar();

@@ -88,9 +88,7 @@ import util.Util;
 
 public class ViewPageRegister extends AppCompatActivity {
 
-    private GoogleApiClient mGoogleApiClient;
     private LocationResolver mLocationResolver;
-
 
     Context context;
     private TabLayout tabLayout;
@@ -344,7 +342,6 @@ public class ViewPageRegister extends AppCompatActivity {
                     mensaje = "Fiebre alta";
                 }
                 final String pMensaje = mensaje;
-
                 final String pOtroSintoma = "";
 
                 // Validar si existe ficha localmente (por Tipo Document, Num Documento y Fecha Registro)
@@ -354,6 +351,11 @@ public class ViewPageRegister extends AppCompatActivity {
                         Toast.makeText(context, "Este registro ya se encuentra registrado", Toast.LENGTH_LONG).show();
                         return;
                     }
+                }
+
+                // cuando temperatura mayor o igual a 38 C
+                if(Double.parseDouble(pGrados) >= 38){
+                    Toast.makeText(context, "APLICACION DE PRUEBA SEROLOGICA O MOLECULAR COVID-19, SEGUN NORMAS DEL MINISTERIO DE SALUD, COMUNICAR A LA AUTORIDAD DE SALUD DE SU JURISDICCION PARA SEGUIMIENTO DE CASO SOSPECHOSO.", Toast.LENGTH_LONG).show();
                 }
 
                 OpenProgressBar();
