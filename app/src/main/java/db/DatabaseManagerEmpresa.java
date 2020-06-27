@@ -48,7 +48,7 @@ import beans.SpinnerBean;
             + CN_FEC_CREACION + " datetime NULL,"
             + CN_FEC_ACTUALIZACION + " datetime NULL,"
             + CN_FEC_ELIMINACION + " datetime NULL,"
-            + CN_ESTADO + " int NULL"
+            + CN_ESTADO + " int NULL DEFAULT 1"
             + ");";
 
     public DatabaseManagerEmpresa(Context ctx) {

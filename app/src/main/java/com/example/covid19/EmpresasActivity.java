@@ -160,7 +160,7 @@ public class EmpresasActivity extends AppCompatActivity {
                 builder.setTitle("ALERTA");
 
                 // Ask the final question
-                builder.setMessage("¿Estás seguro de eliminar esta empresa?");
+                builder.setMessage("¿Estás seguro de eliminar esta sede?");
 
                 // Set click listener for alert dialog buttons
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -268,7 +268,7 @@ public class EmpresasActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 CloseProgressBar();
-                Toast.makeText(context, "No se encontró a la empresa", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, "Ocurrió un error al eliminar la empresa", Toast.LENGTH_LONG).show();
             }
         }){
             @Override
