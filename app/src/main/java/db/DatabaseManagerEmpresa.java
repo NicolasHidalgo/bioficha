@@ -12,24 +12,26 @@ import beans.BioFichaBean;
 import beans.EmpresaBean;
 import beans.SpinnerBean;
 
-public class DatabaseManagerEmpresa extends DatabaseManager {
+    public class DatabaseManagerEmpresa extends DatabaseManager {
 
-    public static final String NOMBRE_TABLA = "EMPRESA";
-    public static final String CN_ID = "_ID";
-    public static final String CN_RUC = "RUC";
-    public static final String CN_NOM_RAZON_SOCIAL = "NOM_RAZON_SOCIAL";
-    public static final String CN_ACT_ECONOMICAS = "ACT_ECONOMICAS";
-    public static final String CN_DIRECCION = "DIRECCION";
-    public static final String CN_ID_DISTRITO = "ID_DISTRITO";
-    public static final String CN_LATITUD = "LATITUD";
-    public static final String CN_LONGITUD = "LONGITUD";
-    public static final String CN_TELEFONO = "TELEFONO";
-    public static final String CN_CORREO = "CORREO";
-    public static final String CN_CONTACTO = "CONTACTO";
+        public static final String NOMBRE_TABLA = "EMPRESA";
+        public static final String CN_ID = "_ID";
+        public static final String CN_RUC = "RUC";
+        public static final String CN_NOM_RAZON_SOCIAL = "NOM_RAZON_SOCIAL";
+        public static final String CN_ACT_ECONOMICAS = "ACT_ECONOMICAS";
+        public static final String CN_DIRECCION = "DIRECCION";
+        public static final String CN_ID_DISTRITO = "ID_DISTRITO";
+        public static final String CN_LATITUD = "LATITUD";
+        public static final String CN_LONGITUD = "LONGITUD";
+        public static final String CN_TELEFONO = "TELEFONO";
+        public static final String CN_CORREO = "CORREO";
+        public static final String CN_CONTACTO = "CONTACTO";
 
-    public static final String CN_FEC_CREACION = "FEC_CREACION";
-    public static final String CN_FEC_ACTUALIZACION = "FEC_ACTUALIZACION";
-    public static final String CN_FEC_ELIMINACION = "FEC_ELIMINACION";
+        public static final String CN_FEC_CREACION = "FEC_CREACION";
+        public static final String CN_FEC_ACTUALIZACION = "FEC_ACTUALIZACION";
+        public static final String CN_FEC_ELIMINACION = "FEC_ELIMINACION";
+        public static final String CN_ESTADO = "ESTADO";
+
 
     public static final String CREATE_TABLE =  "create table " + NOMBRE_TABLA + " ("
             + CN_ID + " integer PRIMARY KEY,"
@@ -45,7 +47,8 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
             + CN_CONTACTO + " text NULL,"
             + CN_FEC_CREACION + " datetime NULL,"
             + CN_FEC_ACTUALIZACION + " datetime NULL,"
-            + CN_FEC_ELIMINACION + " datetime NULL"
+            + CN_FEC_ELIMINACION + " datetime NULL,"
+            + CN_ESTADO + " int NULL"
             + ");";
 
     public DatabaseManagerEmpresa(Context ctx) {
@@ -108,6 +111,12 @@ public class DatabaseManagerEmpresa extends DatabaseManager {
         String [] columnas = new String[]
                 {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
+    }
+    public void EliminarRegistro(String id){
+        String sql = "UPDATE " + NOMBRE_TABLA + " SET " +
+                CN_ESTADO + " = 0, " +
+                CN_FEC_ELIMINACION + " = date('now') WHERE _ID = " + id;
+        super.getDb().execSQL(sql);
     }
 
     public Cursor cargarByRazonSocial(String RazonSocial) {
