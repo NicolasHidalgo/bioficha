@@ -77,7 +77,7 @@ public class RegistroActivity extends Fragment {
     Context context;
     EditText txtNumDocumento, txtNombres, txtApePaterno, txtApeMaterno, txtCorreo;
     EditText txtFechaNacimiento, txtEstatura, txtPeso, txtGrados;
-    TextView lblAlerta1, lblAlerta2;
+    TextView lblAlerta1, lblAlerta2, lblAlerta3;
     RequestQueue requestQueue;
     TextView lblNomEmpresa, lblNomSede, lblIMC;
     private Session session;
@@ -124,6 +124,7 @@ public class RegistroActivity extends Fragment {
         lblIMC = (TextView) view.findViewById(R.id.lblIMC);
         lblAlerta1 = (TextView) view.findViewById(R.id.lblAlerta1);
         lblAlerta2 = (TextView) view.findViewById(R.id.lblAlerta2);
+        lblAlerta3 = (TextView) view.findViewById(R.id.lblAlerta3);
 
         calendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -163,7 +164,7 @@ public class RegistroActivity extends Fragment {
             }
             @Override
             public void afterTextChanged(Editable s) {
-                Alerta1();
+                Alerta3();
             }
         });
 
@@ -365,7 +366,12 @@ public class RegistroActivity extends Fragment {
                     return;
                 }
 
+                // Si no esta en el sqlite, buscamos al mysql (ws)
                 OpenProgressBar();
+
+
+
+
                 // Consulta DNI webservice
                 String URL = "https://dniruc.apisperu.com/api/v1/dni/" + NumDocumento + "?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5pY29sYXNoaWRhbGdvY29ycmVhQGhvdG1haWwuY29tIn0.vRpQYdBvxUFwsXFehU1KpQzNJhl08IBR69hHBcefGno";
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
@@ -504,54 +510,50 @@ public class RegistroActivity extends Fragment {
 
     public void Alerta1(){
         String imc =  lblIMC.getText().toString();
-        lblAlerta1.setText("IMC normal");
+        lblAlerta1.setText("IMC OK");
         lblAlerta1.setTextColor(Color.GREEN);
         if (!(imc.isEmpty())){
             float resultado = Float.parseFloat(imc);
             if (resultado > 40){
-                String fechaNacimiento = txtFechaNacimiento.getText().toString();
-                if (!(fechaNacimiento.isEmpty())){
-                    String [] dateParts = fechaNacimiento.split("/");
-                    int day = Integer.parseInt(dateParts[0]);
-                    int month = Integer.parseInt(dateParts[1]);
-                    int year = Integer.parseInt(dateParts[2]);
+                lblAlerta1.setText("IMC: SEGUN D.S. 083-2020-PCM, NO ESTA AUTORIZADO A LABORAR POR RERPESENTAR RIESGO INMINENTE A SU SALUD");
+                lblAlerta1.setTextColor(Color.RED);
 
-                    int edad = Util.getAge(year,month,day);
-                    if (edad > 65){
-                        lblAlerta1.setText("IMC mayor a 40 | Mayores de 65 años");
-                        lblAlerta1.setTextColor(Color.RED);
-                    }
-                }
             }
         }
-
 
     }
 
     public void Alerta2(){
         String valor = txtGrados.getText().toString();
-        String mensaje = "Temperatura humana normal";
+        String mensaje = "TEMPERATURA OK";
         lblAlerta2.setTextColor(Color.GREEN);
         if (!(valor.isEmpty())){
             double grados = Double.parseDouble(valor);
-            if(grados >= 36.0 && grados <= 37.0 ){
-                mensaje = "Temperatura humana normal";
-                lblAlerta2.setTextColor(Color.GREEN);
-            }else if(grados >= 37.1 && grados <= 38.1 ){
-                mensaje = "Febricula";
-                lblAlerta2.setTextColor(Color.RED);
-            }else if(grados >= 38.2 && grados <= 38.5 ){
-                mensaje = "Fiebre leve";
-                lblAlerta2.setTextColor(Color.RED);
-            }else if(grados >= 38.6 && grados <= 39.0 ){
-                mensaje = "Fiebre moderada";
-                lblAlerta2.setTextColor(Color.RED);
-            }else if(grados > 39.0){
-                mensaje = "Fiebre alta";
+            if(grados >= 38.0){
+                mensaje = "TEMPERATURA: SEGUN D.S. 083-2020-PCM, NO ESTA AUTORIZADO INGRESAR A LABORAR POR REPRESENTAR UN RIESGO AL CENTRO DE TRABAJO";
                 lblAlerta2.setTextColor(Color.RED);
             }
         }
         lblAlerta2.setText(mensaje);
+    }
+
+    public void Alerta3(){
+        String mensaje = "EDAD OK";
+        lblAlerta3.setTextColor(Color.GREEN);
+        String fechaNacimiento = txtFechaNacimiento.getText().toString();
+        if (!(fechaNacimiento.isEmpty())){
+            String [] dateParts = fechaNacimiento.split("/");
+            int day = Integer.parseInt(dateParts[0]);
+            int month = Integer.parseInt(dateParts[1]);
+            int year = Integer.parseInt(dateParts[2]);
+
+            int edad = Util.getAge(year,month,day);
+            if (edad >= 65){
+                mensaje = "EDAD: SEGUN D.S. 083-2020-PCM, PRESENTAR DECLARACION JURADA, DONDE SE HACE RESPONSABLE POR SU ESTADO DE SALUD";
+                lblAlerta3.setTextColor(Color.RED);
+            }
+        }
+        lblAlerta3.setText(mensaje);
     }
 
 }

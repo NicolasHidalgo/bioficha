@@ -353,11 +353,6 @@ public class ViewPageRegister extends AppCompatActivity {
                     }
                 }
 
-                // cuando temperatura mayor o igual a 38 C
-                if(Double.parseDouble(pGrados) >= 38){
-                    Toast.makeText(context, "APLICACION DE PRUEBA SEROLOGICA O MOLECULAR COVID-19, SEGUN NORMAS DEL MINISTERIO DE SALUD, COMUNICAR A LA AUTORIDAD DE SALUD DE SU JURISDICCION PARA SEGUIMIENTO DE CASO SOSPECHOSO.", Toast.LENGTH_LONG).show();
-                }
-
                 OpenProgressBar();
                 String Params = "";
                 Params = Params + "'" + pAccion + "',";

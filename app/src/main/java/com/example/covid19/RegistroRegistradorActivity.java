@@ -70,7 +70,7 @@ public class RegistroRegistradorActivity extends Fragment {
 
     Context context;
     EditText txtNumDocumento, txtNombres, txtApePaterno, txtApeMaterno, txtCorreo;
-    EditText txtFechaNacimiento, txtUsuario, txtClave;
+    EditText txtFechaNacimiento, txtUsuario, txtClave, txtEstatura, txtPeso;
     LinearLayout linearLayoutEmpresa, linearLayoutUsuario, linearLayoutClave;
     RequestQueue requestQueue;
     Button btnBuscarEmpleado;
@@ -113,6 +113,8 @@ public class RegistroRegistradorActivity extends Fragment {
         txtUsuario = (EditText) view.findViewById(R.id.txtUsuario);
         txtClave = (EditText) view.findViewById(R.id.txtClave);
         spRol = (Spinner) view.findViewById(R.id.spRol);
+        txtEstatura = (EditText) view.findViewById(R.id.txtEstatura);
+        txtPeso = (EditText) view.findViewById(R.id.txtPeso);
 
         // Se ocultara cuando la empresa este en session
         linearLayoutEmpresa = (LinearLayout) view.findViewById(R.id.LinearLayoutEmpresa);
@@ -286,6 +288,8 @@ public class RegistroRegistradorActivity extends Fragment {
                         e.printStackTrace();
                     }
                     txtFechaNacimiento.setText(fecNac);
+                    txtEstatura.setText(usuarioBean.getESTATURA());
+                    txtPeso.setText(usuarioBean.getPESO());
                     txtUsuario.setText(usuarioBean.getUSUARIO());
                     txtClave.setText(usuarioBean.getCONTRASENA());
                     txtCorreo.setText(usuarioBean.getCORREO());

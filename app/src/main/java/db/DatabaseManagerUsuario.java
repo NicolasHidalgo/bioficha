@@ -26,6 +26,8 @@ public class DatabaseManagerUsuario extends DatabaseManager {
     public static final String CN_GENERO = "GENERO";
     public static final String CN_CORREO = "CORREO";
     public static final String CN_FECHA_NACIMIENTO = "FECHA_NACIMIENTO";
+    public static final String CN_ESTATURA = "ESTATURA";
+    public static final String CN_PESO = "PESO";
     public static final String CN_NOMBRES_CONTACTO = "NOMBRES_CONTACTO";
     public static final String CN_DIRECCION_CONTACTO = "DIRECCION_CONTACTO";
     public static final String CN_TELEFONO_CONTACTO = "TELEFONO_CONTACTO";
@@ -48,6 +50,8 @@ public class DatabaseManagerUsuario extends DatabaseManager {
             + CN_ID_EMPRESA + " int NULL,"
             + CN_GENERO + " text NULL,"
             + CN_CORREO + " text NULL,"
+            + CN_ESTATURA + " float NULL,"
+            + CN_PESO + " float NULL,"
             + CN_FECHA_NACIMIENTO + " datetime NULL,"
             + CN_NOMBRES_CONTACTO + " text NULL,"
             + CN_DIRECCION_CONTACTO + " text NULL,"
@@ -81,6 +85,8 @@ public class DatabaseManagerUsuario extends DatabaseManager {
         valores.put(CN_ID_EMPRESA,obj.getID_EMPRESA());
         valores.put(CN_GENERO,obj.getGENERO());
         valores.put(CN_CORREO,obj.getCORREO());
+        valores.put(CN_ESTATURA,obj.getESTATURA());
+        valores.put(CN_PESO,obj.getPESO());
         valores.put(CN_FECHA_NACIMIENTO,obj.getFECHA_NACIMIENTO());
         valores.put(CN_NOMBRES_CONTACTO,obj.getNOMBRES_CONTACTO());
         valores.put(CN_DIRECCION_CONTACTO,obj.getDIRECCION_CONTACTO());
@@ -121,7 +127,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
     public Cursor cargar() {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
-                        CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
+                        CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_ESTATURA,CN_PESO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
                 CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,CN_FEC_CREACION + " ASC");
     }
@@ -129,7 +135,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
     public Cursor cargarPorTipoDocumentoNumDocumento(String TipoDocumento, String NumDocumento) {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
-                        CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
+                        CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_ESTATURA,CN_PESO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
                         CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_TIPO_DOCUMENTO + " =? AND " + CN_NUM_DOCUMENTO + " =?", new String[]{TipoDocumento,NumDocumento},null,null,CN_FEC_CREACION + " ASC");
     }
@@ -138,7 +144,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
     public Cursor cargarById(String id) {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
-                        CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
+                        CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_ESTATURA,CN_PESO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
                         CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,CN_FEC_CREACION + " ASC");
     }
@@ -147,7 +153,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
-                        CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
+                        CN_ID_EMPRESA,CN_GENERO,CN_CORREO,CN_ESTATURA,CN_PESO,CN_FECHA_NACIMIENTO,CN_NOMBRES_CONTACTO,CN_DIRECCION_CONTACTO,CN_TELEFONO_CONTACTO,
                         CN_CORREO_CONTACTO,CN_USUARIO,CN_CONTRASENA,CN_ID_ROL,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_EMPRESA+ " = ? AND " + CN_ID_ROL + " != ? ",new String[] { tipo, "1" },null,null,CN_FEC_CREACION + " ASC");
     }
@@ -232,17 +238,19 @@ public class DatabaseManagerUsuario extends DatabaseManager {
             bean.setID_EMPRESA(c.getString(7));
             bean.setGENERO(c.getString(8));
             bean.setCORREO(c.getString(9));
-            bean.setFECHA_NACIMIENTO(c.getString(10));
-            bean.setNOMBRES_CONTACTO(c.getString(11));
-            bean.setDIRECCION_CONTACTO(c.getString(12));
-            bean.setTELEFONO_CONTACTO(c.getString(13));
-            bean.setCORREO_CONTACTO(c.getString(14));
-            bean.setUSUARIO(c.getString(15));
-            bean.setCONTRASENA(c.getString(16));
-            bean.setID_ROL(c.getString(17));
-            bean.setFEC_CREACION(c.getString(18));
-            bean.setFEC_ACTUALIZACION(c.getString(19));
-            bean.setFEC_ELIMINACION(c.getString(20));
+            bean.setESTATURA(c.getString(10));
+            bean.setPESO(c.getString(11));
+            bean.setFECHA_NACIMIENTO(c.getString(12));
+            bean.setNOMBRES_CONTACTO(c.getString(13));
+            bean.setDIRECCION_CONTACTO(c.getString(14));
+            bean.setTELEFONO_CONTACTO(c.getString(15));
+            bean.setCORREO_CONTACTO(c.getString(16));
+            bean.setUSUARIO(c.getString(17));
+            bean.setCONTRASENA(c.getString(18));
+            bean.setID_ROL(c.getString(19));
+            bean.setFEC_CREACION(c.getString(20));
+            bean.setFEC_ACTUALIZACION(c.getString(21));
+            bean.setFEC_ELIMINACION(c.getString(22));
         }
         return bean;
     }
@@ -268,17 +276,19 @@ public class DatabaseManagerUsuario extends DatabaseManager {
             bean.setID_EMPRESA(c.getString(7));
             bean.setGENERO(c.getString(8));
             bean.setCORREO(c.getString(9));
-            bean.setFECHA_NACIMIENTO(c.getString(10));
-            bean.setNOMBRES_CONTACTO(c.getString(11));
-            bean.setDIRECCION_CONTACTO(c.getString(12));
-            bean.setTELEFONO_CONTACTO(c.getString(13));
-            bean.setCORREO_CONTACTO(c.getString(14));
-            bean.setUSUARIO(c.getString(15));
-            bean.setCONTRASENA(c.getString(16));
-            bean.setID_ROL(c.getString(17));
-            bean.setFEC_CREACION(c.getString(18));
-            bean.setFEC_ACTUALIZACION(c.getString(19));
-            bean.setFEC_ELIMINACION(c.getString(20));
+            bean.setESTATURA(c.getString(10));
+            bean.setPESO(c.getString(11));
+            bean.setFECHA_NACIMIENTO(c.getString(12));
+            bean.setNOMBRES_CONTACTO(c.getString(13));
+            bean.setDIRECCION_CONTACTO(c.getString(14));
+            bean.setTELEFONO_CONTACTO(c.getString(15));
+            bean.setCORREO_CONTACTO(c.getString(16));
+            bean.setUSUARIO(c.getString(17));
+            bean.setCONTRASENA(c.getString(18));
+            bean.setID_ROL(c.getString(19));
+            bean.setFEC_CREACION(c.getString(20));
+            bean.setFEC_ACTUALIZACION(c.getString(21));
+            bean.setFEC_ELIMINACION(c.getString(22));
 
             list.add(bean);
         }
@@ -322,17 +332,19 @@ public class DatabaseManagerUsuario extends DatabaseManager {
             bean.setID_EMPRESA(c.getString(7));
             bean.setGENERO(c.getString(8));
             bean.setCORREO(c.getString(9));
-            bean.setFECHA_NACIMIENTO(c.getString(10));
-            bean.setNOMBRES_CONTACTO(c.getString(11));
-            bean.setDIRECCION_CONTACTO(c.getString(12));
-            bean.setTELEFONO_CONTACTO(c.getString(13));
-            bean.setCORREO_CONTACTO(c.getString(14));
-            bean.setUSUARIO(c.getString(15));
-            bean.setCONTRASENA(c.getString(16));
-            bean.setID_ROL(c.getString(17));
-            bean.setFEC_CREACION(c.getString(18));
-            bean.setFEC_ACTUALIZACION(c.getString(19));
-            bean.setFEC_ELIMINACION(c.getString(20));
+            bean.setESTATURA(c.getString(10));
+            bean.setPESO(c.getString(11));
+            bean.setFECHA_NACIMIENTO(c.getString(12));
+            bean.setNOMBRES_CONTACTO(c.getString(13));
+            bean.setDIRECCION_CONTACTO(c.getString(14));
+            bean.setTELEFONO_CONTACTO(c.getString(15));
+            bean.setCORREO_CONTACTO(c.getString(16));
+            bean.setUSUARIO(c.getString(17));
+            bean.setCONTRASENA(c.getString(18));
+            bean.setID_ROL(c.getString(19));
+            bean.setFEC_CREACION(c.getString(20));
+            bean.setFEC_ACTUALIZACION(c.getString(21));
+            bean.setFEC_ELIMINACION(c.getString(22));
         }
         return bean;
     }

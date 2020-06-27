@@ -210,6 +210,60 @@
                 </LinearLayout>
 
                 <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="ESTATURA:"
+                        android:gravity="end"
+                        android:textColor="#000"
+                        android:textStyle="bold"
+                        android:layout_marginTop="3dp"
+                        android:textSize="15dp">
+                    </TextView>
+                    <EditText
+                        android:id="@+id/txtEstatura"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:inputType="number"
+                        android:paddingLeft="10dp"
+                        android:textSize="15dp"
+                        android:background="@drawable/edit"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="4dp">
+                    </EditText>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:layout_width="120dp"
+                        android:layout_height="wrap_content"
+                        android:text="PESO:"
+                        android:gravity="end"
+                        android:textColor="#000"
+                        android:textStyle="bold"
+                        android:layout_marginTop="3dp"
+                        android:textSize="15dp">
+                    </TextView>
+                    <EditText
+                        android:id="@+id/txtPeso"
+                        android:layout_width="150dp"
+                        android:layout_height="40dp"
+                        android:inputType="number"
+                        android:paddingLeft="10dp"
+                        android:textSize="15dp"
+                        android:background="@drawable/edit"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginLeft="4dp">
+                    </EditText>
+                </LinearLayout>
+
+                <LinearLayout
                     android:id="@+id/LinearLayoutEmpresa"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -14,6 +14,8 @@ public class UsuarioBean {
     private String GENERO;
     private String CORREO;
     private String FECHA_NACIMIENTO;
+    private String ESTATURA;
+    private String PESO;
     private String NOMBRES_CONTACTO;
     private String DIRECCION_CONTACTO;
     private String TELEFONO_CONTACTO;
@@ -26,6 +28,22 @@ public class UsuarioBean {
     private String FEC_ELIMINACION;
 
     public UsuarioBean() {
+    }
+
+    public String getESTATURA() {
+        return ESTATURA;
+    }
+
+    public void setESTATURA(String ESTATURA) {
+        this.ESTATURA = ESTATURA;
+    }
+
+    public String getPESO() {
+        return PESO;
+    }
+
+    public void setPESO(String PESO) {
+        this.PESO = PESO;
     }
 
     public String getCOD_PAIS() {

@@ -283,6 +283,18 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                     }
                 }
 
+                String estatura = registroRegistradorActivity.txtEstatura.getText().toString();
+                if (estatura.isEmpty())
+                    estatura = "0";
+
+                final String pEstatura = estatura;
+
+                String peso = registroRegistradorActivity.txtPeso.getText().toString();
+                if (peso.isEmpty())
+                    peso = "0";
+
+                final String pPeso = peso;
+
                 RolBean rolBean = dbRol.getByNombre(pNomRol);
                 final String pIdRol = rolBean.getID();
 
@@ -307,6 +319,8 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                 Params = Params + pIdEmpresa + ",";
                 Params = Params + "'" + pGenero + "',";
                 Params = Params + "'" + pCorreo + "',";
+                Params = Params + pEstatura + ",";
+                Params = Params + pPeso + ",";
                 Params = Params + "'" + pFechaNacimiento + "',";
                 Params = Params + "'" + pNombresContacto + "',";
                 Params = Params + "'" + pDireccionContacto + "',";
@@ -358,6 +372,8 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                                 usuarioBean.setAPELLIDO_MATERNO(pApeMaterno);
                                 usuarioBean.setID_EMPRESA(pIdEmpresa);
                                 usuarioBean.setGENERO(pGenero);
+                                usuarioBean.setESTATURA(pEstatura);
+                                usuarioBean.setPESO(pPeso);
                                 usuarioBean.setFECHA_NACIMIENTO(pFechaNacimiento);
                                 usuarioBean.setNOMBRES_CONTACTO(pNombresContacto);
                                 usuarioBean.setDIRECCION_CONTACTO(pDireccionContacto);

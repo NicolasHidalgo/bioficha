@@ -600,8 +600,7 @@ public class WebService  {
 
     public void WebServiceUsuario(){
         dbUsuario = new DatabaseManagerUsuario(context);
-        String descripcion = "XXX";
-        QUERY = "call SP_USUARIO('" + ACCION  + "','" + descripcion + "');";
+        QUERY = "call SP_USUARIO('" + ACCION  + "',0,'','',0,'');";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -623,6 +622,8 @@ public class WebService  {
                         bean.setID_EMPRESA(jsonObject.getString("ID_EMPRESA"));
                         bean.setGENERO(jsonObject.getString("GENERO"));
                         bean.setCORREO(jsonObject.getString("CORREO"));
+                        bean.setESTATURA(jsonObject.getString("ESTATURA"));
+                        bean.setPESO(jsonObject.getString("PESO"));
                         bean.setFECHA_NACIMIENTO(jsonObject.getString("FECHA_NACIMIENTO"));
                         bean.setNOMBRES_CONTACTO(jsonObject.getString("NOMBRES_CONTACTO"));
                         bean.setDIRECCION_CONTACTO(jsonObject.getString("DIRECCION_CONTACTO"));

@@ -184,7 +184,7 @@ public class LoginActivity extends AppCompatActivity {
         dbUsuario = new DatabaseManagerUsuario(context);
         String descripcion = "XXX";
         String ACCION = "LOGIN";
-        final String QUERY = "call SP_USUARIO('" + ACCION  + "',0,'" + Usuario + "','" + Password + "');";
+        final String QUERY = "call SP_USUARIO('" + ACCION  + "',0,'" + Usuario + "','" + Password + "',0,'');";
         StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -213,6 +213,8 @@ public class LoginActivity extends AppCompatActivity {
                             bean.setID_EMPRESA(jsonObject.getString("ID_EMPRESA"));
                             bean.setGENERO(jsonObject.getString("GENERO"));
                             bean.setCORREO(jsonObject.getString("CORREO"));
+                            bean.setESTATURA(jsonObject.getString("ESTATURA"));
+                            bean.setPESO(jsonObject.getString("PESO"));
                             bean.setFECHA_NACIMIENTO(jsonObject.getString("FECHA_NACIMIENTO"));
                             bean.setNOMBRES_CONTACTO(jsonObject.getString("NOMBRES_CONTACTO"));
                             bean.setDIRECCION_CONTACTO(jsonObject.getString("DIRECCION_CONTACTO"));
