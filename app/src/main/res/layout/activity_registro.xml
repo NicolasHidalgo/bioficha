@@ -351,6 +351,36 @@
         </EditText>
     </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/lblAlerta1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="#FD0000"
+                        android:textSize="18sp" />
+
+                    <TextView
+                        android:id="@+id/lblAlerta2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:textColor="#FF0404"
+                        android:textSize="18sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
 
         </LinearLayout>
     </ScrollView>

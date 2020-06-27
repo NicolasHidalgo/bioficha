@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,6 +38,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -75,6 +77,7 @@ public class RegistroActivity extends Fragment {
     Context context;
     EditText txtNumDocumento, txtNombres, txtApePaterno, txtApeMaterno, txtCorreo;
     EditText txtFechaNacimiento, txtEstatura, txtPeso, txtGrados;
+    TextView lblAlerta1, lblAlerta2;
     RequestQueue requestQueue;
     TextView lblNomEmpresa, lblNomSede, lblIMC;
     private Session session;
@@ -119,6 +122,8 @@ public class RegistroActivity extends Fragment {
         txtPeso = (EditText) view.findViewById(R.id.txtPeso);
         txtGrados = (EditText) view.findViewById(R.id.txtGrados);
         lblIMC = (TextView) view.findViewById(R.id.lblIMC);
+        lblAlerta1 = (TextView) view.findViewById(R.id.lblAlerta1);
+        lblAlerta2 = (TextView) view.findViewById(R.id.lblAlerta2);
 
         calendar = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener date = new DatePickerDialog.OnDateSetListener() {
@@ -144,6 +149,21 @@ public class RegistroActivity extends Fragment {
             } else {
                 // Hide your calender here
             }
+            }
+        });
+
+        txtFechaNacimiento.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                Alerta1();
             }
         });
 
@@ -186,6 +206,23 @@ public class RegistroActivity extends Fragment {
 
                 float resultado = (fpes/(fest*fest));
                 lblIMC.setText(String.format("%.2f",resultado));
+
+                Alerta1();
+            }
+        });
+
+        txtGrados.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // TODO Auto-generated method stub
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                Alerta2();
             }
         });
 
@@ -218,6 +255,8 @@ public class RegistroActivity extends Fragment {
 
                 float resultado = (fpes/(fest*fest));
                 lblIMC.setText(String.format("%.2f",resultado));
+
+                Alerta1();
             }
         });
 
@@ -353,7 +392,7 @@ public class RegistroActivity extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         CloseProgressBar();
-                        Toast.makeText(context,"Error: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                        Toast.makeText(context,"Error: no se encontraron datos", Toast.LENGTH_LONG).show();
                     }
                 });
                 requestQueue = Volley.newRequestQueue(context);
@@ -463,5 +502,56 @@ public class RegistroActivity extends Fragment {
         txtGrados.setText(bioFichaBean.getGRADO_CELSIUS());
     }
 
+    public void Alerta1(){
+        String imc =  lblIMC.getText().toString();
+        lblAlerta1.setText("IMC normal");
+        lblAlerta1.setTextColor(Color.GREEN);
+        if (!(imc.isEmpty())){
+            float resultado = Float.parseFloat(imc);
+            if (resultado > 40){
+                String fechaNacimiento = txtFechaNacimiento.getText().toString();
+                if (!(fechaNacimiento.isEmpty())){
+                    String [] dateParts = fechaNacimiento.split("/");
+                    int day = Integer.parseInt(dateParts[0]);
+                    int month = Integer.parseInt(dateParts[1]);
+                    int year = Integer.parseInt(dateParts[2]);
+
+                    int edad = Util.getAge(year,month,day);
+                    if (edad > 65){
+                        lblAlerta1.setText("IMC mayor a 40 | Mayores de 65 años");
+                        lblAlerta1.setTextColor(Color.RED);
+                    }
+                }
+            }
+        }
+
+
+    }
+
+    public void Alerta2(){
+        String valor = txtGrados.getText().toString();
+        String mensaje = "Temperatura humana normal";
+        lblAlerta2.setTextColor(Color.GREEN);
+        if (!(valor.isEmpty())){
+            double grados = Double.parseDouble(valor);
+            if(grados >= 36.0 && grados <= 37.0 ){
+                mensaje = "Temperatura humana normal";
+                lblAlerta2.setTextColor(Color.GREEN);
+            }else if(grados >= 37.1 && grados <= 38.1 ){
+                mensaje = "Febricula";
+                lblAlerta2.setTextColor(Color.RED);
+            }else if(grados >= 38.2 && grados <= 38.5 ){
+                mensaje = "Fiebre leve";
+                lblAlerta2.setTextColor(Color.RED);
+            }else if(grados >= 38.6 && grados <= 39.0 ){
+                mensaje = "Fiebre moderada";
+                lblAlerta2.setTextColor(Color.RED);
+            }else if(grados > 39.0){
+                mensaje = "Fiebre alta";
+                lblAlerta2.setTextColor(Color.RED);
+            }
+        }
+        lblAlerta2.setText(mensaje);
+    }
 
 }
