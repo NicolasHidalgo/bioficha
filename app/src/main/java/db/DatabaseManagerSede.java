@@ -25,6 +25,7 @@ public class DatabaseManagerSede extends DatabaseManager {
     public static final String CN_FEC_CREACION = "FEC_CREACION";
     public static final String CN_FEC_ACTUALIZCION = "FEC_ACTUALIZCION";
     public static final String CN_FEC_ELIMINACION = "FEC_ELIMINACION";
+    public static final String CN_ESTADO = "ESTADO";
 
     public static final String CREATE_TABLE =  "create table " + NOMBRE_TABLA + " ("
             + CN_ID + " integer PRIMARY KEY,"
@@ -36,7 +37,8 @@ public class DatabaseManagerSede extends DatabaseManager {
             + CN_LONGITUD + " float NULL,"
             + CN_FEC_CREACION + " datetime NULL,"
             + CN_FEC_ACTUALIZCION + " datetime NULL,"
-            + CN_FEC_ELIMINACION + " datetime NULL"
+            + CN_FEC_ELIMINACION + " datetime NULL,"
+            + CN_ESTADO + " integer NULL DEFAULT 1"
             + ");";
 
     public DatabaseManagerSede(Context ctx) {
@@ -103,7 +105,12 @@ public class DatabaseManagerSede extends DatabaseManager {
                 {CN_ID,CN_NOMBRE_SEDE};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_NOMBRE_SEDE+ " = ?",new String[] { tipo },null,null,CN_FEC_CREACION + " ASC");
     }
-
+    public void EliminarRegistro(String id){
+        String sql = "UPDATE " + NOMBRE_TABLA + " SET " +
+                CN_ESTADO + " = 0, " +
+                CN_FEC_ELIMINACION + " = date('now') WHERE _ID = " + id;
+        super.getDb().execSQL(sql);
+    }
     public Cursor cargarPorPermiso(String permiso) {
         String [] columnas = new String[]
                 {CN_ID,CN_NOMBRE_SEDE};
