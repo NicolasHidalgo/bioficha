@@ -61,6 +61,7 @@ public class DatabaseManagerSede extends DatabaseManager {
         valores.put(CN_FEC_CREACION,obj.getFEC_CREACION());
         valores.put(CN_FEC_ACTUALIZCION,obj.getFEC_ACTUALIZACION());
         valores.put(CN_FEC_ELIMINACION,obj.getFEC_ELIMINACION());
+        valores.put(CN_ESTADO,obj.getESTADO());
         return valores;
     }
 
@@ -211,7 +212,7 @@ public class DatabaseManagerSede extends DatabaseManager {
 
     public List<SedeBean> ListarPorSedeXEmpresa(String IdEmpresa){
         List<SedeBean> list = new ArrayList<>();
-        String SQL = "Select bf."+ CN_ID +","+CN_NOMBRE_SEDE+","+CN_ID_EMPRESA+","+CN_DIRECCION+","+CN_ID_DISTRITO+","+CN_FEC_CREACION+"  from " + NOMBRE_TABLA + " bf  WHERE " + CN_ID_EMPRESA + " = " + IdEmpresa + " ORDER BY " + CN_FEC_CREACION + " DESC";
+        String SQL = "Select bf."+ CN_ID +","+CN_NOMBRE_SEDE+","+CN_ID_EMPRESA+","+CN_DIRECCION+","+CN_ID_DISTRITO+","+CN_FEC_CREACION+","+CN_ESTADO+"  from " + NOMBRE_TABLA + " bf  WHERE " + CN_ID_EMPRESA + " = " + IdEmpresa + " ORDER BY " + CN_FEC_CREACION + " DESC";
         Cursor c = super.getDb().rawQuery(SQL, null);
 
         try{
@@ -224,6 +225,7 @@ public class DatabaseManagerSede extends DatabaseManager {
                 bean.setDIRECCION(c.getString(3));
                 bean.setID_DISTRITO(c.getString(4));
                 bean.setFEC_CREACION(c.getString(5));
+                bean.setESTADO(c.getString(6));
                 list.add(bean);
             }
         }catch (Exception e){

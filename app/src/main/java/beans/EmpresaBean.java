@@ -20,10 +20,18 @@ public class EmpresaBean {
     private String FEC_ELIMINACION;
     private String ID_PROVINCIA;
     private String ID_DEPARTAMENTO;
-
+    private String ESTADO;
 
 
     public EmpresaBean() {
+    }
+
+    public String getESTADO() {
+        return ESTADO;
+    }
+
+    public void setESTADO(String ESTADO) {
+        this.ESTADO = ESTADO;
     }
 
     public String getID_DISTRITO() {

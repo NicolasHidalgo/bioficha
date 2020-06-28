@@ -26,8 +26,17 @@ public class UsuarioBean {
     private String FEC_CREACION;
     private String FEC_ACTUALIZACION;
     private String FEC_ELIMINACION;
+    private String ESTADO;
 
     public UsuarioBean() {
+    }
+
+    public String getESTADO() {
+        return ESTADO;
+    }
+
+    public void setESTADO(String ESTADO) {
+        this.ESTADO = ESTADO;
     }
 
     public String getESTATURA() {

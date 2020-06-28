@@ -28,11 +28,20 @@ public class BioFichaBean {
     private String FEC_CREACION;
     private String FEC_ACTUALIZACION;
     private String FEC_ELIMINACION;
+    private String ESTADO;
 
     private List<EnfermedadBean> lstEnfermedad;
     private List<SintomaBean> lstSintoma;
 
     public BioFichaBean() {
+    }
+
+    public String getESTADO() {
+        return ESTADO;
+    }
+
+    public void setESTADO(String ESTADO) {
+        this.ESTADO = ESTADO;
     }
 
     public List<EnfermedadBean> getLstEnfermedad() {

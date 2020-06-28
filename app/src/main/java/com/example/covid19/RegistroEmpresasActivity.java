@@ -443,6 +443,7 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
 
     public void BloquearCampos(boolean x){
         txtRUC.setEnabled(x);
+        txtRazonSocial.setEnabled(x);
     }
 
     public void TraerEmpresa(String ide){
