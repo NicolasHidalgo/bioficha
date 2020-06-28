@@ -189,7 +189,8 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(String response) {
                 try {
-                    dbUsuario.eliminarPorUsuarioPassword(Usuario,Password);
+                    //dbUsuario.eliminarPorUsuarioPassword(Usuario,Password);
+                    dbUsuario.eliminarTodo();
                     if (response.equals("[]")){
                         CloseProgressBar();
                         Toast.makeText(context, "Usuario y Password invalidos", Toast.LENGTH_LONG).show();
@@ -213,15 +214,21 @@ public class LoginActivity extends AppCompatActivity {
                             bean.setID_EMPRESA(jsonObject.getString("ID_EMPRESA"));
                             bean.setGENERO(jsonObject.getString("GENERO"));
                             bean.setCORREO(jsonObject.getString("CORREO"));
-                            bean.setESTATURA(jsonObject.getString("ESTATURA"));
-                            bean.setPESO(jsonObject.getString("PESO"));
+                            String estatura = jsonObject.getString("ESTATURA");
+                            if (!(estatura.equals("null"))){
+                                bean.setESTATURA(jsonObject.getString("ESTATURA"));
+                            }
+
+                            String peso = jsonObject.getString("PESO");
+                            if (!(peso.equals("null"))){
+                                bean.setPESO(jsonObject.getString("PESO"));
+                            }
                             bean.setFECHA_NACIMIENTO(jsonObject.getString("FECHA_NACIMIENTO"));
                             bean.setNOMBRES_CONTACTO(jsonObject.getString("NOMBRES_CONTACTO"));
                             bean.setDIRECCION_CONTACTO(jsonObject.getString("DIRECCION_CONTACTO"));
                             bean.setTELEFONO_CONTACTO(jsonObject.getString("TELEFONO_CONTACTO"));
                             bean.setCORREO_CONTACTO(jsonObject.getString("CORREO_CONTACTO"));
                             bean.setUSUARIO(jsonObject.getString("USUARIO"));
-                            bean.setCONTRASENA(jsonObject.getString("CONTRASENA"));
                             bean.setCONTRASENA(jsonObject.getString("CONTRASENA"));
                             bean.setID_ROL(jsonObject.getString("ID_ROL"));
                             bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));

@@ -288,6 +288,7 @@ public class RegistroRegistradorActivity extends Fragment {
                         e.printStackTrace();
                     }
                     txtFechaNacimiento.setText(fecNac);
+
                     txtEstatura.setText(usuarioBean.getESTATURA());
                     txtPeso.setText(usuarioBean.getPESO());
                     txtUsuario.setText(usuarioBean.getUSUARIO());
@@ -380,6 +381,8 @@ public class RegistroRegistradorActivity extends Fragment {
         txtApePaterno.setText("");
         txtApeMaterno.setText("");
         txtFechaNacimiento.setText("");
+        txtEstatura.setText("");
+        txtPeso.setText("");
         txtUsuario.setText("");
         txtClave.setText("");
         //txtCorreo.setText("");
@@ -429,6 +432,8 @@ public class RegistroRegistradorActivity extends Fragment {
             e.printStackTrace();
         }
         txtFechaNacimiento.setText(fecNac);
+        txtEstatura.setText(usuarioBean.getESTATURA());
+        txtPeso.setText(usuarioBean.getPESO());
 
         EmpresaBean empresaBean = dbEmpresa.get(usuarioBean.getID_EMPRESA());
         pos = 0;

@@ -178,7 +178,6 @@ public class ViewPageRegister extends AppCompatActivity {
         btnGrabar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(context,"No se encontro LATITUD:" + latitud.toString() + " LONGITUD:" + longitud.toString(), Toast.LENGTH_LONG).show();
 
                 if(!(ConnectivityReceiver.isConnected(context))){
                     Toast.makeText(context, "Necesita contectarte a internet para continuar", Toast.LENGTH_LONG).show();
@@ -194,7 +193,7 @@ public class ViewPageRegister extends AppCompatActivity {
                 }
 
                 if(!(VerificarSedeGPS())){
-                    //Toast.makeText(context, "Para registrar una ficha usted debe encontrarse dentro del perimetro de la sede " + session.getNomSede(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Para registrar una ficha usted debe encontrarse dentro del perimetro de la sede " + session.getNomSede(), Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -731,7 +730,7 @@ public class ViewPageRegister extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(context, "Erro servicio poligono: " + error.getMessage(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Error servicio poligono: " + error.getMessage(),Toast.LENGTH_SHORT).show();
             }
         }){
             @Override

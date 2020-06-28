@@ -218,7 +218,7 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                     return;
                 }
 
-                String pCorreo = registroRegistradorActivity.txtCorreo.getText().toString();
+                final String pCorreo = registroRegistradorActivity.txtCorreo.getText().toString();
                 if (pCorreo.isEmpty()){
                     Toast.makeText(context, "Debe ingresar un correo", Toast.LENGTH_LONG).show();
                     return;
@@ -319,9 +319,9 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                 Params = Params + pIdEmpresa + ",";
                 Params = Params + "'" + pGenero + "',";
                 Params = Params + "'" + pCorreo + "',";
+                Params = Params + "'" + pFechaNacimiento + "',";
                 Params = Params + pEstatura + ",";
                 Params = Params + pPeso + ",";
-                Params = Params + "'" + pFechaNacimiento + "',";
                 Params = Params + "'" + pNombresContacto + "',";
                 Params = Params + "'" + pDireccionContacto + "',";
                 Params = Params + "'" + pTelefonoContacto + "',";
@@ -329,6 +329,7 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                 Params = Params + "'" + pUsuario + "',";
                 Params = Params + "'" + pContrasena + "',";
                 Params = Params + pIdRol;
+
 
                 final String QUERY = "CALL SP_USUARIO_UPDATE(" + Params  + ");";
                 final String finalAccion = pAccion;
@@ -374,6 +375,7 @@ public class ViewPageRegisterEmpleado extends AppCompatActivity {
                                 usuarioBean.setGENERO(pGenero);
                                 usuarioBean.setESTATURA(pEstatura);
                                 usuarioBean.setPESO(pPeso);
+                                usuarioBean.setCORREO(pCorreo);
                                 usuarioBean.setFECHA_NACIMIENTO(pFechaNacimiento);
                                 usuarioBean.setNOMBRES_CONTACTO(pNombresContacto);
                                 usuarioBean.setDIRECCION_CONTACTO(pDireccionContacto);

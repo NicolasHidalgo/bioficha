@@ -88,6 +88,8 @@ public class RegistroActivity extends Fragment {
     ProgressBar progressBar;
 
     int check = 0;
+    public static final String SERVER = "https://bioficha.electocandidato.com/";
+    public String URL = SERVER + "select.php";
 
     public RegistroActivity(){
 
@@ -315,7 +317,7 @@ public class RegistroActivity extends Fragment {
                     return;
                 }
 
-                String NumDocumento = txtNumDocumento.getText().toString();
+                final String NumDocumento = txtNumDocumento.getText().toString();
                 if (NumDocumento.isEmpty()){
                     Toast.makeText(context,"Debe ingresar un numero de documento", Toast.LENGTH_LONG).show();
                     return;
@@ -358,6 +360,8 @@ public class RegistroActivity extends Fragment {
                         e.printStackTrace();
                     }
                     txtFechaNacimiento.setText(fecNac);
+                    txtEstatura.setText(usuarioBean.getESTATURA());
+                    txtPeso.setText(usuarioBean.getPESO());
 
                     BloquearCampos(false);
                     spTipoDocumento.setEnabled(true);
@@ -369,30 +373,101 @@ public class RegistroActivity extends Fragment {
                 // Si no esta en el sqlite, buscamos al mysql (ws)
                 OpenProgressBar();
 
-
-
-
-                // Consulta DNI webservice
-                String URL = "https://dniruc.apisperu.com/api/v1/dni/" + NumDocumento + "?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5pY29sYXNoaWRhbGdvY29ycmVhQGhvdG1haWwuY29tIn0.vRpQYdBvxUFwsXFehU1KpQzNJhl08IBR69hHBcefGno";
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+                String ACCION = "CONSULTA";
+                final String QUERY = "call SP_USUARIO('" + ACCION  + "'," + session.getIdEmpresa() + ",'',''," + tipoDocumentoBean.getID() +",'"+NumDocumento+"');";
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, URL, new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                    if (response.equals("[]") || response.equals("")) {
-                        CloseProgressBar();
-                        Toast.makeText(context, "No se encontraron datos", Toast.LENGTH_LONG).show();
-                        LimpiarCampos();
-                    }else {
-                        try {
-                            JSONObject jsonObject = new JSONObject(response);
-                            txtNombres.setText(jsonObject.getString("nombres"));
-                            txtApePaterno.setText(jsonObject.getString("apellidoPaterno"));
-                            txtApeMaterno.setText(jsonObject.getString("apellidoMaterno"));
-                        } catch (JSONException e) {
+                        if(response.equals("[]") || response.isEmpty()){
+                            // Consulta DNI webservice
+                            String URL = "https://dniruc.apisperu.com/api/v1/dni/" + NumDocumento + "?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6Im5pY29sYXNoaWRhbGdvY29ycmVhQGhvdG1haWwuY29tIn0.vRpQYdBvxUFwsXFehU1KpQzNJhl08IBR69hHBcefGno";
+                            StringRequest stringRequest = new StringRequest(Request.Method.GET, URL, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    if (response.equals("[]") || response.equals("")) {
+                                        CloseProgressBar();
+                                        Toast.makeText(context, "No se encontraron datos", Toast.LENGTH_LONG).show();
+                                        LimpiarCampos();
+                                    }else {
+                                        try {
+                                            JSONObject jsonObject = new JSONObject(response);
+                                            txtNombres.setText(jsonObject.getString("nombres"));
+                                            txtApePaterno.setText(jsonObject.getString("apellidoPaterno"));
+                                            txtApeMaterno.setText(jsonObject.getString("apellidoMaterno"));
+                                        } catch (JSONException e) {
+                                            CloseProgressBar();
+                                            Toast.makeText(context,"Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                        CloseProgressBar();
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    CloseProgressBar();
+                                    Toast.makeText(context,"Error: no se encontraron datos", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                            requestQueue = Volley.newRequestQueue(context);
+                            requestQueue.add(stringRequest);
+
+                        }else{
+                            try {
+                                UsuarioBean bean  = null;
+                                JSONArray jsonArray = new JSONArray(response);
+                                JSONObject jsonObject = null;
+                                for (int i = 0; i < jsonArray.length(); i++) {
+                                    jsonObject = jsonArray.getJSONObject(i);
+                                    bean = new UsuarioBean();
+                                    txtNombres.setText(jsonObject.getString("NOMBRES"));
+                                    txtApePaterno.setText(jsonObject.getString("APELLIDO_PATERNO"));
+                                    txtApeMaterno.setText(jsonObject.getString("APELLIDO_MATERNO"));
+
+                                    String estatura = jsonObject.getString("ESTATURA");
+                                    if (!(estatura.equals("null"))){
+                                        txtEstatura.setText(estatura);
+                                    }
+
+                                    String peso = jsonObject.getString("PESO");
+                                    if (!(peso.equals("null"))){
+                                        txtPeso.setText(peso);
+                                    }
+
+                                    String fecNac = "";
+                                    try {
+                                        fecNac = Util.formatDate(jsonObject.getString("FECHA_NACIMIENTO"),"yyyy-MM-dd","dd/MM/yyyy");
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    txtFechaNacimiento.setText(fecNac);
+
+
+                                    PaisBean paisBean = dbPais.get(jsonObject.getString("COD_PAIS"));
+                                    int pos = 0;
+                                    for (int j=0;j<spPais.getCount();j++){
+                                        if (spPais.getItemAtPosition(j).toString().equalsIgnoreCase(paisBean.getNOMBRE())){
+                                            pos = j;
+                                            break;
+                                        }
+                                    }
+                                    spPais.setSelection(pos);
+
+                                    pos = 0;
+                                    for (int j=0;j<spGenero.getCount();j++){
+                                        if (spGenero.getItemAtPosition(j).toString().equalsIgnoreCase(jsonObject.getString("GENERO"))){
+                                            pos = j;
+                                            break;
+                                        }
+                                    }
+                                    spGenero.setSelection(pos);
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
                             CloseProgressBar();
-                            Toast.makeText(context,"Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
                         }
-                        CloseProgressBar();
-                    }
+
                     }
                 }, new Response.ErrorListener() {
                     @Override
@@ -400,9 +475,17 @@ public class RegistroActivity extends Fragment {
                         CloseProgressBar();
                         Toast.makeText(context,"Error: no se encontraron datos", Toast.LENGTH_LONG).show();
                     }
-                });
+                }){
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String,String> parametros = new HashMap<>();
+                        parametros.put("consulta",QUERY);
+                        return parametros;
+                    }
+                };
                 requestQueue = Volley.newRequestQueue(context);
                 requestQueue.add(stringRequest);
+
             }
         });
         return view;

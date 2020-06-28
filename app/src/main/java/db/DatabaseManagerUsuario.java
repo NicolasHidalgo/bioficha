@@ -192,7 +192,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
     }
 
     public void eliminarPorUsuarioPassword(String usuario, String password) {
-        super.getDb().delete(NOMBRE_TABLA,CN_USUARIO + "=? AND " + CN_CONTRASENA + "=?" , new String[]{usuario,password});
+        Log.d(NOMBRE_TABLA + "_deletebyUserPwd", getDb().delete(NOMBRE_TABLA,CN_USUARIO + "=? AND " + CN_CONTRASENA + "=?" , new String[]{usuario,password}) + "");
     }
 
     @Override

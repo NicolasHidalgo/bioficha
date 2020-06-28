@@ -342,8 +342,16 @@ public class MenuActivity extends AppCompatActivity {
                             bean.setID_EMPRESA(jsonObject.getString("ID_EMPRESA"));
                             bean.setGENERO(jsonObject.getString("GENERO"));
                             bean.setCORREO(jsonObject.getString("CORREO"));
-                            bean.setESTATURA(jsonObject.getString("ESTATURA"));
-                            bean.setPESO(jsonObject.getString("PESO"));
+                            String estatura = jsonObject.getString("ESTATURA");
+                            if (!(estatura.equals("null"))){
+                                bean.setESTATURA(jsonObject.getString("ESTATURA"));
+                            }
+
+                            String peso = jsonObject.getString("PESO");
+                            if (!(peso.equals("null"))){
+                                bean.setPESO(jsonObject.getString("PESO"));
+                            }
+
                             bean.setFECHA_NACIMIENTO(jsonObject.getString("FECHA_NACIMIENTO"));
                             bean.setNOMBRES_CONTACTO(jsonObject.getString("NOMBRES_CONTACTO"));
                             bean.setDIRECCION_CONTACTO(jsonObject.getString("DIRECCION_CONTACTO"));
@@ -414,8 +422,16 @@ public class MenuActivity extends AppCompatActivity {
                             bean.setID_EMPRESA(jsonObject.getString("ID_EMPRESA"));
                             bean.setGENERO(jsonObject.getString("GENERO"));
                             bean.setCORREO(jsonObject.getString("CORREO"));
-                            bean.setESTATURA(jsonObject.getString("ESTATURA"));
-                            bean.setPESO(jsonObject.getString("PESO"));
+                            String estatura = jsonObject.getString("ESTATURA");
+                            if (!(estatura.equals("null"))){
+                                bean.setESTATURA(jsonObject.getString("ESTATURA"));
+                            }
+
+                            String peso = jsonObject.getString("PESO");
+                            if (!(peso.equals("null"))){
+                                bean.setPESO(jsonObject.getString("PESO"));
+                            }
+
                             bean.setFECHA_NACIMIENTO(jsonObject.getString("FECHA_NACIMIENTO"));
                             bean.setNOMBRES_CONTACTO(jsonObject.getString("NOMBRES_CONTACTO"));
                             bean.setDIRECCION_CONTACTO(jsonObject.getString("DIRECCION_CONTACTO"));
