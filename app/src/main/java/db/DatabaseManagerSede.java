@@ -116,7 +116,7 @@ public class DatabaseManagerSede extends DatabaseManager {
         String [] columnas = new String[]
                 {CN_ID,CN_NOMBRE_SEDE,"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO};
         //return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " IN ?",new String[] { "("+permiso+")" },null,null,null);
-        String query = "SELECT "+CN_ID+", " + CN_NOMBRE_SEDE +" FROM " + NOMBRE_TABLA + " WHERE " + CN_ID +" IN (" + permiso + ")";
+        String query = "SELECT "+CN_ID+", " + CN_NOMBRE_SEDE +" FROM " + NOMBRE_TABLA + " WHERE " + CN_ID +" IN (" + permiso + ") AND IFNULL("+CN_ESTADO+",1) = 1";
         return super.getDb().rawQuery(query, null);
     }
 
