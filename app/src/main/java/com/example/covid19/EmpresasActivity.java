@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -101,7 +102,7 @@ public class EmpresasActivity extends AppCompatActivity {
             nInfoID[i] = user.getID();
             nInfo1[i] = user.getNOM_RAZON_SOCIAL();
             nInfo2[i] = user.getRUC();
-            nInfo3[i] = "x";
+            nInfo3[i] = user.getESTADO();
         }
 
         btnAgregarEmpresa = findViewById(R.id.btnAgregarEmpresa);
@@ -220,7 +221,7 @@ public class EmpresasActivity extends AppCompatActivity {
             nInfoID[i] = user.getID();
             nInfo1[i] = user.getNOM_RAZON_SOCIAL();
             nInfo2[i] = user.getRUC();
-            nInfo3[i] = user.getFEC_CREACION();
+            nInfo3[i] = user.getESTADO();
         }
         btnAgregarEmpresa = findViewById(R.id.btnAgregarEmpresa);
         lvEmpresa = findViewById(R.id.lvEmpresa);
@@ -334,7 +335,14 @@ public class EmpresasActivity extends AppCompatActivity {
             id.setText(nID[position]);
             tit.setText(nInfo1[position]);
             sub.setText(nInfo2[position]);
-            inf.setText(nInfo3[position]);
+            String estado = nInfo3[position];
+            if(estado.equals("1")){
+                inf.setTextColor(Color.GREEN);
+                inf.setText("Activo");
+            }else{
+                inf.setTextColor(Color.RED);
+                inf.setText("Inactivo");
+            }
 
             return row;
         }
