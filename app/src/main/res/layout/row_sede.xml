@@ -13,55 +13,53 @@
             android:layout_height="75dp"
             android:src="@drawable/ic_sede"/>
         <LinearLayout
-            android:layout_width="200dp"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-            <TextView
-                android:id="@+id/txtInfoSede1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Sede 1"
-                android:textColor="#000"
-                android:textStyle="bold"
-                android:layout_margin="5dp"
-                android:textSize="20sp"/>
-            <TextView
-                android:id="@+id/txtInfoSede2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Direccion"
-                android:textColor="#A9A9A9"
-                android:textStyle="bold"
-                android:layout_margin="5dp"
-                android:textSize="15sp"/>
-        </LinearLayout>
-        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtInfoSede1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Sede 1"
+                    android:textColor="#000"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:textSize="18sp"/>
 
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/txtInfoSede2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="RUC"
+                    android:textColor="#A9A9A9"
+                    android:textStyle="bold"
+                    android:layout_margin="5dp"
+                    android:textSize="15sp"/>
                 <TextView
                     android:id="@+id/txtInfoSedeId"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"/>
                 <TextView
                     android:id="@+id/txtInfoSede3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="Hora"
+                    android:text="Estado"
                     android:textColor="#A9A9A9"
                     android:textSize="15sp"
+                    android:layout_margin="5dp"
+                    android:gravity="end"
                     android:textStyle="bold" />
+
             </LinearLayout>
-
         </LinearLayout>
-
     </LinearLayout>
 
 </LinearLayout>

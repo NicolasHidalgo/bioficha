@@ -100,7 +100,6 @@ public class DatabaseManagerUsuario extends DatabaseManager {
         valores.put(CN_FEC_CREACION,obj.getFEC_CREACION());
         valores.put(CN_FEC_ACTUALIZACION,obj.getFEC_ACTUALIZACION());
         valores.put(CN_FEC_ELIMINACION,obj.getFEC_ELIMINACION());
-        valores.put(CN_ESTADO,obj.getFEC_ELIMINACION());
         return valores;
     }
 
@@ -169,7 +168,7 @@ public class DatabaseManagerUsuario extends DatabaseManager {
     public Cursor cargarADMIN() {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO,
-                        CN_ID_ROL,CN_FEC_CREACION, CN_ESTADO};
+                        CN_ID_ROL,CN_FEC_CREACION,CN_ESTADO };
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_ROL+ " = ? ",new String[] { "2" },null,null,CN_FEC_CREACION + " ASC");
     }
 

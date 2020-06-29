@@ -61,7 +61,6 @@ public class DatabaseManagerSede extends DatabaseManager {
         valores.put(CN_FEC_CREACION,obj.getFEC_CREACION());
         valores.put(CN_FEC_ACTUALIZCION,obj.getFEC_ACTUALIZACION());
         valores.put(CN_FEC_ELIMINACION,obj.getFEC_ELIMINACION());
-        valores.put(CN_ESTADO,obj.getESTADO());
         return valores;
     }
 

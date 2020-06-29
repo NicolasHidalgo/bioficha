@@ -75,7 +75,6 @@ import beans.SpinnerBean;
         valores.put(CN_FEC_CREACION,obj.getFEC_CREACION());
         valores.put(CN_FEC_ACTUALIZACION,obj.getFEC_ACTUALIZACION());
         valores.put(CN_FEC_ELIMINACION,obj.getFEC_ELIMINACION());
-        valores.put(CN_ESTADO,obj.getESTADO());
         return valores;
     }
 

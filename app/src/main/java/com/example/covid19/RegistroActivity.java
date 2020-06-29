@@ -592,7 +592,7 @@ public class RegistroActivity extends Fragment {
     }
 
     public void Alerta1(){
-        String imc =  lblIMC.getText().toString();
+        String imc =  lblIMC.getText().toString().replace(",",".");
         lblAlerta1.setText("IMC OK");
         lblAlerta1.setTextColor(Color.GREEN);
         if (!(imc.isEmpty())){

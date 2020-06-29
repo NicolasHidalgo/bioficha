@@ -100,7 +100,6 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         valores.put(CN_FEC_CREACION,obj.getFEC_CREACION());
         valores.put(CN_FEC_ACTUALIZACION,obj.getFEC_ACTUALIZACION());
         valores.put(CN_FEC_ELIMINACION,obj.getFEC_ELIMINACION());
-        valores.put(CN_ESTADO,obj.getESTADO());
         return valores;
     }
 
@@ -124,7 +123,12 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         super.getDb().execSQL("DELETE FROM " + NOMBRE_TABLA + ";");
         Log.d(NOMBRE_TABLA + "_eliminados","Datos borrados");
     }
-
+    public void EliminarRegistro(String id){
+        String sql = "UPDATE " + NOMBRE_TABLA + " SET " +
+                CN_ESTADO + " = 0, " +
+                CN_FEC_ELIMINACION + " = date('now') WHERE _ID = " + id;
+        super.getDb().execSQL(sql);
+    }
     @Override
     public Cursor cargar() {
         String [] columnas = new String[]
@@ -249,7 +253,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
 
     public List<BioFichaBean> ListarPorSedeFechaV2(String IdSede, String Fecha){
         List<BioFichaBean> list = new ArrayList<>();
-        String SQL = "Select bf."+ CN_ID +","+CN_ID_TIPO_DOCUMENTO+","+CN_NOM_DOCUMENTO+","+CN_NUM_DOCUMENTO+","+CN_NOMBRES+","+CN_APELLIDO_PATERNO+","+CN_FEC_CREACION+","+CN_ESTADO+"  from " + NOMBRE_TABLA + " bf INNER JOIN TIPO_DOCUMENTO td ON td._ID = bf.ID_TIPO_DOCUMENTO WHERE " + CN_ID_SEDE + " = " + IdSede + " AND strftime('%Y-%m-%d'," + CN_FEC_CREACION + ") = '" + Fecha + "' ORDER BY " + CN_FEC_CREACION + " DESC";
+        String SQL = "Select bf."+ CN_ID +","+CN_ID_TIPO_DOCUMENTO+","+CN_NOM_DOCUMENTO+","+CN_NUM_DOCUMENTO+","+CN_NOMBRES+","+CN_APELLIDO_PATERNO+","+CN_FEC_CREACION+","+CN_ESTADO+ " from "+ NOMBRE_TABLA + " bf INNER JOIN TIPO_DOCUMENTO td ON td._ID = bf.ID_TIPO_DOCUMENTO WHERE " + CN_ID_SEDE + " = " + IdSede + " AND strftime('%Y-%m-%d'," + CN_FEC_CREACION + ") = '" + Fecha + "' ORDER BY " + CN_FEC_CREACION + " DESC";
         Cursor c = super.getDb().rawQuery(SQL, null);
 
         try{

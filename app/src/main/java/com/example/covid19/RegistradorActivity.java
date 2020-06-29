@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -90,7 +91,7 @@ public class RegistradorActivity extends AppCompatActivity {
             nInfoID[i] = user.getID();
             nInfo1[i] = user.getNOMBRES();
             nInfo2[i] = user.getNUM_DOCUMENTO();
-            nInfo3[i] = user.getCOD_PAIS();
+            nInfo3[i] = user.getESTADO();
         }
 
         btnAgregarRegistrador = findViewById(R.id.btnAgregarRegistrador);
@@ -235,7 +236,7 @@ public class RegistradorActivity extends AppCompatActivity {
             nInfoID[i] = user.getID();
             nInfo1[i] = user.getNOMBRES();
             nInfo2[i] = user.getNUM_DOCUMENTO();
-            nInfo3[i] = user.getCOD_PAIS();
+            nInfo3[i] = user.getESTADO();
         }
         btnAgregarRegistrador = findViewById(R.id.btnAgregarRegistrador);
         lvEmpleado = findViewById(R.id.lvEmpleado);
@@ -295,7 +296,14 @@ public class RegistradorActivity extends AppCompatActivity {
             id.setText(nInfoID[position]);
             tit.setText(nInfo1[position]);
             sub.setText(nInfo2[position]);
-            inf.setText(nInfo3[position]);
+            String estado = nInfo3[position];
+            if(estado.equals("1")){
+                inf.setTextColor(Color.GREEN);
+                inf.setText("Activo");
+            }else{
+                inf.setTextColor(Color.RED);
+                inf.setText("Inactivo");
+            }
 
             return row;
         }
