@@ -73,7 +73,6 @@ public class LoginActivity extends AppCompatActivity {
     Button btnIngresar;
     EditText txtUsuario, txtPassword;
     private Session session;
-    TextView lblOlvidaste;
 
     public static final String SERVER = "https://bioficha.electocandidato.com/";
     public String URL = SERVER + "select.php";
@@ -123,9 +122,6 @@ public class LoginActivity extends AppCompatActivity {
 
         ProgressBarHandler(context);
         progressBar.setVisibility(View.INVISIBLE);
-
-        lblOlvidaste = (TextView) findViewById(R.id.lblOlvidaste);
-        lblOlvidaste.setVisibility(View.INVISIBLE);
     }
 
     @Override

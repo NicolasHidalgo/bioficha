@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -83,7 +84,32 @@ public class EmpresasActivity extends AppCompatActivity {
         dbEmpresa = new DatabaseManagerEmpresa(context);
         lvEmpresa = findViewById(R.id.lvEmpresa);
 
+<<<<<<< HEAD
         Listar();
+=======
+        if (session.getNomRol().equals("SUPER-ADMIN")) {
+            //lISTAR TODAS LAS EMPRESAS
+            listaEmpresa = dbEmpresa.getList("");
+        } else if (session.getNomRol().equals("ADMIN")) {
+            // LISTAR SOLO SU EMPRESA
+            listaEmpresa = dbEmpresa.getList(session.getIdEmpresa());
+        }
+
+        EmpresaBean user = null;
+        int len = listaEmpresa.size();
+        nInfoID = new String[len];
+        nInfo1 = new String[len];
+        nInfo2 = new String[len];
+        nInfo3 = new String[len];
+
+        for (int i = 0; i < listaEmpresa.size(); i++) {
+            user = listaEmpresa.get(i);
+            nInfoID[i] = user.getID();
+            nInfo1[i] = user.getNOM_RAZON_SOCIAL();
+            nInfo2[i] = user.getRUC();
+            nInfo3[i] = user.getESTADO();
+        }
+>>>>>>> e8552c1db4cac158cf074eb965c7acb2e3cc6b77
 
         btnAgregarEmpresa = findViewById(R.id.btnAgregarEmpresa);
         btnExportarExcel = findViewById(R.id.btnExportarExcel);
@@ -177,7 +203,36 @@ public class EmpresasActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         progressBar.setVisibility(View.INVISIBLE);
+<<<<<<< HEAD
         Listar();
+=======
+        if(session.getNomRol().equals("SUPER-ADMIN")){
+            //lISTAR TODAS LAS EMPRESAS
+            listaEmpresa = dbEmpresa.getList("");
+        }else if(session.getNomRol().equals("ADMIN")){
+            // LISTAR SOLO SU EMPRESA
+            listaEmpresa = dbEmpresa.getList(session.getIdEmpresa());
+        }
+
+        EmpresaBean user = null;
+        int len = listaEmpresa.size();
+        nInfoID = new String[len];
+        nInfo1 = new String[len];
+        nInfo2 = new String[len];
+        nInfo3 = new String[len];
+
+        for (int i=0; i<listaEmpresa.size(); i++) {
+            user = listaEmpresa.get(i);
+            nInfoID[i] = user.getID();
+            nInfo1[i] = user.getNOM_RAZON_SOCIAL();
+            nInfo2[i] = user.getRUC();
+            nInfo3[i] = user.getESTADO();
+        }
+        btnAgregarEmpresa = findViewById(R.id.btnAgregarEmpresa);
+        lvEmpresa = findViewById(R.id.lvEmpresa);
+        EmpresasActivity.MyAdapter adapter = new EmpresasActivity.MyAdapter(this, nInfoID, nInfo1, nInfo2, nInfo3);
+        lvEmpresa.setAdapter(adapter);
+>>>>>>> e8552c1db4cac158cf074eb965c7acb2e3cc6b77
 
     }
     public void EliminarEmpresa(View v){
@@ -287,7 +342,14 @@ public class EmpresasActivity extends AppCompatActivity {
             id.setText(nID[position]);
             tit.setText(nInfo1[position]);
             sub.setText(nInfo2[position]);
-            inf.setText(nInfo3[position]);
+            String estado = nInfo3[position];
+            if(estado.equals("1")){
+                inf.setTextColor(Color.GREEN);
+                inf.setText("Activo");
+            }else{
+                inf.setTextColor(Color.RED);
+                inf.setText("Inactivo");
+            }
 
             return row;
         }
