@@ -524,6 +524,7 @@ public class WebService  {
                             bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
                             bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                             bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                            bean.setESTADO(jsonObject.getString("ESTADO"));
                             dbEmpresa.insertar(bean);
                         }
                         WebServiceSede();
@@ -575,6 +576,7 @@ public class WebService  {
                             bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
                             bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                             bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                            bean.setESTADO(jsonObject.getString("ESTADO"));
                             dbSede.insertar(bean);
                         }
                     } catch (JSONException e) {
@@ -635,6 +637,7 @@ public class WebService  {
                         bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
                         bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                         bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                        bean.setESTADO(jsonObject.getString("ESTADO"));
                         dbUsuario.insertar(bean);
                     }
                 } catch (JSONException e) {

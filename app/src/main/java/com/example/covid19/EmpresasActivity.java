@@ -58,6 +58,7 @@ public class EmpresasActivity extends AppCompatActivity {
     DatabaseManagerEmpresa dbEmpresa;
     List<EmpresaBean> listaEmpresa;
     ListView lvEmpresa;
+    EmpresasActivity.MyAdapter adapter;
     RequestQueue requestQueue;
     ProgressBar progressBar;
     Button btnExportarExcel;
@@ -80,29 +81,9 @@ public class EmpresasActivity extends AppCompatActivity {
         ProgressBarHandler(context);
         progressBar.setVisibility(View.INVISIBLE);
         dbEmpresa = new DatabaseManagerEmpresa(context);
+        lvEmpresa = findViewById(R.id.lvEmpresa);
 
-        if (session.getNomRol().equals("SUPER-ADMIN")) {
-            //lISTAR TODAS LAS EMPRESAS
-            listaEmpresa = dbEmpresa.getList("");
-        } else if (session.getNomRol().equals("ADMIN")) {
-            // LISTAR SOLO SU EMPRESA
-            listaEmpresa = dbEmpresa.getList(session.getIdEmpresa());
-        }
-
-        EmpresaBean user = null;
-        int len = listaEmpresa.size();
-        nInfoID = new String[len];
-        nInfo1 = new String[len];
-        nInfo2 = new String[len];
-        nInfo3 = new String[len];
-
-        for (int i = 0; i < listaEmpresa.size(); i++) {
-            user = listaEmpresa.get(i);
-            nInfoID[i] = user.getID();
-            nInfo1[i] = user.getNOM_RAZON_SOCIAL();
-            nInfo2[i] = user.getRUC();
-            nInfo3[i] = "x";
-        }
+        Listar();
 
         btnAgregarEmpresa = findViewById(R.id.btnAgregarEmpresa);
         btnExportarExcel = findViewById(R.id.btnExportarExcel);
@@ -110,10 +91,6 @@ public class EmpresasActivity extends AppCompatActivity {
         if (session.getNomRol().equals("ADMIN")) {
             btnAgregarEmpresa.hide();
         }
-
-        lvEmpresa = findViewById(R.id.lvEmpresa);
-        EmpresasActivity.MyAdapter adapter = new EmpresasActivity.MyAdapter(this, nInfoID, nInfo1, nInfo2, nInfo3);
-        lvEmpresa.setAdapter(adapter);
 
         btnExportarExcel.setVisibility(View.INVISIBLE);
         if (session.getNomRol().equals("ADMIN")) {
@@ -200,32 +177,7 @@ public class EmpresasActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         progressBar.setVisibility(View.INVISIBLE);
-        if(session.getNomRol().equals("SUPER-ADMIN")){
-            //lISTAR TODAS LAS EMPRESAS
-            listaEmpresa = dbEmpresa.getList("");
-        }else if(session.getNomRol().equals("ADMIN")){
-            // LISTAR SOLO SU EMPRESA
-            listaEmpresa = dbEmpresa.getList(session.getIdEmpresa());
-        }
-
-        EmpresaBean user = null;
-        int len = listaEmpresa.size();
-        nInfoID = new String[len];
-        nInfo1 = new String[len];
-        nInfo2 = new String[len];
-        nInfo3 = new String[len];
-
-        for (int i=0; i<listaEmpresa.size(); i++) {
-            user = listaEmpresa.get(i);
-            nInfoID[i] = user.getID();
-            nInfo1[i] = user.getNOM_RAZON_SOCIAL();
-            nInfo2[i] = user.getRUC();
-            nInfo3[i] = user.getFEC_CREACION();
-        }
-        btnAgregarEmpresa = findViewById(R.id.btnAgregarEmpresa);
-        lvEmpresa = findViewById(R.id.lvEmpresa);
-        EmpresasActivity.MyAdapter adapter = new EmpresasActivity.MyAdapter(this, nInfoID, nInfo1, nInfo2, nInfo3);
-        lvEmpresa.setAdapter(adapter);
+        Listar();
 
     }
     public void EliminarEmpresa(View v){
@@ -257,6 +209,7 @@ public class EmpresasActivity extends AppCompatActivity {
                             }
                         }
                         dbEmpresa.EliminarRegistro(ID_EMPRESA);
+                        Listar();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -340,4 +293,30 @@ public class EmpresasActivity extends AppCompatActivity {
         }
     }
 
+    public void Listar(){
+        if (session.getNomRol().equals("SUPER-ADMIN")) {
+            //lISTAR TODAS LAS EMPRESAS
+            listaEmpresa = dbEmpresa.getList("");
+        } else if (session.getNomRol().equals("ADMIN")) {
+            // LISTAR SOLO SU EMPRESA
+            listaEmpresa = dbEmpresa.getList(session.getIdEmpresa());
+        }
+
+        EmpresaBean user = null;
+        int len = listaEmpresa.size();
+        nInfoID = new String[len];
+        nInfo1 = new String[len];
+        nInfo2 = new String[len];
+        nInfo3 = new String[len];
+
+        for (int i = 0; i < listaEmpresa.size(); i++) {
+            user = listaEmpresa.get(i);
+            nInfoID[i] = user.getID();
+            nInfo1[i] = user.getNOM_RAZON_SOCIAL();
+            nInfo2[i] = user.getRUC();
+            nInfo3[i] = "x";
+        }
+        adapter = new EmpresasActivity.MyAdapter(this, nInfoID, nInfo1, nInfo2, nInfo3);
+        lvEmpresa.setAdapter(adapter);
+    }
 }

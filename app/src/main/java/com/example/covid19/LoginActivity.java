@@ -239,6 +239,7 @@ public class LoginActivity extends AppCompatActivity {
                             // Valido si el usuario esta activo o inactivo
                             if(bean.getESTADO().equals("0")){
                                 Toast.makeText(context,"USUARIO INACTIVO", Toast.LENGTH_LONG).show();
+                                CloseProgressBar();
                                 return;
                             }
 
@@ -771,6 +772,7 @@ public class LoginActivity extends AppCompatActivity {
                                 bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
                                 bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                                 bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                                bean.setESTADO(jsonObject.getString("ESTADO"));
                                 dbEmpresa.insertar(bean);
                             }
 
@@ -839,6 +841,7 @@ public class LoginActivity extends AppCompatActivity {
                                 bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
                                 bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                                 bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                                bean.setESTADO(jsonObject.getString("ESTADO"));
                                 dbSede.insertar(bean);
                             }
 
@@ -1024,6 +1027,7 @@ public class LoginActivity extends AppCompatActivity {
                             bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
                             bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                             bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                            bean.setESTADO(jsonObject.getString("ESTADO"));
                             dbFicha.insertar(bean);
                         }
                     }

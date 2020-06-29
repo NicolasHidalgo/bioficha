@@ -100,6 +100,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         valores.put(CN_FEC_CREACION,obj.getFEC_CREACION());
         valores.put(CN_FEC_ACTUALIZACION,obj.getFEC_ACTUALIZACION());
         valores.put(CN_FEC_ELIMINACION,obj.getFEC_ELIMINACION());
+        valores.put(CN_ESTADO,obj.getESTADO());
         return valores;
     }
 
@@ -134,7 +135,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_SEDE,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO
                         ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_MENSAJE_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_GRADO,CN_LATITUD,CN_LONGITUD
-                        ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION,CN_ESTADO};
+                        ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION,"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO};
         return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,null);
     }
 
@@ -143,7 +144,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_SEDE,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO
                         ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_MENSAJE_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_GRADO,CN_LATITUD,CN_LONGITUD
-                        ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION,CN_ESTADO};
+                        ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION,"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
     }
 
@@ -152,14 +153,14 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_SEDE,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO
                         ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_MENSAJE_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_GRADO,CN_LATITUD,CN_LONGITUD
-                        ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION,CN_ESTADO};
+                        ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION,"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,null);
     }
     public Cursor cargarPorSedeFecha(String IdSede, String Fecha) {
         String [] columnas = new String[]
                 {CN_ID,CN_ID_SEDE,CN_ID_TIPO_DOCUMENTO,CN_NUM_DOCUMENTO,CN_COD_PAIS,CN_NOMBRES,CN_APELLIDO_PATERNO,CN_APELLIDO_MATERNO
                         ,CN_FECHA_NACIMIENTO,CN_GENERO,CN_ESTATURA,CN_PESO,CN_IMC,CN_MENSAJE_IMC,CN_GRADO_CELSIUS,CN_MENSAJE_GRADO,CN_LATITUD,CN_LONGITUD
-                        ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION,CN_ESTADO};
+                        ,CN_OTRO_SINTOMA,CN_FEC_CREACION,CN_FEC_ACTUALIZACION,CN_FEC_ELIMINACION,"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID_SEDE+ " = ? AND strftime('%Y-%m-%d'," + CN_FEC_CREACION + ") = ?",new String[] { IdSede, Fecha },null,null,null);
     }
 
@@ -253,7 +254,7 @@ public class DatabaseManagerBioFicha extends DatabaseManager {
 
     public List<BioFichaBean> ListarPorSedeFechaV2(String IdSede, String Fecha){
         List<BioFichaBean> list = new ArrayList<>();
-        String SQL = "Select bf."+ CN_ID +","+CN_ID_TIPO_DOCUMENTO+","+CN_NOM_DOCUMENTO+","+CN_NUM_DOCUMENTO+","+CN_NOMBRES+","+CN_APELLIDO_PATERNO+","+CN_FEC_CREACION+","+CN_ESTADO+ " from "+ NOMBRE_TABLA + " bf INNER JOIN TIPO_DOCUMENTO td ON td._ID = bf.ID_TIPO_DOCUMENTO WHERE " + CN_ID_SEDE + " = " + IdSede + " AND strftime('%Y-%m-%d'," + CN_FEC_CREACION + ") = '" + Fecha + "' ORDER BY " + CN_FEC_CREACION + " DESC";
+        String SQL = "Select bf."+ CN_ID +","+CN_ID_TIPO_DOCUMENTO+","+CN_NOM_DOCUMENTO+","+CN_NUM_DOCUMENTO+","+CN_NOMBRES+","+CN_APELLIDO_PATERNO+","+CN_FEC_CREACION+","+"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO+ " from "+ NOMBRE_TABLA + " bf INNER JOIN TIPO_DOCUMENTO td ON td._ID = bf.ID_TIPO_DOCUMENTO WHERE " + CN_ID_SEDE + " = " + IdSede + " AND strftime('%Y-%m-%d'," + CN_FEC_CREACION + ") = '" + Fecha + "' ORDER BY " + CN_FEC_CREACION + " DESC";
         Cursor c = super.getDb().rawQuery(SQL, null);
 
         try{

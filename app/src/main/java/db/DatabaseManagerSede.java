@@ -61,6 +61,7 @@ public class DatabaseManagerSede extends DatabaseManager {
         valores.put(CN_FEC_CREACION,obj.getFEC_CREACION());
         valores.put(CN_FEC_ACTUALIZCION,obj.getFEC_ACTUALIZACION());
         valores.put(CN_FEC_ELIMINACION,obj.getFEC_ELIMINACION());
+        valores.put(CN_ESTADO,obj.getESTADO());
         return valores;
     }
 
@@ -88,21 +89,21 @@ public class DatabaseManagerSede extends DatabaseManager {
     @Override
     public Cursor cargar() {
         String [] columnas = new String[]
-                {CN_ID,CN_NOMBRE_SEDE};
+                {CN_ID,CN_NOMBRE_SEDE,"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO};
         return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,CN_FEC_CREACION + " ASC");
     }
 
     @Override
     public Cursor cargarById(String id) {
         String [] columnas = new String[]
-                {CN_ID,CN_NOMBRE_SEDE};
+                {CN_ID,CN_NOMBRE_SEDE,"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID + "=?", new String[]{id},null,null,null);
     }
 
 
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
-                {CN_ID,CN_NOMBRE_SEDE};
+                {CN_ID,CN_NOMBRE_SEDE,"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_NOMBRE_SEDE+ " = ?",new String[] { tipo },null,null,CN_FEC_CREACION + " ASC");
     }
     public void EliminarRegistro(String id){
@@ -113,7 +114,7 @@ public class DatabaseManagerSede extends DatabaseManager {
     }
     public Cursor cargarPorPermiso(String permiso) {
         String [] columnas = new String[]
-                {CN_ID,CN_NOMBRE_SEDE};
+                {CN_ID,CN_NOMBRE_SEDE,"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO};
         //return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " IN ?",new String[] { "("+permiso+")" },null,null,null);
         String query = "SELECT "+CN_ID+", " + CN_NOMBRE_SEDE +" FROM " + NOMBRE_TABLA + " WHERE " + CN_ID +" IN (" + permiso + ")";
         return super.getDb().rawQuery(query, null);
@@ -121,7 +122,7 @@ public class DatabaseManagerSede extends DatabaseManager {
 
     public Cursor cargarPorEmpresa(String IdEmpresa) {
         String [] columnas = new String[]
-                {CN_ID,CN_NOMBRE_SEDE};
+                {CN_ID,CN_NOMBRE_SEDE,"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO};
         String query = "SELECT "+CN_ID+", " + CN_NOMBRE_SEDE +" FROM " + NOMBRE_TABLA + " WHERE " + CN_ID_EMPRESA +" = " + IdEmpresa ;
         return super.getDb().rawQuery(query, null);
     }
@@ -211,7 +212,7 @@ public class DatabaseManagerSede extends DatabaseManager {
 
     public List<SedeBean> ListarPorSedeXEmpresa(String IdEmpresa){
         List<SedeBean> list = new ArrayList<>();
-        String SQL = "Select bf."+ CN_ID +","+CN_NOMBRE_SEDE+","+CN_ID_EMPRESA+","+CN_DIRECCION+","+CN_ID_DISTRITO+","+CN_FEC_CREACION+","+CN_ESTADO+"  from " + NOMBRE_TABLA + " bf  WHERE " + CN_ID_EMPRESA + " = " + IdEmpresa + " ORDER BY " + CN_FEC_CREACION + " DESC";
+        String SQL = "Select bf."+ CN_ID +","+CN_NOMBRE_SEDE+","+CN_ID_EMPRESA+","+CN_DIRECCION+","+CN_ID_DISTRITO+","+CN_FEC_CREACION+","+"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO+"  from " + NOMBRE_TABLA + " bf  WHERE " + CN_ID_EMPRESA + " = " + IdEmpresa + " ORDER BY " + CN_FEC_CREACION + " DESC";
         Cursor c = super.getDb().rawQuery(SQL, null);
 
         try{

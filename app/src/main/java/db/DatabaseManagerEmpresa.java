@@ -75,6 +75,7 @@ import beans.SpinnerBean;
         valores.put(CN_FEC_CREACION,obj.getFEC_CREACION());
         valores.put(CN_FEC_ACTUALIZACION,obj.getFEC_ACTUALIZACION());
         valores.put(CN_FEC_ELIMINACION,obj.getFEC_ELIMINACION());
+        valores.put(CN_ESTADO,obj.getESTADO());
         return valores;
     }
 
@@ -102,7 +103,7 @@ import beans.SpinnerBean;
     @Override
     public Cursor cargar() {
         String [] columnas = new String[]
-                {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL,CN_FEC_CREACION,CN_ESTADO};
+                {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL,CN_FEC_CREACION,"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO};
         return super.getDb().query(NOMBRE_TABLA, columnas,null,null,null,null,CN_FEC_CREACION + " ASC");
     }
 
@@ -134,7 +135,7 @@ import beans.SpinnerBean;
     }
     public Cursor cargarPorTipo(String tipo) {
         String [] columnas = new String[]
-                {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL,CN_FEC_CREACION,CN_ESTADO};
+                {CN_ID,CN_RUC,CN_NOM_RAZON_SOCIAL,CN_FEC_CREACION,"IFNULL(" + CN_ESTADO + ",1) AS " + CN_ESTADO};
         return super.getDb().query(NOMBRE_TABLA, columnas,CN_ID+ " = ?",new String[] { tipo },null,null,CN_FEC_CREACION + " ASC");
     }
 

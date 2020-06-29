@@ -52,6 +52,7 @@ public class RegistradorActivity extends AppCompatActivity {
     DatabaseManagerUsuario dbUsuario;
     List<UsuarioBean> listaUsuario;
     ListView lvEmpleado;
+    RegistradorActivity.MyAdapter adapter;
     RequestQueue requestQueue;
     ProgressBar progressBar;
     public final String URL = "https://bioficha.electocandidato.com/insert_id.php";
@@ -71,34 +72,11 @@ public class RegistradorActivity extends AppCompatActivity {
         dbUsuario = new DatabaseManagerUsuario(context);
         ProgressBarHandler(context);
         progressBar.setVisibility(View.INVISIBLE);
-        if (session.getNomRol().equals("SUPER-ADMIN")){
-            // Solo traer a usuarios ADMIN
-            listaUsuario = dbUsuario.getListADMIN();
-        }else{
-            // Traer todos los usuarios
-            listaUsuario = dbUsuario.getList(session.getIdEmpresa());
-        }
+        lvEmpleado = findViewById(R.id.lvEmpleado);
 
-        UsuarioBean user = null;
-        int len = listaUsuario.size();
-        nInfoID = new String[len];
-        nInfo1 = new String[len];
-        nInfo2 = new String[len];
-        nInfo3 = new String[len];
-
-        for (int i=0; i<listaUsuario.size(); i++) {
-            user = listaUsuario.get(i);
-            nInfoID[i] = user.getID();
-            nInfo1[i] = user.getNOMBRES();
-            nInfo2[i] = user.getNUM_DOCUMENTO();
-            nInfo3[i] = user.getESTADO();
-        }
+        Listar();
 
         btnAgregarRegistrador = findViewById(R.id.btnAgregarRegistrador);
-        lvEmpleado = findViewById(R.id.lvEmpleado);
-        RegistradorActivity.MyAdapter adapter = new RegistradorActivity.MyAdapter(this, nInfoID, nInfo1,nInfo2,nInfo3);
-        lvEmpleado.setAdapter(adapter);
-
         btnAgregarRegistrador.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,7 +123,6 @@ public class RegistradorActivity extends AppCompatActivity {
                     }
                 };
 
-
                 // Set the alert dialog yes button click listener
                 builder.setPositiveButton("Si", dialogClickListener);
                 // Set the alert dialog no button click listener
@@ -187,6 +164,8 @@ public class RegistradorActivity extends AppCompatActivity {
                             }
                         }
                         dbUsuario.EliminarRegistro(ID_USUARIO);
+                        Listar();
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -216,32 +195,7 @@ public class RegistradorActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         progressBar.setVisibility(View.INVISIBLE);
-        if (session.getNomRol().equals("SUPER-ADMIN")){
-            // Solo traer a usuarios ADMIN
-            listaUsuario = dbUsuario.getListADMIN();
-        }else{
-            // Traer todos los usuarios
-            listaUsuario = dbUsuario.getList(session.getIdEmpresa());
-        }
-
-        UsuarioBean user = null;
-        int len = listaUsuario.size();
-        nInfoID = new String[len];
-        nInfo1 = new String[len];
-        nInfo2 = new String[len];
-        nInfo3 = new String[len];
-
-        for (int i=0; i<listaUsuario.size(); i++) {
-            user = listaUsuario.get(i);
-            nInfoID[i] = user.getID();
-            nInfo1[i] = user.getNOMBRES();
-            nInfo2[i] = user.getNUM_DOCUMENTO();
-            nInfo3[i] = user.getESTADO();
-        }
-        btnAgregarRegistrador = findViewById(R.id.btnAgregarRegistrador);
-        lvEmpleado = findViewById(R.id.lvEmpleado);
-        RegistradorActivity.MyAdapter adapter = new RegistradorActivity.MyAdapter(this, nInfoID, nInfo1, nInfo2, nInfo3);
-        lvEmpleado.setAdapter(adapter);
+        Listar();
 
     }
     public void CloseProgressBar() {
@@ -307,5 +261,32 @@ public class RegistradorActivity extends AppCompatActivity {
 
             return row;
         }
+    }
+
+    private void Listar(){
+        if (session.getNomRol().equals("SUPER-ADMIN")){
+            // Solo traer a usuarios ADMIN
+            listaUsuario = dbUsuario.getListADMIN();
+        }else{
+            // Traer todos los usuarios
+            listaUsuario = dbUsuario.getList(session.getIdEmpresa());
+        }
+
+        UsuarioBean user = null;
+        int len = listaUsuario.size();
+        nInfoID = new String[len];
+        nInfo1 = new String[len];
+        nInfo2 = new String[len];
+        nInfo3 = new String[len];
+
+        for (int i=0; i<listaUsuario.size(); i++) {
+            user = listaUsuario.get(i);
+            nInfoID[i] = user.getID();
+            nInfo1[i] = user.getNOMBRES();
+            nInfo2[i] = user.getNUM_DOCUMENTO();
+            nInfo3[i] = user.getESTADO();
+        }
+        adapter = new RegistradorActivity.MyAdapter(context, nInfoID, nInfo1,nInfo2,nInfo3);
+        lvEmpleado.setAdapter(adapter);
     }
 }

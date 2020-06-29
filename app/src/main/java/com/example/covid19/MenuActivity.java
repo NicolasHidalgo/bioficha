@@ -282,6 +282,7 @@ public class MenuActivity extends AppCompatActivity {
                             bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
                             bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                             bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                            bean.setESTADO(jsonObject.getString("ESTADO"));
                             dbEmpresa.insertar(bean);
                         }
                     } catch (JSONException e) {
@@ -363,6 +364,7 @@ public class MenuActivity extends AppCompatActivity {
                             bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
                             bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                             bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                            bean.setESTADO(jsonObject.getString("ESTADO"));
                             dbUsuario.insertar(bean);
                         }
                     }
@@ -443,6 +445,7 @@ public class MenuActivity extends AppCompatActivity {
                             bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
                             bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                             bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                            bean.setESTADO(jsonObject.getString("ESTADO"));
                             dbUsuario.insertar(bean);
                         }
                     }
@@ -499,6 +502,7 @@ public class MenuActivity extends AppCompatActivity {
                             bean.setFEC_CREACION(jsonObject.getString("FEC_CREACION"));
                             bean.setFEC_ACTUALIZACION(jsonObject.getString("FEC_ACTUALIZACION"));
                             bean.setFEC_ELIMINACION(jsonObject.getString("FEC_ELIMINACION"));
+                            bean.setESTADO(jsonObject.getString("ESTADO"));
                             dbSede.insertar(bean);
                         }
                     } catch (JSONException e) {

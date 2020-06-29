@@ -58,6 +58,7 @@ public class FichasActivity extends AppCompatActivity {
 
     FloatingActionButton btnAgregarFicha;
     ListView lvFicha;
+    MyAdapter adapter;
     public final String URL = "https://bioficha.electocandidato.com/insert_id.php";
     RequestQueue requestQueue;
     ProgressBar progressBar;
@@ -76,30 +77,11 @@ public class FichasActivity extends AppCompatActivity {
         ProgressBarHandler(context);
         progressBar.setVisibility(View.INVISIBLE);
         dbFicha = new DatabaseManagerBioFicha(context);
+        lvFicha = findViewById(R.id.lvFicha);
 
-        String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
-        listaFicha = dbFicha.ListarPorSedeFechaV2(session.getIdSede(),fechaHoy);
-
-        BioFichaBean bio = null;
-        int len = listaFicha.size();
-        nInfoId = new String[len];
-        nInfo1 = new String[len];
-        nInfo2 = new String[len];
-        nInfo3 = new String[len];
-
-        for (int i=0; i<listaFicha.size(); i++) {
-            bio = listaFicha.get(i);
-            nInfoId[i] = bio.getID();
-            nInfo1[i] = bio.getNOMBRES();
-            nInfo2[i] = bio.getNUM_DOCUMENTO();
-            nInfo3[i] = bio.getESTADO();
-        }
+        Listar();
 
         btnAgregarFicha = findViewById(R.id.btnAgregarFicha);
-        lvFicha = findViewById(R.id.lvFicha);
-        MyAdapter adapter = new MyAdapter(this, nInfoId,nInfo1,nInfo2,nInfo3);
-        lvFicha.setAdapter(adapter);
-
         btnAgregarFicha.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -180,27 +162,7 @@ public class FichasActivity extends AppCompatActivity {
     @Override
     public void onResume() {
         super.onResume();
-
-        String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
-        listaFicha = dbFicha.ListarPorSedeFechaV2(session.getIdSede(),fechaHoy);
-        BioFichaBean bio = null;
-        int len = listaFicha.size();
-        nInfoId = new String[len];
-        nInfo1 = new String[len];
-        nInfo2 = new String[len];
-        nInfo3 = new String[len];
-
-        for (int i=0; i<listaFicha.size(); i++) {
-            bio = listaFicha.get(i);
-            nInfoId[i] = bio.getID();
-            nInfo1[i] = bio.getNOMBRES();
-            nInfo2[i] = bio.getNUM_DOCUMENTO();
-            nInfo3[i] = bio.getESTADO();
-        }
-        btnAgregarFicha = findViewById(R.id.btnAgregarFicha);
-        lvFicha = findViewById(R.id.lvFicha);
-        MyAdapter adapter = new MyAdapter(this, nInfoId, nInfo1, nInfo2, nInfo3);
-        lvFicha.setAdapter(adapter);
+        Listar();
 
     }
     public void EliminarFicha(View v){
@@ -232,6 +194,7 @@ public class FichasActivity extends AppCompatActivity {
                             }
                         }
                         dbFicha.EliminarRegistro(ID_FICHA);
+                        Listar();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -319,5 +282,28 @@ public class FichasActivity extends AppCompatActivity {
 
             return row;
         }
+    }
+
+    private void Listar(){
+        String fechaHoy = new SimpleDateFormat("yyyy-MM-dd").format(new java.util.Date());
+        listaFicha = dbFicha.ListarPorSedeFechaV2(session.getIdSede(),fechaHoy);
+
+        BioFichaBean bio = null;
+        int len = listaFicha.size();
+        nInfoId = new String[len];
+        nInfo1 = new String[len];
+        nInfo2 = new String[len];
+        nInfo3 = new String[len];
+
+        for (int i=0; i<listaFicha.size(); i++) {
+            bio = listaFicha.get(i);
+            nInfoId[i] = bio.getID();
+            nInfo1[i] = bio.getNOMBRES();
+            nInfo2[i] = bio.getNUM_DOCUMENTO();
+            nInfo3[i] = bio.getESTADO();
+        }
+
+        adapter = new MyAdapter(this, nInfoId,nInfo1,nInfo2,nInfo3);
+        lvFicha.setAdapter(adapter);
     }
 }

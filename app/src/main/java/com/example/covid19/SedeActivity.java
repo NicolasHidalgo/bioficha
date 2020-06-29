@@ -60,6 +60,7 @@ public class SedeActivity extends AppCompatActivity {
     String nInfo2[];
     String nInfo3[];
     ListView lvSede;
+    SedeActivity.MyAdapter adapter;
     FloatingActionButton btnAgregarSede;
 
     @Override
@@ -71,24 +72,11 @@ public class SedeActivity extends AppCompatActivity {
         ProgressBarHandler(context);
         progressBar.setVisibility(View.INVISIBLE);
         dbSede = new DatabaseManagerSede(context);
-        listaSede = dbSede.ListarPorSedeXEmpresa(session.getIdEmpresa());
-        SedeBean sede = null;
-        int len = listaSede.size();
-        nID = new String[len];
-        nInfo1 = new String[len];
-        nInfo2 = new String[len];
-        nInfo3 = new String[len];
-        for (int i = 0; i < listaSede.size(); i++) {
-            sede = listaSede.get(i);
-            nID[i] = sede.getID();
-            nInfo1[i] = sede.getNOMBRE_SEDE();
-            nInfo2[i] = sede.getDIRECCION();
-            nInfo3[i] = sede.getFEC_CREACION();
-        }
-        btnAgregarSede = findViewById(R.id.btnAgregarSede);
         lvSede = findViewById(R.id.lvSede);
-        SedeActivity.MyAdapter adapter = new SedeActivity.MyAdapter(this, nID, nInfo1, nInfo2, nInfo3);
-        lvSede.setAdapter(adapter);
+
+        Listar();
+
+        btnAgregarSede = findViewById(R.id.btnAgregarSede);
         btnAgregarSede.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,24 +140,7 @@ public class SedeActivity extends AppCompatActivity {
     public void onResume() {
         super.onResume();
         progressBar.setVisibility(View.INVISIBLE);
-        listaSede = dbSede.ListarPorSedeXEmpresa(session.getIdEmpresa());
-        SedeBean sede = null;
-        int len = listaSede.size();
-        nID = new String[len];
-        nInfo1 = new String[len];
-        nInfo2 = new String[len];
-        nInfo3 = new String[len];
-        for (int i = 0; i < listaSede.size(); i++) {
-            sede = listaSede.get(i);
-            nID[i] = sede.getID();
-            nInfo1[i] = sede.getNOMBRE_SEDE();
-            nInfo2[i] = sede.getDIRECCION();
-            nInfo3[i] = sede.getFEC_CREACION();
-        }
-        btnAgregarSede = findViewById(R.id.btnAgregarSede);
-        lvSede = findViewById(R.id.lvSede);
-        SedeActivity.MyAdapter adapter = new SedeActivity.MyAdapter(this, nID, nInfo1, nInfo2, nInfo3);
-        lvSede.setAdapter(adapter);
+        Listar();
 
     }
     public void CloseProgressBar() {
@@ -224,6 +195,7 @@ public class SedeActivity extends AppCompatActivity {
                             }
                         }
                         dbSede.EliminarRegistro(ID_SEDE);
+                        Listar();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -279,6 +251,26 @@ public class SedeActivity extends AppCompatActivity {
             hora.setText(nInfo3[position]);
             return row;
         }
+    }
+
+    public void Listar(){
+        listaSede = dbSede.ListarPorSedeXEmpresa(session.getIdEmpresa());
+        SedeBean sede = null;
+        int len = listaSede.size();
+        nID = new String[len];
+        nInfo1 = new String[len];
+        nInfo2 = new String[len];
+        nInfo3 = new String[len];
+        for (int i = 0; i < listaSede.size(); i++) {
+            sede = listaSede.get(i);
+            nID[i] = sede.getID();
+            nInfo1[i] = sede.getNOMBRE_SEDE();
+            nInfo2[i] = sede.getDIRECCION();
+            nInfo3[i] = sede.getFEC_CREACION();
+        }
+
+        adapter = new SedeActivity.MyAdapter(this, nID, nInfo1, nInfo2, nInfo3);
+        lvSede.setAdapter(adapter);
     }
 }
 
