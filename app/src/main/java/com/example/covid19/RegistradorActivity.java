@@ -282,7 +282,7 @@ public class RegistradorActivity extends AppCompatActivity {
         for (int i=0; i<listaUsuario.size(); i++) {
             user = listaUsuario.get(i);
             nInfoID[i] = user.getID();
-            nInfo1[i] = user.getNOMBRES();
+            nInfo1[i] = user.getNOMBRES() +" " + user.getAPELLIDO_PATERNO();
             nInfo2[i] = user.getNUM_DOCUMENTO();
             nInfo3[i] = user.getESTADO();
         }
