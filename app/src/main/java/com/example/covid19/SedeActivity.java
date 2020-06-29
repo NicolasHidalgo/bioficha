@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -248,7 +249,15 @@ public class SedeActivity extends AppCompatActivity {
             id.setText(nID[position]);
             nombre_sede.setText(nInfo1[position]);
             direccion.setText(nInfo2[position]);
-            hora.setText(nInfo3[position]);
+            String estado = nInfo3[position];
+            if(estado.equals("1")){
+                hora.setTextColor(Color.GREEN);
+                hora.setText("Activo");
+            }else{
+                hora.setTextColor(Color.RED);
+                hora.setText("Inactivo");
+            }
+
             return row;
         }
     }
@@ -266,7 +275,7 @@ public class SedeActivity extends AppCompatActivity {
             nID[i] = sede.getID();
             nInfo1[i] = sede.getNOMBRE_SEDE();
             nInfo2[i] = sede.getDIRECCION();
-            nInfo3[i] = sede.getFEC_CREACION();
+            nInfo3[i] = sede.getESTADO();
         }
 
         adapter = new SedeActivity.MyAdapter(this, nID, nInfo1, nInfo2, nInfo3);
