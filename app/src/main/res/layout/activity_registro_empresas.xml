@@ -44,6 +44,14 @@
                 android:layout_marginTop="5dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_marginLeft="15dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Registro de Empresas"
+                android:textStyle=""
+                android:textSize="18sp"
+                android:layout_marginLeft="15dp"
+                android:textColor="@color/colorPrimaryDark"/>
 
         </LinearLayout>
         <ScrollView
@@ -234,7 +242,7 @@
                     </TextView>
                     <EditText
                         android:id="@+id/txtRubro"
-                        android:layout_width="160dp"
+                        android:layout_width="match_parent"
                         android:layout_height="40dp"
                         android:inputType="text"
                         android:paddingLeft="10dp"

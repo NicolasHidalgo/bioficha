@@ -21,9 +21,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Empresa:"
+            android:text="EMPRESA:"
             android:textColor="#000"
-
+            android:textStyle="bold"
             android:textSize="15dp">
         </TextView>
 
@@ -44,8 +44,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sede:"
+            android:text="SEDE:"
             android:textColor="#000"
+            android:textStyle="bold"
             android:layout_marginTop="15dp"
             android:textSize="15dp">
         </TextView>
@@ -68,9 +69,11 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="Tipo Documento:"
+            android:text="TIPO DOCUMENTO:"
             android:textColor="#000"
-            android:layout_marginTop="15dp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:layout_marginTop="5dp"
             android:textSize="15dp">
         </TextView>
 
@@ -90,9 +93,10 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="N° Documento:"
+            android:text="N° DOCUMENTO:"
             android:textColor="#000"
-
+            android:textStyle="bold"
+            android:gravity="end"
             android:layout_marginTop="10dp"
             android:textSize="15dp">
         </TextView>
@@ -126,9 +130,11 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="Nacionalidad:"
+            android:text="NACIONALIDAD:"
             android:textColor="#000"
-            android:layout_marginTop="12dp"
+            android:textStyle="bold"
+            android:gravity="end"
+            android:layout_marginTop="14dp"
             android:textSize="15dp">
         </TextView>
         <Spinner
@@ -147,9 +153,10 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="Nombres:"
+            android:text="NOMBRES:"
             android:textColor="#000"
-
+            android:textStyle="bold"
+            android:gravity="end"
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -173,9 +180,10 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="Apellido Paterno:"
+            android:text="AP. PATERNO:"
             android:textColor="#000"
-
+            android:gravity="end"
+            android:textStyle="bold"
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -198,9 +206,11 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="Apellido Materno:"
+            android:text="AP. MATERNO:"
             android:textColor="#000"
+            android:textStyle="bold"
             android:layout_marginTop="12dp"
+            android:gravity="end"
             android:textSize="15dp">
         </TextView>
         <EditText
@@ -222,8 +232,10 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="Género:"
+            android:text="GÉNERO:"
+            android:textStyle="bold"
             android:textColor="#000"
+            android:gravity="end"
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -243,8 +255,10 @@
         <TextView
             android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="Nacimiento:"
+            android:text="NACIMIENTO:"
             android:textColor="#000"
+            android:gravity="end"
+            android:textStyle="bold"
             android:layout_marginTop="12dp"
             android:textSize="15dp">
         </TextView>
@@ -267,11 +281,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="75dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="Estatura:"
+            android:text="ESTATURA:"
             android:textColor="#000"
+            android:textStyle="bold"
             android:layout_marginTop="12dp"
+            android:gravity="end"
             android:textSize="15dp">
         </TextView>
         <EditText
@@ -288,7 +304,9 @@
         <TextView
             android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:text="Peso:"
+            android:text="PESO:"
+            android:textStyle="bold"
+            android:gravity="end"
             android:textColor="#000"
             android:layout_marginTop="12dp"
             android:layout_marginLeft="20dp"
@@ -311,11 +329,13 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
         <TextView
-            android:layout_width="75dp"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:text="IMC:"
+            android:textStyle="bold"
             android:textColor="#000"
             android:layout_marginTop="12dp"
+            android:gravity="end"
             android:textSize="15dp">
         </TextView>
 
@@ -331,9 +351,10 @@
         <TextView
             android:layout_width="75dp"
             android:layout_height="wrap_content"
-            android:text="Grados C°:"
+            android:text="GRADO C°:"
             android:textColor="#000"
-
+            android:textStyle="bold"
+            android:gravity="end"
             android:layout_marginTop="12dp"
             android:layout_marginLeft="20dp"
             android:textSize="15dp">

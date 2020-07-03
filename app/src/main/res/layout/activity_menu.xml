@@ -23,7 +23,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Cumplimiento de los protocolos de Bioseguridad, RM-239-2020-MINSA y jurisdicción distrital"
+                android:text="Cumplimiento de los protocolos de Bioseguridad, RM-448-2020-MINSA y jurisdicción distrital"
                 android:textColor="@color/colorPrimary"
                 android:textSize="15sp"
                 android:textStyle="bold"

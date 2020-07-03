@@ -222,6 +222,7 @@ public class RegistroEmpresasActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         }
+                        txtDireccionFiscal.requestFocus();
                         CloseProgressBar();
                     }
                 }, new Response.ErrorListener() {
